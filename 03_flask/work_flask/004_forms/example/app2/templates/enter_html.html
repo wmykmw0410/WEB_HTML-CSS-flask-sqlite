@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML Form サンプル</title>
+</head>
+<body>
+<h1>HTML Form : Input</h1>
+
+<form method="POST" action="/">
+
+    <!-- StringField -->
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" size="20">
+    <br>
+
+    <!-- IntegerField -->
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" value="20">
+    <br>
+
+    <!-- PasswordField -->
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" size="20">
+    <br>
+
+    <!-- PasswordField (confirm) -->
+    <label for="confirm_password">Password Check:</label>
+    <input type="password" id="confirm_password" name="confirm_password" size="20">
+    <br>
+
+    <!-- EmailField -->
+    <label for="email">Mail address:</label>
+    <input type="email" id="email" name="email" placeholder="xxxx@example.com">
+    <br>
+
+    <!-- DateField -->
+    <label for="birthday">Birthday:</label>
+    <input type="date" id="birthday" name="birthday" placeholder="yyyy/mm/dd">
+    <br>
+
+    <!-- RadioField -->
+    <label>Gender:</label>
+    <input type="radio" id="gender_man" name="gender" value="man" checked>
+    <label for="gender_man">Man</label>
+    <input type="radio" id="gender_woman" name="gender" value="woman">
+    <label for="gender_woman">Woman</label>
+    <br>
+
+    <!-- SelectField -->
+    <label for="area">Area:</label>
+    <select id="area" name="area">
+        <option value="east">East Japan</option>
+        <option value="west">West Japan</option>
+    </select>
+    <br>
+
+    <!-- BooleanField -->
+    <input type="checkbox" id="is_married" name="is_married" value="y">
+    <label for="is_married">Are you married?</label>
+    <br>
+
+    <!-- TextAreaField -->
+    <label for="note">Remarks:</label><br>
+    <textarea id="note" name="note" style="height:100px; width:150px"></textarea>
+    <br>
+
+    <!-- SubmitField -->
+    <input type="submit" value="Send">
+
+</form>
+</body>
+</html>

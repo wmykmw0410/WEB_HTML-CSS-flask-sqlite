@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1>Flask-WTF:Output</h1>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <ul>
+            <li>Name:{{session['name']}}</li>
+            <li>Email:{{session['email']}}</li>
+        </ul>
+        <p><a href="{{ url_for('input') }}">Return to the input page.</a></p>
+    </div>
+{% endblock %}

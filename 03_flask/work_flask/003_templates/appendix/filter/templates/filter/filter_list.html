@@ -1,0 +1,18 @@
+{% extends "filter/base3.html" %}
+
+{% block header %}<h1>Filter:Variable</h1>{% endblock %}
+
+{% block content %}
+    <p>List Elements</p>
+    <ul>
+        {% for user in users %}
+            <li>{{ user }}</li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <p>[First User] {{ users| first }}</p>
+    <p>[Last User] {{ users| last }}</p>
+    <p>[Join User] {{ users| join('=>') }}</p>
+    <p>[Number of Users] {{ users| length }}</p>
+    <p>[Random User] {{ users| random }}</p>
+{% endblock %}

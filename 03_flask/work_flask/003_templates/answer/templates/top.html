@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block title %}TOP{% endblock %}
+
+{% block content %}
+    <h1>書籍管理アプリへようこそ</h1>
+    <a href="{{ url_for('book_list') }}">書籍一覧を見る</a>
+{% endblock %}

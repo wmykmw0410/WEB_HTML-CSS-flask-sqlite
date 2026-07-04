@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}DETAIL{% endblock %}
+
+{% block header %}<h1>商品詳細：画面</h1>{% endblock %}
+
+{% block content %}
+<table border="1">
+    <tr>
+        <th>商品ID : </th>
+        <th>{{ show_id }}</th>
+    </tr>
+    <tr>
+        <th>商品名 : </th>
+        <th>アイテム-{{ show_id }}</th>
+    </tr>
+</table>
+{% endblock %}
+
+{% block footer %}
+    {{ super() }}
+    <a href="{{ url_for('item_list') }}">一覧画面へ</a>
+{% endblock %}

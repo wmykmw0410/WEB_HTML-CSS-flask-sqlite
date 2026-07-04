@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1>WTForm : Input</h1>
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    {{ form.name.label }}{{ form.name(size=20)}} <br>
+    {{ form.age.label }}{{ form.age()}} <br>
+    {{ form.password.label }}{{ form.password(size=20)}} <br>
+    {{ form.confirm_password.label }}{{ form.confirm_password(size=20)}} <br>
+    {{ form.email.label }}{{ form.email(placeholder="xxxx@example.com")}} <br>
+    {{ form.birthday.label }}{{ form.birthday()}} <br>
+    {{ form.gender.label }}{{ form.gender()}} <br>
+    {{ form.area.label }}{{ form.area()}} <br>
+    {{ form.is_married.label }}{{ form.is_married()}} <br>
+    {{ form.note.label }}{{ form.note(style="height:100px; width:150px")}} <br>
+    {{ form.submit() }}
+</form>
+{% endblock %}

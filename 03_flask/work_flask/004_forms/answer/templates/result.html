@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}送信完了{% endblock %}
+
+{% block content %}
+<h1>送信完了</h1>
+<p>以下の内容でお問い合わせを受け付けました。</p>
+<table border="1">
+    <tr><th>お名前</th><td>{{ name }}</td></tr>
+    <tr><th>メールアドレス</th><td>{{ email }}</td></tr>
+    <tr><th>種別</th><td>{{ category }}</td></tr>
+    <tr><th>メッセージ</th><td>{{ message }}</td></tr>
+</table>
+<p><a href="{{ url_for('contact') }}">戻る</a></p>
+{% endblock %}

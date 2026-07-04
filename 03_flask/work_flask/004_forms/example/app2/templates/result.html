@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1>WTForm : Result</h1>
+{% endblock %}
+
+{% block content %}
+<ul>
+    <li>Name: {{ form.name.data }}</li>
+    <li>Age: {{ form.age.data }}</li>
+    <li>Email: {{ form.email.data }}</li>
+    <li>Birthday: {{ form.birthday.data }}</li>
+    <li>Gender: {{ form.gender.data }}</li>
+    <li>Area: {{ form.area.data }}</li>
+    <li>Married: {{ form.is_married.data }}</li>
+    <li>Remarks: {{ form.note.data }}</li>
+</ul>
+<a href="{{ url_for('show_enter') }}">戻る</a>
+{% endblock %}

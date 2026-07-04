@@ -1,0 +1,13 @@
+{% macro render_field(filed) %}
+    <dt>{{ filed.label }}</dt>
+    <dd>
+        {{ filed(**kwargs)|safe }}
+        {% if filed.errors %}
+            <ul style="color:red;">
+                {% for error in filed.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}    
+    </dd>
+{% endmacro %}

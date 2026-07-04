@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>for + if</title>
+</head>
+<body>
+    <h1>商品詳細（ID: {{ show_id }}）</h1>
+    <table border="1">
+        {% for item in items %}
+            {% if show_id == item.id %}
+            <tr><td>ID</td><td>{{ item.id }}</td></tr>
+            <tr><td>名前</td><td>{{ item.name }}</td></tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+</body>
+</html>

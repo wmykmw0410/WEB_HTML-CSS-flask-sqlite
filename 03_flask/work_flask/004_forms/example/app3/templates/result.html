@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1>WTForm : Result</h1>
+{% endblock %}
+
+{% block content %}
+    <ul>
+        <li>Name : {{ form.name.data }}</li>
+        <li>Age : {{ form.age.data }}</li>
+        <li>Password : {{ form.password.data }}</li>
+        <li>Confirm_Password : {{ form.confirm_password.data }}</li>
+        <li>Email : {{ form.email.data }}</li>
+        <li>Birthday : {{ form.birthday.data }}</li>
+        <li>Gender : {{ form.gender.data }}</li>
+        <li>Area : {{ form.area.data }}</li>
+        <li>is_married : {{ form.is_married.data }}</li>
+        <li>Note : {{ form.note.data }}</li>
+    </ul>
+{% endblock %}

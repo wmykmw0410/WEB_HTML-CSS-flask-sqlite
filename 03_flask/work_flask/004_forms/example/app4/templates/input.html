@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1>Flask-WTF:Input</h1>
+{% endblock %}
+
+{% block content %}
+    {% from "_formhelper.html" import render_field %}
+    <form method="post" novalidate>
+        {{ form.csrf_token }}
+        {{ render_field(form.name) }}
+        {{ render_field(form.email) }}
+        <br>
+        {{ form.submit }}
+    </form>
+{% endblock %}

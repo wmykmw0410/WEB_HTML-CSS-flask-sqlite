@@ -1,0 +1,12 @@
+{% extends "filter/base3.html" %}
+
+{% block header %}<h1>Filter</h1>{% endblock %}
+
+{% block content %}
+    <p>[No Filter]</p>
+    This is a {{ show_word }}.
+    <p>[Filter]</p>
+    {% filter upper %}
+        This is a {{ show_word }}.
+    {% endfilter %}
+{% endblock %}

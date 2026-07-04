@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}書籍アプリ{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">TOP</a> |
+        <a href="{{ url_for('book_list') }}">書籍一覧</a>
+    </nav>
+    <hr>
+    {% block content %}{% endblock %}
+</body>
+</html>

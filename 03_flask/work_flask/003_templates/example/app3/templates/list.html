@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}LIST{% endblock %}
+
+{% block header %}<h1>商品一覧：画面</h1>{% endblock %}
+
+{% block content %}
+<table border="1">
+    <thead>
+        <tr>
+            <th>商品ID</th>
+            <th>商品名</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="{{ url_for('item_detail', id=1) }}">1</a></td>
+            <td>団子</td>
+        </tr>
+        <tr>
+            <td><a href="{{ url_for('item_detail', id=2) }}">2</a></td>
+            <td>肉まん</td>
+        </tr>
+        <tr>
+            <td><a href="{{ url_for('item_detail', id=3) }}">3</a></td>
+            <td>どら焼き</td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

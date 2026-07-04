@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}お問い合わせ{% endblock %}
+
+{% block content %}
+<h1>お問い合わせ</h1>
+<form method="POST" novalidate>
+    {{ form.csrf_token }}
+
+    <p>
+        {{ form.name.label }}<br>
+        {{ form.name(size=40) }}<br>
+        {% for error in form.name.errors %}
+            <span style="color:red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.email.label }}<br>
+        {{ form.email(size=40, placeholder="xxxx@example.com") }}<br>
+        {% for error in form.email.errors %}
+            <span style="color:red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.category.label }}<br>
+        {{ form.category() }}
+    </p>
+
+    <p>
+        {{ form.message.label }}<br>
+        {{ form.message(style="width:400px; height:120px") }}<br>
+        {% for error in form.message.errors %}
+            <span style="color:red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    {{ form.submit() }}
+</form>
+{% endblock %}

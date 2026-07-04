@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}タイトル{% endblock %}</title>
+</head>
+<body>
+    {% block header %}ヘッダー{% endblock %}
+    {% block content %}内容{% endblock %}
+    <hr>
+    {% block footer %}<a href="{{ url_for('index') }}">TOP画面へ</a>{% endblock %}
+</body>
+</html>

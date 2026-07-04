@@ -1,0 +1,9 @@
+{% extends "filter/base3.html" %}
+
+{% block header %}<h1>Filter:Custom</h1>{% endblock %}
+
+{% block content %}
+    <p>Custom filter : {{ show_word1 | truncate }}</p>
+    <p>Custom filter : {{ show_word1 | truncate(2) }}</p>
+    <p>Custom filter : {{ show_word2 | truncate }}</p>
+{% endblock %}
