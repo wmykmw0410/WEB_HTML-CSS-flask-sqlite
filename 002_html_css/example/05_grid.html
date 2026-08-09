@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Grid でカードを並べる</title>
+    <style>
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 150px);
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e1e5eb;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Grid でカードを並べる</h1>
+
+    <div class="card-grid">
+        <div class="card">カード1</div>
+        <div class="card">カード2</div>
+        <div class="card">カード3</div>
+        <div class="card">カード4</div>
+        <div class="card">カード5</div>
+    </div>
+
+    <h2>ポイント</h2>
+    <ul>
+        <li><code>display: grid</code> — 子要素を格子状に並べる</li>
+        <li><code>grid-template-columns: repeat(auto-fill, 150px)</code> — 幅150pxの列を、画面幅に収まるだけ自動的に並べる</li>
+        <li><code>justify-content: center</code> — 余ったスペースがあれば列全体を中央寄せにする</li>
+        <li>画面幅を狭くすると、自動的に列数が減ることを確認しよう</li>
+    </ul>
+</body>
+</html>

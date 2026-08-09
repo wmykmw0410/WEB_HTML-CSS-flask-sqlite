@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Home</h1>
+<a href="{{ url_for('one_app.show_template') }}">App1</a><br>
+<a href="{{ url_for('two_app.show_template') }}">App2</a>
+{% endblock %}

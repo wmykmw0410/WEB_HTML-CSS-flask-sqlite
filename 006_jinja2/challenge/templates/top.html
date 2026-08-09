@@ -1,0 +1,13 @@
+{# TODO: base.html を継承する（extends） #}
+
+{#
+    TODO: block "content" の中に、005_redirectのanswerと同じ見た目のカード一覧を
+    {% for %} を使って書籍一覧をループ表示してください。
+
+    - practice.py の book_list() から books（辞書のリスト。各要素は
+      id / title / author / price / image を持つ）が渡されています
+    - 各カードは <a class="card" href="/books/{{ book.id }}"> で囲む
+    - 画像は /static/img/{{ book.image }}
+    - 005_redirect/practice/answer/templates/top.html にハードコードされていた
+      5枚のカードを、このループ1つに置き換えるのが目標です
+#}

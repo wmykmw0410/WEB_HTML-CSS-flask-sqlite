@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}新規登録 - ブックストア{% endblock %}
+
+{% block content %}
+<h1>新規登録</h1>
+
+<form method="post">
+    {{ form.csrf_token }}
+
+    <div class="field">
+        {{ form.username.label }}
+        {{ form.username() }}
+        {% if form.username.errors %}
+        <ul class="errors">
+            {% for error in form.username.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="field">
+        {{ form.password.label }}
+        {{ form.password() }}
+        {% if form.password.errors %}
+        <ul class="errors">
+            {% for error in form.password.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="field">
+        {{ form.confirm.label }}
+        {{ form.confirm() }}
+        {% if form.confirm.errors %}
+        <ul class="errors">
+            {% for error in form.confirm.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    {{ form.submit() }}
+</form>
+{# TODO: 問題3 'login' を Blueprint 形式のエンドポイント名に書き換える #}
+<p><a href="{{ url_for('login') }}">すでにアカウントをお持ちの方はこちら</a></p>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}注文完了 - ブックストア{% endblock %}
+
+{% block content %}
+<h1>注文が完了しました</h1>
+<p>注文番号: {{ order.id }}</p>
+<p>注文日時: {{ order.created_at }}</p>
+<p>お届け先: 〒{{ order.postal_code }} {{ order.address }}</p>
+
+<table>
+    <tr><th>書籍名</th><th>単価</th><th>数量</th><th>小計</th></tr>
+    {% for item in order.items %}
+    <tr>
+        <td>{{ item.title }}</td>
+        <td>¥{{ item.price }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>¥{{ item.subtotal }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="3"><strong>合計</strong></td>
+        <td><strong>¥{{ order.total }}</strong></td>
+    </tr>
+</table>
+
+<p><a href="{{ url_for('books.index') }}">← 書籍一覧に戻る</a></p>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}カート - ブックストア{% endblock %}
+
+{% block content %}
+<h1>カート</h1>
+{% if items %}
+<table>
+    <tr><th>書籍名</th><th>単価</th><th>数量</th><th>小計</th><th></th></tr>
+    {% for item in items %}
+    <tr>
+        <td>{{ item.book.title }}</td>
+        <td>¥{{ item.book.price }}</td>
+        <td>
+            <form method="post" action="{{ url_for('cart.update', book_id=item.book.id) }}" style="display:inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="number" name="quantity" value="{{ item.quantity }}" min="0" style="width:60px">
+                <button type="submit">更新</button>
+            </form>
+        </td>
+        <td>¥{{ item.subtotal }}</td>
+        <td>
+            <form method="post" action="{{ url_for('cart.remove', book_id=item.book.id) }}" style="display:inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit">削除</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="3"><strong>合計</strong></td>
+        <td colspan="2"><strong>¥{{ total }}</strong></td>
+    </tr>
+</table>
+
+<form method="post" action="{{ url_for('cart.checkout') }}" style="margin-top:16px">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="field">
+        <label for="postal_code">お届け先の郵便番号（ハイフンなし）</label>
+        <input type="text" id="postal_code" name="postal_code" placeholder="7830060" required>
+    </div>
+    <button type="submit">注文を確定する</button>
+</form>
+
+<form method="post" action="{{ url_for('cart.clear') }}" style="margin-top:8px">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" onclick="return confirm('カートを空にしますか？')">カートを空にする</button>
+</form>
+{% else %}
+<p>カートに書籍がありません。</p>
+{% endif %}
+<p><a href="{{ url_for('books.index') }}">← 書籍一覧に戻る</a></p>
+{% endblock %}

@@ -1,0 +1,15 @@
+-- ============================================================
+-- 問題 1：テーブル作成
+-- ============================================================
+-- 実行: sqlite3 practice.db
+--       sqlite> .read basic/question/question01.sql
+-- ============================================================
+-- 以下のカラムを持つ members テーブルを作成してください。
+--
+-- | カラム名   | 型      | 制約                      |
+-- | id         | INTEGER | PRIMARY KEY AUTOINCREMENT |
+-- | name       | TEXT    | NOT NULL                  |
+-- | department | TEXT    | NOT NULL                  |
+-- | salary     | INTEGER |                           |
+--
+-- ここに SQL を書く

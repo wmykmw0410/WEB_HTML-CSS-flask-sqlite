@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ブックストア</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 4. Flexboxでナビゲーションを作る -->
+    <header>
+        <nav>
+            <strong>ブックストア</strong>
+            <a href="#">書籍一覧</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- 1. HTMLの基本タグ（見出し） -->
+        <h1>書籍一覧</h1>
+
+        <!-- 5. Gridでカードを並べる -->
+        <div class="card-grid">
+            <!-- 1. HTMLの基本タグ（img/h3/p） + 2. CSSセレクタの基本（class="card"） -->
+            <div class="card">
+                <img src="img/wagahai_neko.png" alt="吾輩は猫である">
+                <h3>吾輩は猫である</h3>
+                <p>夏目漱石</p>
+                <p>¥770</p>
+            </div>
+            <div class="card">
+                <img src="img/bocchan.png" alt="坊っちゃん">
+                <h3>坊っちゃん</h3>
+                <p>夏目漱石</p>
+                <p>¥660</p>
+            </div>
+            <div class="card">
+                <img src="img/rashomon.png" alt="羅生門">
+                <h3>羅生門</h3>
+                <p>芥川龍之介</p>
+                <p>¥550</p>
+            </div>
+            <div class="card">
+                <img src="img/ginga_tetsudo.png" alt="銀河鉄道の夜">
+                <h3>銀河鉄道の夜</h3>
+                <p>宮沢賢治</p>
+                <p>¥480</p>
+            </div>
+            <div class="card">
+                <img src="img/hashire_merosu.png" alt="走れメロス">
+                <h3>走れメロス</h3>
+                <p>太宰治</p>
+                <p>¥440</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 1. HTMLの基本タグ（footer） -->
+    <footer>
+        &copy; ブックストア
+    </footer>
+</body>
+</html>

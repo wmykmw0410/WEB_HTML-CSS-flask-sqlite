@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>書籍一覧</h1>
+<div class="card-grid">
+    {% for book in books %}
+    <div class="card">
+        <a class="card-link" href="{{ url_for('books.detail', book_id=book.id) }}">
+            <img src="/static/img/{{ book.image or 'not_found.png' }}" alt="{{ book.title }}">
+            <h3>{{ book.title }}</h3>
+            <p>{{ book.author }}</p>
+            <p>¥{{ book.price }}</p>
+        </a>
+        {% if current_user.is_authenticated and (current_user.id == book.user_id or current_user.is_admin) %}
+        <div class="owner-actions">
+            <a href="{{ url_for('books.update', book_id=book.id) }}">編集</a>
+            <form method="post" action="{{ url_for('books.delete', book_id=book.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" onclick="return confirm('削除しますか？')">削除</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }} - ブックストア</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <strong>ブックストア</strong>
+            <a href="/">書籍一覧</a>
+        </nav>
+    </header>
+
+    <main class="detail">
+        <img src="{{ image }}" alt="{{ title }}">
+        <h1>{{ title }}</h1>
+        <p>{{ author_line }}</p>
+        <p>{{ price_line }}</p>
+        <a class="back-link" href="/">一覧へ戻る</a>
+    </main>
+
+    <footer>
+        &copy; ブックストア
+    </footer>
+</body>
+</html>

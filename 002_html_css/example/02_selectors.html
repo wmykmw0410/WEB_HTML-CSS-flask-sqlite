@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>CSSセレクタ</title>
+    <style>
+        /* 要素セレクタ: すべての <p> に適用される */
+        p {
+            font-family: sans-serif;
+        }
+
+        /* クラスセレクタ: class="highlight" を持つ要素に適用される。何度でも使える */
+        .highlight {
+            background: #fff3cd;
+            padding: 4px 8px;
+        }
+
+        /* IDセレクタ: id="title" を持つ要素だけに適用される。ページ内で1回だけ使う想定 */
+        #title {
+            color: #3f6fd1;
+        }
+
+        /* 子孫セレクタ: .card の中にある <p> だけに適用される */
+        .card p {
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title">CSSセレクタの基本</h1>
+
+    <p>これは通常の段落です。</p>
+    <p class="highlight">これは <code>.highlight</code> クラスが付いた段落です。</p>
+
+    <div class="card">
+        <h3>カードの中の見出し</h3>
+        <p>このpは「.card p」という子孫セレクタで、カードの外のpとは違う色になります。</p>
+    </div>
+</body>
+</html>

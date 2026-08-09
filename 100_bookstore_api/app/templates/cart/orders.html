@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}注文履歴 - ブックストア{% endblock %}
+
+{% block content %}
+<h1>注文履歴</h1>
+{% if orders %}
+<table>
+    <tr><th>注文番号</th><th>注文日時</th><th>合計</th><th></th></tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.created_at }}</td>
+        <td>¥{{ order.total }}</td>
+        <td><a href="{{ url_for('cart.complete', order_id=order.id) }}">詳細</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>注文履歴がありません。</p>
+{% endif %}
+<p><a href="{{ url_for('books.index') }}">← 書籍一覧に戻る</a></p>
+{% endblock %}

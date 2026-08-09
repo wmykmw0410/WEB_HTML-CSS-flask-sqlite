@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}マイページ{% endblock %}
+{% block content %}
+<h1>マイページ</h1>
+<p>ようこそ、<strong>{{ current_user.username }}</strong> さん</p>
+<p>このページは <code>@login_required</code> で保護されています。</p>
+<p>ログイン中の user.id：{{ current_user.id }}</p>
+<p><a href="{{ url_for('logout') }}">ログアウト</a></p>
+{% endblock %}

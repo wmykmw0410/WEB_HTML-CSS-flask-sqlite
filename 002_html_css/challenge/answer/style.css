@@ -1,0 +1,114 @@
+/* 発展：CSSカスタムプロパティ（色をまとめて管理する。カリキュラム本編では未出だが、5. Gridの解説に登場） */
+:root {
+    --color-bg: #f4f6f9;
+    --color-surface: #ffffff;
+    --color-primary: #3f6fd1;
+    --color-text: #262b33;
+    --color-muted: #6b7280;
+    --color-border: #e1e5eb;
+}
+
+/* 2. CSSセレクタの基本（要素セレクタ） */
+body {
+    font-family: sans-serif;
+    max-width: 900px;
+    margin: 30px auto;
+    background: var(--color-bg);
+    color: var(--color-text);
+}
+
+/* 4. Flexboxでナビゲーションを作る */
+nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--color-primary);
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* 2. CSSセレクタの基本（子孫セレクタ） */
+nav a,
+nav strong {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* 5. Gridでカードを並べる */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 200px);
+    justify-content: center;
+    gap: 16px;
+}
+
+/* 3. CSSとボックスモデル（padding/border/box-sizing相当の考え方） + 2. クラスセレクタ */
+.card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+/* 2. CSSセレクタの基本（子孫セレクタ： .card img） */
+.card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* 2. CSSセレクタの基本（子孫セレクタ： .card h3） */
+.card h3 {
+    margin: 8px 0 4px;
+    font-size: 1em;
+}
+
+/* 2. CSSセレクタの基本（子孫セレクタ： .card p） */
+.card p {
+    margin: 2px 0;
+    color: var(--color-muted);
+}
+
+/* 2. CSSセレクタの基本（要素セレクタ） + 3. ボックスモデル（border-top・padding） */
+footer {
+    margin-top: 40px;
+    padding: 16px 0;
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+    font-size: 0.85em;
+    color: var(--color-muted);
+}
+
+/* 発展：レスポンシブ対応（カリキュラム本編では未出。5. Gridの発展として掲載） */
+/* タブレット以下：カードを2列に固定 */
+@media (max-width: 768px) {
+    body {
+        margin: 16px;
+        max-width: 100%;
+    }
+
+    .card-grid {
+        grid-template-columns: repeat(2, 200px);
+        gap: 12px;
+    }
+}
+
+/* スマートフォン：カードを1列に固定 */
+@media (max-width: 480px) {
+    body {
+        margin: 8px;
+    }
+
+    .card-grid {
+        grid-template-columns: repeat(1, 200px);
+        gap: 8px;
+    }
+}

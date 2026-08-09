@@ -1,0 +1,13 @@
+/*
+    ここにCSSを書いていきます。
+
+    ヒント:
+    - header/nav の背景色・文字色
+    - .card-grid は display:grid で複数列に並べる
+    - .card は白背景・枠線・角丸・影を付けるとカードらしく見える
+    - .card img は幅いっぱい・高さ固定・object-fit:cover で綺麗に切り抜く
+    - footer は中央寄せ・小さめの文字
+    - @media (max-width: 768px) でタブレット幅は2列、(max-width: 480px) でスマホ幅は1列にする
+
+    詰まったら 100_bookstore_api/example/flask_app/static/style.css も参考にしてください。
+*/

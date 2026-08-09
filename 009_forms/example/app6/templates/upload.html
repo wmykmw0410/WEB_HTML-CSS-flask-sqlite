@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ファイルアップロード</title>
+</head>
+<body>
+    <h1>ファイルアップロード</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name() }}
+        </p>
+        <p>
+            {{ form.image.label }}<br>
+            {{ form.image() }}
+            {% for error in form.image.errors %}
+                <span style="color:red">{{ error }}</span>
+            {% endfor %}
+        </p>
+        {{ form.submit() }}
+    </form>
+
+    {% if filename %}
+        <h2>アップロード済み画像</h2>
+        <img src="{{ url_for('static', filename='uploads/' + filename) }}" width="200" alt="{{ filename }}">
+    {% endif %}
+</body>
+</html>

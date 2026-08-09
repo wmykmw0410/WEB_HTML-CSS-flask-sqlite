@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>レスポンシブ対応</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        .box-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .box {
+            background: #3f6fd1;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 6px;
+        }
+
+        /* 画面幅が768px以下になったら2列にする */
+        @media (max-width: 768px) {
+            .box-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* 画面幅が480px以下になったら1列にする */
+        @media (max-width: 480px) {
+            .box-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>レスポンシブ対応</h1>
+    <p>ブラウザの幅を狭めていくと、3列 → 2列 → 1列と切り替わります。</p>
+
+    <div class="box-grid">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <div class="box">4</div>
+        <div class="box">5</div>
+        <div class="box">6</div>
+    </div>
+</body>
+</html>

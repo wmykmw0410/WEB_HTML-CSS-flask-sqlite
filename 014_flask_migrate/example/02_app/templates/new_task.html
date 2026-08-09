@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Task</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>New Task</h1>
+        <form action="{{ url_for('new_task') }}" method="post">
+            <label for="content"> Task Content :</label>
+            <br>
+            <input type="text" name="content" id="content" class="text-input">
+            <br>
+            <input type="submit" value="Add" class="button">
+        </form>
+    </div>
+</body>
+</html>

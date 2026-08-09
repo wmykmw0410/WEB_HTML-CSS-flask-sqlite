@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Flexbox</title>
+    <style>
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #3f6fd1;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: #fff;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .spacer {
+            flex: 1;   /* 余った幅をこの要素が埋める → 残りを右に押し出す */
+        }
+    </style>
+</head>
+<body>
+    <h1>Flexbox でナビゲーションを作る</h1>
+
+    <nav>
+        <strong>サイト名</strong>
+        <a href="#">ホーム</a>
+        <a href="#">一覧</a>
+        <span class="spacer"></span>
+        <a href="#">ログイン</a>
+    </nav>
+
+    <h2>ポイント</h2>
+    <ul>
+        <li><code>display: flex</code> — 子要素を横並びにする</li>
+        <li><code>align-items: center</code> — 縦方向を中央揃えにする</li>
+        <li><code>gap</code> — 子要素同士の間隔</li>
+        <li><code>flex: 1</code> — 余ったスペースをその要素が埋める（右寄せに使える）</li>
+    </ul>
+</body>
+</html>

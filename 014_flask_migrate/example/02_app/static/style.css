@@ -1,0 +1,82 @@
+/* ページ全体 */
+.container {
+    background-color: #f8f8f8;
+    max-width: 800px;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-top: 50px;
+}
+
+label {
+    font-size: 20px;
+}
+
+.no-complete {
+    color: green;
+}
+
+.complete {
+    color: red;
+}
+
+.button {
+    background-color: blue;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+a.button {
+    display: block;
+    width: 200px;
+}
+
+.complete-button, .uncompleted-button {
+    background-color: green;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.uncompleted-button {
+    background-color: red;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    background-color: white;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+p {
+    font-size: 20px;
+}
+
+.text-input {
+    padding: 10px;
+    width: 80%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin: 10px;
+}

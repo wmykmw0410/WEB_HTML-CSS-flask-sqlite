@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}書籍を追加 - ブックストア{% endblock %}
+
+{% block content %}
+<h1>書籍を追加</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+
+    <div class="field">
+        {{ form.title.label }}
+        {{ form.title() }}
+        {% if form.title.errors %}
+        <ul class="errors">
+            {% for error in form.title.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="field">
+        {{ form.author.label }}
+        {{ form.author() }}
+        {% if form.author.errors %}
+        <ul class="errors">
+            {% for error in form.author.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="field">
+        {{ form.price.label }}
+        {{ form.price() }}
+        {% if form.price.errors %}
+        <ul class="errors">
+            {% for error in form.price.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="field">
+        {{ form.genre.label }}
+        {{ form.genre() }}
+        {% if form.genre.errors %}
+        <ul class="errors">
+            {% for error in form.genre.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="field">
+        {{ form.image.label }}
+        {{ form.image() }}
+        {% if form.image.errors %}
+        <ul class="errors">
+            {% for error in form.image.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    {{ form.submit() }}
+</form>
+{% endblock %}

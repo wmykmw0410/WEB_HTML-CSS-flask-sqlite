@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}ログインサンプル{% endblock %}</title>
+    <style>
+        body  { font-family: sans-serif; max-width: 500px; margin: 40px auto; }
+        nav a { margin-right: 12px; }
+        .flash { color: green; }
+        .error { color: red; font-size: 0.9em; }
+        input[type=text], input[type=password] { width: 100%; padding: 6px; margin: 4px 0 12px; }
+        input[type=submit] { padding: 8px 20px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">トップ</a>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('mypage') }}">マイページ</a>
+            <a href="{{ url_for('logout') }}">ログアウト</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">ログイン</a>
+            <a href="{{ url_for('register') }}">新規登録</a>
+        {% endif %}
+    </nav>
+    <hr>
+    {% for msg in get_flashed_messages() %}
+        <p class="flash">{{ msg }}</p>
+    {% endfor %}
+    {% block content %}{% endblock %}
+</body>
+</html>

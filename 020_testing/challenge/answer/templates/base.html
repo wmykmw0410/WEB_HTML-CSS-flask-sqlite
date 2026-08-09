@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}ブックストア{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <strong>ブックストア</strong>
+            <a href="{{ url_for('books.index') }}">書籍一覧</a>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('books.create') }}">書籍を追加</a>
+            <a href="{{ url_for('cart.index') }}">カート</a>
+            <a href="{{ url_for('cart.orders') }}">注文履歴</a>
+            <span>{{ current_user.username }} さん</span>
+            <a href="{{ url_for('auth.logout') }}">ログアウト</a>
+            {% else %}
+            <a href="{{ url_for('auth.login') }}">ログイン</a>
+            <a href="{{ url_for('auth.register') }}">新規登録</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flash">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        &copy; ブックストア
+    </footer>
+</body>
+</html>

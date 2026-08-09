@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>お問い合わせフォーム</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 500px;
+            margin: 30px auto;
+            color: #262b33;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 6px;
+            box-sizing: border-box;
+            border: 1px solid #e1e5eb;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 20px;
+            background: #3f6fd1;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>お問い合わせ</h1>
+
+    <form method="post">
+        <div class="field">
+            <label for="name">お名前</label>
+            <input id="name" type="text" name="name" required>
+        </div>
+
+        <div class="field">
+            <label for="email">メールアドレス</label>
+            <input id="email" type="email" name="email" required>
+        </div>
+
+        <div class="field">
+            <label for="category">お問い合わせ種別</label>
+            <select id="category" name="category">
+                <option value="general">一般</option>
+                <option value="support">サポート</option>
+                <option value="other">その他</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="message">メッセージ</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+
+        <button type="submit">送信</button>
+    </form>
+</body>
+</html>

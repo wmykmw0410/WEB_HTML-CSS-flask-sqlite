@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ボックスモデル</title>
+    <style>
+        .box {
+            width: 200px;
+            padding: 20px;      /* 内側の余白 */
+            border: 4px solid #3f6fd1;
+            margin: 30px;       /* 外側の余白 */
+            background: #eef3ff;
+        }
+
+        .box-border-box {
+            width: 200px;       /* border-boxだと padding/border を含めて200pxになる */
+            padding: 20px;
+            border: 4px solid #d1723f;
+            margin: 30px;
+            background: #fff3ee;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <h1>ボックスモデル</h1>
+
+    <div class="box">
+        content-box（デフォルト）<br>
+        width:200pxは中身だけの幅。実際の見た目はpadding+borderの分広がる。
+    </div>
+
+    <div class="box-border-box">
+        box-sizing: border-box<br>
+        width:200pxにpadding/borderを含める。実務ではほぼこちらを使う。
+    </div>
+</body>
+</html>
