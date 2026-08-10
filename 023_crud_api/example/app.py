@@ -2,7 +2,7 @@
 書籍APIのフルCRUD化（サンプルアプリ）
 
 実行:
-    python example/app.py
+python example/app.py
 """
 from flask import Flask
 from api.views import api_bp

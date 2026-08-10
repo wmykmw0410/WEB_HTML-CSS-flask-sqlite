@@ -8,7 +8,7 @@
 |---|---|
 | 015_login | Flask-Login・ログイン処理 |
 | 018_ownership_crud | db.Model・所有権パターン |
-| 019_cart | カート・チェックアウト |
+| 019_javascript | fetch()で呼び出すJSON API（toggle-pin） |
 
 ```bash
 pip install pytest
@@ -23,16 +23,16 @@ pip install pytest
 │   ├── test_01_pytest_basics.py   pytestの基本（assert・fixture・parametrize）
 │   ├── 02_app.py                   テスト対象の最小Flaskアプリ
 │   └── test_02_flask_client.py     Flaskのtest_clientの基本
-└── challenge/                      019_cartの続き（テストを書く）
-    ├── conftest.py                 フィクスチャ（app/client/sample_user/sample_book）
-    ├── test_books.py
-    ├── test_cart.py
+└── challenge/                      019_javascriptの続き（テストを書く）
+    ├── conftest.py                 フィクスチャ（app/client/sample_user/sample_memo）
+    ├── test_memos.py
+    ├── test_pin.py
     ├── pytest.ini
-    ├── app.py / models.py / ...    019_cartと同じアプリ本体
+    ├── app.py / models.py / ...    019_javascriptと同じメモ帳アプリ本体
     └── answer/
         ├── conftest.py
-        ├── test_books.py
-        ├── test_cart.py
+        ├── test_memos.py
+        ├── test_pin.py
         ├── pytest.ini
         └── app.py / models.py / ...
 ```
@@ -89,6 +89,16 @@ pytest 020_testing/example/test_01_pytest_basics.py -v
 ```
 
 `-v`（verbose）を付けると、実行したテスト関数名が1つずつ表示されます。
+
+### 動作確認：PASSEDとFAILEDの違いを実際に見る
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| そのまま実行する | `test_add`・`test_sample_list_length`・`test_add_parametrized[...]`が3パターン、合計5件前後すべて`PASSED`（緑）になる |
+| `test_add`の中の`assert add(2, 3) == 5`を`assert add(2, 3) == 999`のように**わざと間違えて**実行する | そのテストだけ`FAILED`（赤）になり、`assert 5 == 999`のように実際の値と期待値の差分が表示される。確認後は必ず元に戻す |
+| `parametrize`の引数リストに`(2, 2, 999)`のような間違ったデータを1つ追加する | そのパラメータの組み合わせだけ`FAILED`になり、他の組み合わせは影響を受けず`PASSED`のまま |
+
+**正常な状態の見分け方**：意図的に間違えた箇所だけが`FAILED`になり、それ以外のテストは`PASSED`のままであれば、テストが互いに独立して正しく検証できている証拠です。1箇所直しただけで無関係なテストまで失敗する場合は、フィクスチャの共有状態を疑ってください（本章セクション2で詳しく扱います）。
 
 ---
 
@@ -152,11 +162,21 @@ def reset_tasks():
 pytest 020_testing/example/test_02_flask_client.py -v
 ```
 
+### 動作確認：テスト間の状態リセットが効いているかを確認する
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| そのまま実行する | `test_list_tasks`・`test_create_task`など全件`PASSED`になる |
+| `reset_tasks`フィクスチャの`@pytest.fixture(autouse=True)`を`@pytest.fixture`（`autouse=True`を外す）に変更して実行する | 実行順序によっては`test_list_tasks`が`FAILED`になることがある（前のテストで`POST`した「読書」タスクが残ってしまい、期待した2件のリストと一致しなくなるため）。確認後は必ず`autouse=True`に戻す |
+| `pytest 020_testing/example/test_02_flask_client.py -v -p no:randomly`のように実行順序を変えて試す（ランダム化プラグインが無い場合は通常の順序で複数回実行） | `autouse=True`が効いていれば、実行順序が変わっても結果は常に同じになる |
+
+**正常な状態の見分け方**：テストの実行順序を変えても結果が変わらないのが正しい状態です。順序によって結果が変わる場合は、どこかのテストが他のテストの後始末に依存している（グローバルな状態を共有している）サインです。
+
 ---
 
 ## 3. DBを使うアプリのテスト — フィクスチャで使い捨てのDBを用意する
 
-`018_ownership_crud`や`019_cart`のようにDBを使うアプリをテストするときは、開発用の`books.sqlite`を直接使ってはいけません。テストのたびに**まっさらな状態**から始められるよう、インメモリのSQLiteに差し替えます。
+`018_ownership_crud`のようにDBを使うアプリをテストするときは、開発用のDBファイル（`memos.sqlite`）を直接使ってはいけません。テストのたびに**まっさらな状態**から始められるよう、インメモリのSQLiteに差し替えます。
 
 ```python
 # conftest.py
@@ -216,13 +236,13 @@ pytest 020_testing/example/test_02_flask_client.py -v
 
 ---
 
-## 4. 練習問題：ブックストアのテストを書こう
+## 4. 練習問題：メモ帳アプリのテストを書こう
 
-> [challenge/](challenge/) — 問題（`test_books.py`・`test_cart.py`） ｜ [challenge/answer/](challenge/answer/) — 解答
+> [challenge/](challenge/) — 問題（`test_memos.py`・`test_pin.py`） ｜ [challenge/answer/](challenge/answer/) — 解答
 
-### 問題：019_cartのブックストアに対するテストを書こう
+### 問題：019_javascriptのメモ帳アプリに対するテストを書こう
 
-`019_cart`で作ったブックストア（`challenge/`にアプリ本体をそのままコピーしてあります）に対して、`test_books.py`・`test_cart.py`のテストを完成させてください。フィクスチャ（`client`・`sample_user`・`sample_book`・`logged_in_client`）は`conftest.py`にすでに用意されています。
+`019_javascript`で作ったメモ帳アプリ（`challenge/`にアプリ本体をそのままコピーしてあります）に対して、`test_memos.py`・`test_pin.py`のテストを完成させてください。フィクスチャ（`client`・`sample_user`・`sample_memo`・`logged_in_client`）は`conftest.py`にすでに用意されています。
 
 ```bash
 cd 020_testing/challenge
@@ -233,24 +253,42 @@ pytest -v
 
 | ファイル | テスト | 内容 |
 |---|---|---|
-| `test_books.py` | `test_book_list_shows_title` | 未ログインでも書籍一覧にタイトルが表示される |
-| `test_books.py` | `test_book_detail_shows_owner` | 書籍詳細に追加者のユーザー名が表示される |
-| `test_books.py` | `test_new_book_requires_login` | 未ログインで`/books/new`にアクセスするとログイン画面に転送される |
-| `test_books.py` | `test_other_user_cannot_edit_book` | 他人の書籍の編集ページは404になる |
-| `test_cart.py` | `test_add_to_cart` | カートに追加した書籍がカート画面に表示される |
-| `test_cart.py` | `test_update_quantity` | 数量を更新すると合計金額が再計算される |
-| `test_cart.py` | `test_checkout_creates_order` | チェックアウトすると注文完了メッセージが出て、カートが空になる |
-| `test_cart.py` | `test_order_survives_price_change` | 注文確定後に価格を変更しても、過去の注文の金額は変わらない |
+| `test_memos.py` | `test_memo_list_shows_title` | 未ログインでもメモ一覧にタイトルが表示される |
+| `test_memos.py` | `test_memo_detail_shows_owner` | メモ詳細に追加者のユーザー名が表示される |
+| `test_memos.py` | `test_new_memo_requires_login` | 未ログインで`/memos/new`にアクセスするとログイン画面に転送される |
+| `test_memos.py` | `test_other_user_cannot_edit_memo` | 他人のメモの編集ページは404になる |
+| `test_pin.py` | `test_toggle_pin_requires_login` | 未ログインで`toggle-pin`にアクセスするとログイン画面に転送される |
+| `test_pin.py` | `test_toggle_pin_flips_state` | `toggle-pin`を呼ぶと`is_pinned`が反転し、JSONで返る |
+| `test_pin.py` | `test_toggle_pin_twice_returns_to_original` | 2回呼ぶと元の状態に戻る |
+| `test_pin.py` | `test_pinned_memo_appears_first` | ピン留めしたメモが一覧の先頭に表示される |
 
 #### ヒント
 
 - `client.get(...)` / `client.post(...)`の戻り値の`.data`（バイト列）に、期待する文字列が含まれるか`in`で確認する（本章セクション2）
 - ログインが必要な操作は`logged_in_client`フィクスチャを使う（セクション3）
+- `test_pin.py`は画面ではなくJSONを返すルート（`019_javascript`の`toggle-pin`）が対象。`response.get_json()`で辞書として結果を取得する（セクション2の`res.get_json()`と同じ）
 - **`pass`だけのテスト関数は、アサーションが1つもないので必ず「成功」してしまいます。** 実装が終わるまでは`pytest.fail('TODO: 実装してください')`が残るようにしてあるので、これが消えて`assert`が正しく書けていることを確認してから提出してください
-- `challenge/`で`pytest`を実行すると`challenge/answer/`のテストまで一緒に収集してしまいそうですが、`pytest.ini`の`norecursedirs = answer`で除外されています（同名の`test_books.py`が2箇所にあるとpytestの収集がエラーになるため）
+- `challenge/`で`pytest`を実行すると`challenge/answer/`のテストまで一緒に収集してしまいそうですが、`pytest.ini`の`norecursedirs = answer`で除外されています（同名の`test_memos.py`が2箇所にあるとpytestの収集がエラーになるため）
 - `challenge/answer/`にも空の`pytest.ini`を置いてあります。これが無いと、`answer/`の中で`pytest`を実行してもpytestが親ディレクトリの`challenge/pytest.ini`まで探しに行ってrootdirを`challenge/`だと判断し、`challenge/conftest.py`（問題側）まで一緒に読み込んでしまいます（`conftest.py`は`rootdir`から実行対象のディレクトリまで、経路上のものが全て読み込まれるため）。`answer/`に空でも`pytest.ini`を置いておくことで、pytestがそこで探索を打ち切り、`answer/`だけで完結させられます
 
 解答は`challenge/answer/`を参照してください。
+
+### 動作確認：未実装（challenge）と完成版（answer）でテスト結果がどう違うか
+
+```bash
+cd 020_testing/challenge
+pytest -v
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| 実装前に`challenge/`で`pytest -v`を実行する | 8件のテストすべてが`FAILED`になる。エラーメッセージに`Failed: TODO: 実装してください`が表示される（`pytest.fail(...)`によるもの） |
+| 1つのテスト（例: `test_memo_list_shows_title`）だけ実装して再実行する | そのテストだけ`PASSED`に変わり、残り7件は`FAILED`のまま |
+| 全問実装後に`pytest -v`を実行する | 8件すべて`PASSED`になる |
+| `cd 020_testing/challenge/answer`で`pytest -v`を実行する | 同じく8件すべて`PASSED`になる（最初から完成しているため） |
+| `challenge/`のトップディレクトリ（`020_testing/`）で`pytest`を実行する | `challenge/`と`challenge/answer/`のテストが重複収集されず、エラーにならない（`pytest.ini`の`norecursedirs`設定が効いている） |
+
+**正常な状態の見分け方**：実装が終わっていないテストは`FAILED`になるべきで、**`pass`だけで何もしないテストが`PASSED`として紛れ込んでいないか**が最大の注意点です（ヒント参照）。全問実装後は`challenge/`と`challenge/answer/`の結果が完全に一致する（どちらも8件`PASSED`）のが正しい状態です。
 
 ## 次のステップ
 

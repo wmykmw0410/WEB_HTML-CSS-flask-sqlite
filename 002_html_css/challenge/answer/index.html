@@ -3,61 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ブックストア</title>
+    <title>メモ帳</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- 4. Flexboxでナビゲーションを作る -->
     <header>
         <nav>
-            <strong>ブックストア</strong>
-            <a href="#">書籍一覧</a>
+            <strong>メモ帳</strong>
+            <a href="#">メモ一覧</a>
         </nav>
     </header>
 
     <main>
         <!-- 1. HTMLの基本タグ（見出し） -->
-        <h1>書籍一覧</h1>
+        <h1>メモ一覧</h1>
 
         <!-- 5. Gridでカードを並べる -->
         <div class="card-grid">
-            <!-- 1. HTMLの基本タグ（img/h3/p） + 2. CSSセレクタの基本（class="card"） -->
+            <!-- 1. HTMLの基本タグ（span/h3/p） + 2. CSSセレクタの基本（class="card"） -->
             <div class="card">
-                <img src="img/wagahai_neko.png" alt="吾輩は猫である">
-                <h3>吾輩は猫である</h3>
-                <p>夏目漱石</p>
-                <p>¥770</p>
+                <span class="tag">家事</span>
+                <h3>買い物リスト</h3>
+                <p>牛乳、卵、パン、洗剤を買う。特売は火曜日まで。</p>
             </div>
             <div class="card">
-                <img src="img/bocchan.png" alt="坊っちゃん">
-                <h3>坊っちゃん</h3>
-                <p>夏目漱石</p>
-                <p>¥660</p>
+                <span class="tag">仕事</span>
+                <h3>企画会議メモ</h3>
+                <p>来週の企画会議の議題を整理する。新商品の販促案について。</p>
             </div>
             <div class="card">
-                <img src="img/rashomon.png" alt="羅生門">
-                <h3>羅生門</h3>
-                <p>芥川龍之介</p>
-                <p>¥550</p>
+                <span class="tag">趣味</span>
+                <h3>読書メモ：銀河鉄道の夜</h3>
+                <p>宮沢賢治の作品。銀河や星座の描写が美しい。</p>
             </div>
             <div class="card">
-                <img src="img/ginga_tetsudo.png" alt="銀河鉄道の夜">
-                <h3>銀河鉄道の夜</h3>
-                <p>宮沢賢治</p>
-                <p>¥480</p>
+                <span class="tag">アイデア</span>
+                <h3>アプリのアイデア</h3>
+                <p>習慣トラッカーアプリを作る。毎日の記録をグラフで見せる。</p>
             </div>
             <div class="card">
-                <img src="img/hashire_merosu.png" alt="走れメロス">
-                <h3>走れメロス</h3>
-                <p>太宰治</p>
-                <p>¥440</p>
+                <span class="tag">プライベート</span>
+                <h3>旅行の持ち物リスト</h3>
+                <p>パスポート、充電器、常備薬を忘れずに。</p>
             </div>
         </div>
     </main>
 
     <!-- 1. HTMLの基本タグ（footer） -->
     <footer>
-        &copy; ブックストア
+        &copy; メモ帳
     </footer>
 </body>
 </html>

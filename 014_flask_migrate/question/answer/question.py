@@ -2,15 +2,15 @@
 練習問題：メモアプリに Flask-Migrate を組み込もう — 解答
 
 実行手順:
-    cd question/answer
-    flask --app question db init
-    flask --app question db migrate -m "create memos table"
-    flask --app question db upgrade
-    python question.py
+cd question/answer
+flask --app question db init
+flask --app question db migrate -m "create memos table"
+flask --app question db upgrade
+python question.py
 
 カラム追加後（ステップ3）:
-    flask --app question db migrate -m "add created_at column"
-    flask --app question db upgrade
+flask --app question db migrate -m "add created_at column"
+flask --app question db upgrade
 """
 import os
 from flask import Flask

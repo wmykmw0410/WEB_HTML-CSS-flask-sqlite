@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>メモ一覧</h1>
+<div class="card-grid">
+    {% for memo in memos %}
+    <div class="card">
+        <a class="card-link" href="{{ url_for('memos.detail', memo_id=memo.id) }}">
+            <span class="tag">{{ memo.category }}</span>
+            <h3>{{ memo.title }}</h3>
+            <p>{{ memo.body }}</p>
+        </a>
+        {% if current_user.is_authenticated and current_user.id == memo.user_id %}
+        <div class="owner-actions">
+            <a href="{{ url_for('memos.update', memo_id=memo.id) }}">編集</a>
+            <form method="post" action="{{ url_for('memos.delete', memo_id=memo.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" onclick="return confirm('削除しますか？')">削除</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

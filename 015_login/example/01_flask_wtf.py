@@ -2,8 +2,8 @@
 Flask-WTF フォームの基本
 
 実行:
-    python example/02_flask_wtf.py
-    ブラウザで http://localhost:5000 にアクセス
+python example/02_flask_wtf.py
+ブラウザで http://localhost:5000 にアクセス
 """
 from flask import Flask, render_template_string, redirect, url_for
 from flask_wtf import FlaskForm

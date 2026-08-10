@@ -2,89 +2,77 @@ import json
 import os
 
 from flask import Flask, redirect, render_template, request, url_for
-from werkzeug.utils import secure_filename
 
-from forms import BookForm
+from forms import MemoForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 
-BOOKS_PATH = os.path.join(os.path.dirname(__file__), 'books.json')
-STATIC_IMG_DIR = os.path.join(os.path.dirname(__file__), 'static', 'img')
+MEMOS_PATH = os.path.join(os.path.dirname(__file__), 'memos.json')
 
-with open(BOOKS_PATH, encoding='utf-8') as f:
-    books_list = json.load(f)
+with open(MEMOS_PATH, encoding='utf-8') as f:
+    memos_list = json.load(f)
 
-books = {i + 1: book for i, book in enumerate(books_list)}
+memos = {i + 1: memo for i, memo in enumerate(memos_list)}
 
 
 @app.route('/')
-def book_list():
-    author = request.args.get('author')
+def memo_list():
+    category = request.args.get('category')
 
-    book_list_data = [{"id": book_id, **book} for book_id, book in books.items()]
+    memo_list_data = [{"id": memo_id, **memo} for memo_id, memo in memos.items()]
 
-    if author:
-        book_list_data = [b for b in book_list_data if b["author"] == author]
+    if category:
+        memo_list_data = [m for m in memo_list_data if m["category"] == category]
 
-    return render_template('top.html', books=book_list_data)
+    return render_template('top.html', memos=memo_list_data)
 
 
-@app.route('/books/<int:book_id>')
-def book_detail(book_id):
-    book = books.get(book_id)
+@app.route('/memos/<int:memo_id>')
+def memo_detail(memo_id):
+    memo = memos.get(memo_id)
 
-    if book:
-        title = book['title']
-        author_line = f"著者: {book['author']}"
-        price_line = f"¥{book['price']}"
-        image = f"/static/img/{book['image']}"
+    if memo:
+        title = memo['title']
+        category = memo['category']
+        body = memo['body']
     else:
-        title = f'書籍ID {book_id} は見つかりません'
-        author_line = ''
-        price_line = ''
-        image = '/static/img/not_found.png'
+        title = f'メモID {memo_id} は見つかりません'
+        category = ''
+        body = ''
 
     return render_template(
         'detail.html',
         title=title,
-        author_line=author_line,
-        price_line=price_line,
-        image=image,
+        category=category,
+        body=body,
     )
 
 
-@app.route('/books/new', methods=['GET', 'POST'])
-def new_book():
-    form = BookForm()
+@app.route('/memos/new', methods=['GET', 'POST'])
+def new_memo():
+    form = MemoForm()
 
     if form.validate_on_submit():
-        image_filename = 'not_found.png'
-        if form.image.data and form.image.data.filename:
-            image_filename = secure_filename(form.image.data.filename)
-            os.makedirs(STATIC_IMG_DIR, exist_ok=True)
-            form.image.data.save(os.path.join(STATIC_IMG_DIR, image_filename))
-
-        new_book_data = {
+        new_memo_data = {
             'title': form.title.data,
-            'author': form.author.data,
-            'price': form.price.data,
-            'image': image_filename,
+            'category': form.category.data,
+            'body': form.body.data,
         }
-        books_list.append(new_book_data)
-        books[len(books_list)] = new_book_data
+        memos_list.append(new_memo_data)
+        memos[len(memos_list)] = new_memo_data
 
-        with open(BOOKS_PATH, 'w', encoding='utf-8') as f:
-            json.dump(books_list, f, ensure_ascii=False, indent=2)
+        with open(MEMOS_PATH, 'w', encoding='utf-8') as f:
+            json.dump(memos_list, f, ensure_ascii=False, indent=2)
 
-        return redirect(url_for('book_list'))
+        return redirect(url_for('memo_list'))
 
-    return render_template('new_book.html', form=form)
+    return render_template('new_memo.html', form=form)
 
 
-@app.route('/old-books')
-def old_books():
-    return redirect(url_for('book_list'))
+@app.route('/old-memos')
+def old_memos():
+    return redirect(url_for('memo_list'))
 
 
 if __name__ == '__main__':

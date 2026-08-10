@@ -2,5 +2,9 @@ __pycache__/
 *.pyc
 *.pyo
 *.db
+*.sqlite
+*.sqlite3
 instance/
+migrations/
+.pytest_cache/
 .env

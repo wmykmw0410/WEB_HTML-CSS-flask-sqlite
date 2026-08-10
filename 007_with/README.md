@@ -3,7 +3,7 @@
 Python の `with` 文（コンテキストマネージャー）を学びます。
 ファイル操作を題材に、リソースを安全に扱う書き方を身につけます。
 
-各章は「機能の学習」と「`000_my_app`を完成させるための機能追加」の2部構成です。前者は`example/`で単体のサンプルとして学び、後者は`challenge/`で`100_bookstore_api`を完成形の参考にしながら取り組みます。
+各章は「機能の学習」と「`000_my_app`を完成させるための機能追加」の2部構成です。前者は`example/`で単体のサンプルとして学び、後者は`challenge/`でメモ帳アプリを組み立てながら取り組みます。
 
 ## フォルダ構成
 
@@ -23,12 +23,12 @@ Python の `with` 文（コンテキストマネージャー）を学びます�
 │       └── answer01.py〜answer08.py
 └── challenge/           # 006_jinja2の続き（000_my_appに組み込む機能の追加分）
     ├── challenge.py
-    ├── books.json       # 読み込む書籍データ
+    ├── memos.json       # 読み込むメモデータ
     ├── static/
     ├── templates/
     └── answer/
         ├── challenge.py
-        ├── books.json
+        ├── memos.json
         ├── static/
         └── templates/
 ```
@@ -90,6 +90,23 @@ with open('sample.txt', encoding='utf-8') as f:
 | `'a'` | 追記。ファイルがなければ作成 |
 | `'rb'` / `'wb'` | バイナリで読み込み / 書き込み |
 
+### 動作確認：read()・readlines()・forループの出力の違いを見る
+
+```bash
+cd 007_with/example
+python 01_file.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `python 01_file.py`を実行する | ターミナルに「書き込み完了」の後、`--- read()：全体 ---`の下に3行分の文字列が改行込みでまとめて表示される |
+| `--- readlines()：リスト ---`の出力を見る | `['1行目\n', '2行目\n', '3行目\n']`のように、各要素に`\n`を含んだ**リスト**として表示される（`read()`の1つの文字列との違いを比較する） |
+| `--- for ループ ---`の出力を見る | `1行目`・`2行目`・`3行目`が改行無しで1行ずつ表示される（`rstrip()`で末尾の`\n`が除去されているため） |
+| 「追記後:」以降の出力を見る | 1〜3行目に加えて`4行目（追記）`が追加された4行が表示される（`'a'`モードで追記されたことを確認） |
+| スクリプト終了後、`007_with/example/`フォルダを確認する | `sample.txt`が残っていない（スクリプト末尾の`os.remove(path)`で自動削除されるため。ファイルが消えているのは正常な後片付けで、バグではない） |
+
+**正常な状態の見分け方**：`read()`は改行込みの1つの文字列、`readlines()`は改行込みの文字列のリスト、forループは`rstrip()`で改行を除いた文字列、という3通りの違いが出力から見分けられれば理解できています。
+
 ### 練習問題
 
 1. `with open` で `memo.txt` に2行書き込んでください
@@ -137,6 +154,21 @@ with 対象 as f:     →  f = 対象.__enter__()  ← 前処理
                    →  対象.__exit__(...)      ← 後処理（例外の有無に関わらず実行）
 ```
 
+### 動作確認：例外が起きてもwithが必ずcloseすることを確認する
+
+```bash
+cd 007_with/example
+python 02_why.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `python 02_why.py`を実行する | `=== with なし ===`・`=== try / finally ===`・`=== with ===`の3つのセクションで、いずれも`読み込み: hello`が表示される（書き方が違うだけで結果自体は同じであることを確認する） |
+| `=== 例外が起きたとき ===`以降の出力を見る | `例外発生。f.closed = True`と表示される。`with`ブロックの中で`ValueError`を発生させても、ブロックを抜けた時点でファイルが自動的に閉じられていることを`f.closed`で確認している |
+| スクリプト終了後、`007_with/example/`フォルダを確認する | `why_sample.txt`が残っていない（末尾の`os.remove(path)`で削除される） |
+
+**正常な状態の見分け方**：`f.closed`が`True`になっていれば、例外が起きても`with`が確実に`close()`を呼んでいる証拠です。`False`のままなら、`with`の対象がファイルオブジェクトになっていない、または例外処理の書き方に問題がある可能性を疑ってください。
+
 ### 練習問題
 
 1. 次のコードを `with` を使って書き直してください
@@ -182,6 +214,22 @@ import contextlib
 with contextlib.suppress(FileNotFoundError):
     os.remove('maybe_exists.txt')   # ファイルがなくてもエラーにならない
 ```
+
+### 動作確認：1行withとネストで結果がどう変わるか
+
+```bash
+cd 007_with/example
+python 03_multiple.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `python 03_multiple.py`を実行する | `=== 1行の with で2ファイルを同時に開く ===`の下に、`input.txt`の内容（`apple`・`banana`・`cherry`）がすべて**大文字**（`APPLE`・`BANANA`・`CHERRY`）になって表示される |
+| `=== ネスト（同じ動作だが読みにくい）===`の下の出力を見る | 今度はすべて**小文字**（`apple`・`banana`・`cherry`）になって表示される（`f_out.write(line.lower())`のため） |
+| `=== as なし（変数が不要なとき）===`の下の出力を見る | 「ファイルがなくてもエラーにならなかった」と表示される（存在しない`not_exist.txt`を`os.remove`しても`contextlib.suppress(FileNotFoundError)`で例外が握りつぶされるため） |
+| スクリプト終了後、`007_with/example/`フォルダを確認する | `input.txt`・`output.txt`のどちらも残っていない（末尾の`os.remove`で削除される） |
+
+**正常な状態の見分け方**：同じ`input.txt`を読んでいるのに、1行のwith（大文字）とネスト（小文字）で結果の大文字・小文字が違って出力されるのが正しい挙動です（`upper()`と`lower()`を呼び分けているだけで、複数リソースを扱えていること自体は同じ）。
 
 ### 練習問題
 
@@ -258,6 +306,23 @@ py_files = list(p.parent.glob('*.py'))
 | 既存コードの多さ | 多い | 近年増えている |
 | おすすめ | 既存コードとの互換 | 新規に書くとき |
 
+### 動作確認：os.pathとpathlib.Pathが同じ結果を返すことを確認する
+
+```bash
+cd 007_with/example
+python 04_path.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `python 04_path.py`を実行する | `=== os.path ===`の下で、`dirname`は`04_path.py`が置かれているディレクトリの絶対パス、`basename`は`04_path.py`という値になる |
+| `splitext`の行を見る | `name=report, ext=.csv`と表示される（名前と拡張子が分離されている） |
+| `exists(存在しないパス)`の行を見る | `False`と表示される（`/no/such/path`は実在しないため） |
+| `=== pathlib.Path ===`以降の出力を見る | `.parent`・`.name`の値が、直前の`os.path`の`dirname`・`basename`と**それぞれ同じ値**になり、`.stem`は`04_path`、`.suffix`は`.py`になる |
+| `=== ディレクトリ操作 ===`以降の出力を見る | `example/`フォルダ内のファイル一覧が表示され、最後に`.py ファイル数`として`6`（`01_file.py`〜`06_json.py`の数）が表示される |
+
+**正常な状態の見分け方**：`os.path`で得た値と`pathlib.Path`で得た値（`dirname`↔`.parent`、`basename`↔`.name`）が一致していれば、書き方が違うだけで同じパス情報を扱えていることが確認できます。
+
 ### 練習問題
 
 1. `os.path.dirname(__file__)` と `os.path.basename(__file__)` を表示してください
@@ -322,6 +387,23 @@ with open('items.csv', 'w', encoding='utf-8', newline='') as f:
 | `csv.DictReader` | 辞書 | カラム名でアクセスしたい |
 | `csv.DictWriter` | 辞書 | 辞書のリストを書き込みたい |
 
+### 動作確認：reader/DictReaderで読んだ値の型・形の違いを見る
+
+```bash
+cd 007_with/example
+python 05_csv.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `python 05_csv.py`を実行する | `=== CSV 書き込み ===`の下に「（パス）を作成しました」と表示される |
+| `=== csv.reader（リスト形式）===`の出力を見る | `['id', 'name', 'price']`のヘッダー行に続き、`['1', 'りんご', '150']`のように**値がすべて文字列**として読み込まれている（`150`ではなく`'150'`であることに注目） |
+| `=== csv.DictReader（辞書形式）===`の出力を見る | `id=1  りんご  150円`のように、カラム名でアクセスした値が1行ずつ表示される |
+| `=== csv.DictWriter（辞書形式）===`の出力を見る | `id,name,price`のヘッダーの後に`1,コーヒー,200`・`2,紅茶,180`の2行が表示される |
+| スクリプト終了後、`007_with/example/`フォルダを確認する | `items.csv`・`items2.csv`のどちらも残っていない（末尾の`os.remove`で削除される） |
+
+**正常な状態の見分け方**：`csv.reader`で読んだ値がクォート無しでも文字列型（`str`）であることに気づければ理解できています。数値として計算に使いたい場合は`int()`などで明示的に変換する必要がある、という点が重要です。
+
 ### 練習問題
 
 1. `csv.writer` で `members.csv`（id / name / age）を3件書き込んでください
@@ -383,6 +465,22 @@ parsed = json.loads(json_str)
 | `json.dumps(obj)` | dict → 文字列 | 文字列に変換 |
 | `json.loads(s)` | 文字列 → dict | 文字列から変換 |
 
+### 動作確認：ensure_asciiの有無で出力がどう変わるか
+
+```bash
+cd 007_with/example
+python 06_json.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `python 06_json.py`を実行する | `=== json.dump（ファイルに書き込む）===`の下に、`data.json`の中身がインデント付きで表示される。`"name": "山田太郎"`のように**日本語がそのまま**出力されている（`ensure_ascii=False`の効果。`True`だと`山...`のような文字コード表記になる） |
+| `=== json.load（ファイルから読み込む）===`の出力を見る | `name`・`skills`・`city`（ネストした`address`辞書の中の値）がそれぞれ正しく取り出されて表示される |
+| `=== json.dumps / json.loads ===`の出力を見る | `json.dumps`の行はJSON文字列の先頭部分、`json.loads`の行は文字列から辞書に戻した`name`の値（`山田太郎`）が表示される |
+| スクリプト終了後、`007_with/example/`フォルダを確認する | `data.json`が残っていない（末尾の`os.remove`で削除される） |
+
+**正常な状態の見分け方**：`ensure_ascii=False`を付けたときだけ日本語がそのまま読める形で出力されるのが正しい挙動です。`\uXXXX`のような文字コードの羅列になっている場合は`ensure_ascii`の設定を疑ってください。
+
 ### Python ↔ JSON の型対応
 
 | Python | JSON |
@@ -427,22 +525,37 @@ python 007_with/question/question01.py
 | 7 | `products.csv` を書き込んで `DictReader` で読み込む | `csv.writer` / `csv.DictReader` | [question/answer/answer07.py](question/answer/answer07.py) |
 | 8 | `config.json` を書き込んで `json.load` で読み込む | `json.dump` / `json.load` | [question/answer/answer08.py](question/answer/answer08.py) |
 
+### 動作確認：正しく実装できたかを確認する
+
+```bash
+cd 007_with/question
+python question01.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| 各`questionN.py`を実行する | エラーで途中終了せず、末尾の「問題N: ...」というメッセージまで到達する（`with`の書き方を間違えると`NameError`や`AttributeError`で途中で止まる） |
+| 実行前に、確認したい`questionN.py`の末尾にある`os.remove(...)`の行を一時的にコメントアウトしてから実行する | `log.txt`・`products.csv`・`config.json`などの生成ファイルが削除されずに残るので、エディタで開いて中身を直接確認できる（通常はスクリプトの最後で自動削除されるため、そのままでは実行後にファイルが残らない） |
+| [question/answer/answerN.py](question/answer/) を実行し、自分の`questionN.py`の出力と見比べる | ターミナルに表示される行数・内容が一致する |
+
+**正常な状態の見分け方**：どの問題も、実行後にエラーメッセージが出ずに末尾の「問題N: ...」のprintまで到達していれば、`with`の書き方は正しく機能しています。
+
 ---
 
-## 9. 練習問題：書籍データをJSONファイルから読み込もう
+## 9. 練習問題：メモデータをJSONファイルから読み込もう
 
 > [challenge/challenge.py](challenge/challenge.py) — 問題 ｜ [challenge/answer/challenge.py](challenge/answer/challenge.py) — 解答
 
-### 問題：books.jsonから書籍データを読み込むようにしよう
+### 問題：memos.jsonからメモデータを読み込むようにしよう
 
-`006_jinja2`で作った書籍一覧・詳細ページ・リダイレクト（`challenge/challenge.py`にすでに実装済み）は、これまで`books`辞書をPythonのコードにハードコードしていました。これを`books.json`ファイルから読み込むように変更します。
+`006_jinja2`で作ったメモ一覧・詳細ページ・リダイレクト（`challenge/challenge.py`にすでに実装済み）は、これまで`memos`辞書をPythonのコードにハードコードしていました。これを`memos.json`ファイルから読み込むように変更します。
 
-実はこの先の章（`011_sqlite`の`challenge`など）でも、まったく同じやり方で`books.json`から書籍データを読み込んでいます。
+実はこの先の章（`011_sqlite`の`challenge`など）でも、まったく同じやり方で`memos.json`からメモデータを読み込んでいます。
 
 ```python
-json_path = os.path.join(os.path.dirname(__file__), 'data', 'books.json')
+json_path = os.path.join(os.path.dirname(__file__), 'data', 'memos.json')
 with open(json_path, encoding='utf-8') as f:
-    books_data = json.load(f)
+    memos_data = json.load(f)
 ```
 
 ```bash
@@ -453,14 +566,29 @@ python 007_with/challenge/challenge.py
 
 | 項目 | 内容 |
 |---|---|
-| 読み込み元 | `challenge/books.json`（`title`・`author`・`price`・`image`を持つオブジェクトのリスト） |
+| 読み込み元 | `challenge/memos.json`（`title`・`category`・`body`を持つオブジェクトのリスト） |
 | 変換後の形 | これまでと同じ`{1: {...}, 2: {...}, ...}`という、idをキーにした辞書 |
 | 画面の見た目 | `006_jinja2`のときと完全に同じ（データの取得方法だけが変わる） |
 
 #### ヒント
 
-- `os.path.join(os.path.dirname(__file__), 'books.json')`で、このファイルと同じディレクトリの`books.json`のパスを組み立てる（`5. パス操作`）
+- `os.path.join(os.path.dirname(__file__), 'memos.json')`で、このファイルと同じディレクトリの`memos.json`のパスを組み立てる（`5. パス操作`）
 - `with open(パス, encoding='utf-8') as f:`で開く（`2. ファイル操作`）
 - `json.load(f)`でリストとして読み込む（`7. JSONの読み書き`）
-- `{i + 1: book for i, book in enumerate(リスト)}`のような辞書内包表記で、リストのインデックス（0始まり）を1始まりのidに変換する
+- `{i + 1: memo for i, memo in enumerate(リスト)}`のような辞書内包表記で、リストのインデックス（0始まり）を1始まりのidに変換する
 - Python側の変更だけで完結します。`templates/`はこの章では変更しません
+
+### 動作確認：memos.jsonの中身がそのまま画面に出ているか
+
+```bash
+python 007_with/challenge/challenge.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `http://127.0.0.1:5016/`にアクセスする | `006_jinja2`のときと同じ5枚のメモカードが表示される（データの取得元がPythonのハードコードから`memos.json`に変わっただけで、画面の見た目は変わらない） |
+| `challenge/memos.json`をエディタで直接開く | 表示されているメモのタイトル・カテゴリ・本文が、このファイルの中身とそのまま一致している |
+| `memos.json`の`title`の値を書き換えて保存し、`challenge.py`を再起動する | 一覧ページのタイトル表示が書き換えた内容に変わる（`memos`辞書が起動のたびにファイルから読み込まれていることを確認できる） |
+| `http://127.0.0.1:5016/memos/2`にアクセスする | `memos.json`の2番目の要素（企画会議メモ、カテゴリ「仕事」）の内容が表示される |
+
+**正常な状態の見分け方**：`memos.json`を書き換えてアプリを再起動すると画面の表示も連動して変わるなら、データがファイルから正しく読み込まれています。書き換えても画面が変わらない場合は、どこかにまだハードコードされたデータが残っていないか疑ってください。

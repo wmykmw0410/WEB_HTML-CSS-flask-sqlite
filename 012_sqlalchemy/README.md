@@ -30,13 +30,13 @@ pip install sqlalchemy flask-sqlalchemy
 └── challenge/                 011_sqliteの続き（000_my_appに組み込む機能の変更分）
     ├── challenge.py
     ├── forms.py
-    ├── books.json
+    ├── memos.json
     ├── static/
     ├── templates/
     └── answer/
         ├── challenge.py
         ├── forms.py
-        ├── books.json
+        ├── memos.json
         ├── static/
         └── templates/
 ```
@@ -146,6 +146,21 @@ session.commit()
 2. `filter` で price が 200 より大きい商品を取得してください
 3. id=1 の price を 500 に更新してください
 4. id=2 のレコードを削除してください
+
+### 動作確認：echo=Trueで実際に発行されるSQLを確認する
+
+```bash
+python 012_sqlalchemy/example/01_basic.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `session.add(item)` → `session.commit()`実行時のターミナル出力を見る | `echo=True`により`INSERT INTO items (name, price) VALUES (?, ?)`のような実際のSQLが表示される（ORMのメソッド呼び出しが裏でSQLに変換されていることが分かる） |
+| `session.query(Item).all()`の出力を見る | `[<Item ...>, ...]`のようなPythonオブジェクトのリストが返る（`011_sqlite`のタプルとは異なり、`.name`や`.price`で属性アクセスできる） |
+| `item.price = 200`の後、`session.commit()`前に別の`session.query(Item).filter(Item.id == 1).first()`で確認する | 同じセッション内なら更新後の`200`が見える（コミット前でもセッション内には反映されている） |
+| `session.delete(item)` → `commit()`後に`session.query(Item).all()` | 削除した`Item`が結果に含まれなくなる |
+
+**正常な状態の見分け方**：`echo=True`のログに表示されるSQLの`?`の位置に、Pythonコードで渡した値が対応していることを確認してください。ログが表示されない場合は`create_engine(..., echo=True)`の指定を忘れていないか確認してください。
 
 ---
 
@@ -328,6 +343,21 @@ for emp in dept.employees:
 2. 「電子機器」カテゴリに3件の商品を追加してください
 3. `product.category.name` でカテゴリ名を表示してください
 
+### 動作確認：どちらの向きからでも関連データを辿れることを確認する
+
+```bash
+python 012_sqlalchemy/example/04_relationship.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `dept.employees.append(emp)` → `commit()`後、`emp.department_id`を確認する | `dept.id`と同じ値が自動的に設定されている（`relationship`を使うと外部キーの値を手動で代入しなくても済む） |
+| `print(emp.department.name)`（社員→部署） | 所属する部署名が表示される |
+| `for emp in dept.employees: print(emp.name)`（部署→社員） | その部署に所属する社員が全員表示される。**1件も登録していない部署**で試すと空のリストになりエラーにはならない |
+| 存在しない`department_id`を手動で設定した社員に対して`emp.department`にアクセスする | `None`が返る（`ForeignKey`はSQLite単体では強制されないため、参照先が無くてもエラーにはならない点に注意） |
+
+**正常な状態の見分け方**：`dept.employees`（1→多）と`emp.department`（多→1）の**どちら向きに辿っても矛盾なく対応関係が一致する**のが正しい状態です。片方からしか辿れない場合は`back_populates`の指定漏れ・スペルミスを疑ってください。
+
 ---
 
 ## 5. 多対多リレーション
@@ -420,17 +450,29 @@ python 012_sqlalchemy/question/question01.py
 | 4 | id=1 のタスクを done=1 に更新する | [question/answer/answer04.py](question/answer/answer04.py) |
 | 5 | category 名で絞り込み（filter + join）する | [question/answer/answer05.py](question/answer/answer05.py) |
 
+### 動作確認：各問題を実行した結果
+
+| 問題 | 実行コマンド | 確認したいこと |
+|---|---|---|
+| 1 | `python question/question01.py` | エラーなく終了する。テーブルが作成される（`echo=True`にしていれば`CREATE TABLE`のSQLがログに出る） |
+| 2 | `python question/question02.py` | 追加したタスクの`category_id`が、紐づけたカテゴリの`id`と一致している |
+| 3 | `python question/question03.py` | 各タスクのタイトルと、`task.category.name`で取得したカテゴリ名が両方表示される |
+| 4 | `python question/question04.py` | 更新後に`id=1`のタスクを取得すると`done`が`1`になっている（更新前は`0`） |
+| 5 | `python question/question05.py` | 指定したカテゴリ名に属するタスクだけが表示され、他のカテゴリのタスクは含まれない |
+
+**正常な状態の見分け方**：`task.category.name`のようにリレーション経由で属性にアクセスしてエラーにならなければ、`relationship`と`ForeignKey`の設定が正しくできています。`AttributeError`が出る場合はモデル定義の`relationship`名を疑ってください。
+
 ---
 
-## 7. 練習問題：書籍データをSQLAlchemyに移行しよう
+## 7. 練習問題：メモデータをSQLAlchemyに移行しよう
 
 > [challenge/challenge.py](challenge/challenge.py) — 問題 ｜ [challenge/answer/challenge.py](challenge/answer/challenge.py) — 解答
 
-### 問題：書籍データの保存先を sqlite3（生SQL）から SQLAlchemy（ORM）に変更しよう
+### 問題：メモデータの保存先を sqlite3（生SQL）から SQLAlchemy（ORM）に変更しよう
 
-`011_sqlite`で作った書籍一覧・詳細・書籍追加フォーム・リダイレクト（`challenge/challenge.py`にすでに実装済み）は、これまで`sqlite3`モジュールで生SQLを書いて`books.db`を操作していました。これを`SQLAlchemy`のORM（`Book`モデル + `Session`）に置き換えます。
+`011_sqlite`で作ったメモ一覧・詳細・メモ追加フォーム・リダイレクト（`challenge/challenge.py`にすでに実装済み）は、これまで`sqlite3`モジュールで生SQLを書いて`memos.db`を操作していました。これを`SQLAlchemy`のORM（`Memo`モデル + `Session`）に置き換えます。
 
-`Book`モデルの定義（問題1）はすでに`engine`・`Base`・`Session`の準備、`init_db()`（テーブル作成と初回シード投入）と合わせて用意されていますが、モデルのカラム定義は`pass`のままになっているので、まずこれを実装してください。`books.json`は初回起動時にだけ`books`テーブルへ投入するために使われます。
+`Memo`モデルの定義（問題1）はすでに`engine`・`Base`・`Session`の準備、`init_db()`（テーブル作成と初回シード投入）と合わせて用意されていますが、モデルのカラム定義は`pass`のままになっているので、まずこれを実装してください。`memos.json`は初回起動時にだけ`memos`テーブルへ投入するために使われます。
 
 ```bash
 python 012_sqlalchemy/challenge/challenge.py
@@ -440,13 +482,29 @@ python 012_sqlalchemy/challenge/challenge.py
 
 | エンドポイント | メソッド | 処理 |
 |---|---|---|
-| `/` | GET | `session.query(Book)`で全件取得する（`author`指定時は`filter_by(author=author)`で絞り込み） |
-| `/books/<int:book_id>` | GET | `filter_by(id=book_id).first()`で1件取得する |
-| `/books/new` | POST（バリデーション成功時） | `Book(...)`を作って`session.add()`→`session.commit()`する |
+| `/` | GET | `session.query(Memo)`で全件取得する（`category`指定時は`filter_by(category=category)`で絞り込み） |
+| `/memos/<int:memo_id>` | GET | `filter_by(id=memo_id).first()`で1件取得する |
+| `/memos/new` | POST（バリデーション成功時） | `Memo(...)`を作って`session.add()`→`session.commit()`する |
 
 #### ヒント
 
-- モデル定義は`id`（主キー・自動採番）、`title`・`author`・`price`・`image`（すべて`NOT NULL`）の5カラム（本章セクション1）
-- `session.query(Book).filter_by(...).all()` / `.first()`で結果を取得する（セクション2）
-- テンプレート側では`book.title`のようにORMオブジェクトの属性へ直接アクセスできる（`dict()`への変換は不要）
-- 見た目やCSRF・ファイルアップロードの仕組みは`011_sqlite`から変更不要
+- モデル定義は`id`（主キー・自動採番）、`title`・`category`・`body`（すべて`NOT NULL`）の4カラム（本章セクション1）
+- `session.query(Memo).filter_by(...).all()` / `.first()`で結果を取得する（セクション2）
+- テンプレート側では`memo.title`のようにORMオブジェクトの属性へ直接アクセスできる（`dict()`への変換は不要）
+- 見た目やCSRFの仕組みは`011_sqlite`から変更不要
+
+### 動作確認：sqlite3の生SQLからORMに変わっても同じ見た目で動くか
+
+```bash
+cd 012_sqlalchemy/challenge
+python challenge.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `http://127.0.0.1:5034/`にアクセスする | `011_sqlite`のときと**見た目が変わらず**メモ一覧が表示される（データ取得の実装が生SQLからORMに変わっただけ） |
+| `?category=仕事`を付けてアクセスする | `filter_by(category='仕事')`で絞り込んだ結果が表示される |
+| メモ詳細ページ（`/memos/<id>`）にアクセスする | `filter_by(id=memo_id).first()`で取得した1件が表示される。存在しないidだと404になる |
+| `/memos/new`から新しいメモを追加する | 追加後、一覧に反映される。テンプレート側で`{{ memo.title }}`のように`.title`で直接アクセスできている（`row['title']`のような辞書アクセスは不要になった点が`011_sqlite`との違い） |
+
+**正常な状態の見分け方**：`011_sqlite`のときと画面の動作が変わらないのが正しい状態です。テンプレートで`memo['title']`のような辞書アクセスの書き方が残っていると`TypeError`になるので、`memo.title`という属性アクセスに統一されているか確認してください。

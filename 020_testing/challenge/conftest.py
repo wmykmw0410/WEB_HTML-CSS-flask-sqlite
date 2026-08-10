@@ -6,7 +6,7 @@ import pytest
 sys.path.insert(0, os.path.dirname(__file__))
 
 from app import app as flask_app
-from models import Book, User, db
+from models import Memo, User, db
 
 
 @pytest.fixture
@@ -39,12 +39,12 @@ def sample_user(app):
 
 
 @pytest.fixture
-def sample_book(app, sample_user):
-    """sample_user が追加した書籍を1件作成する"""
-    book = Book(title='吾輩は猫である', author='夏目漱石', price=770, user_id=sample_user.id)
-    db.session.add(book)
+def sample_memo(app, sample_user):
+    """sample_user が追加したメモを1件作成する"""
+    memo = Memo(title='買い物リスト', category='家事', body='牛乳、卵、パン', user_id=sample_user.id)
+    db.session.add(memo)
     db.session.commit()
-    return book
+    return memo
 
 
 @pytest.fixture

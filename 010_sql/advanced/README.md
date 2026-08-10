@@ -84,6 +84,16 @@ ALTER TABLE books ADD COLUMN in_stock INTEGER DEFAULT 1;
 `products` テーブルに `description` カラム（`TEXT`）を追加してください。
 `.schema products` で定義を確認してください。
 
+### 動作確認：カラムが追加され、既存データが壊れていないか
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `ALTER TABLE books ADD COLUMN publisher TEXT;`の後に`.schema books` | `publisher TEXT`が新しいカラムとして表示される |
+| `SELECT * FROM books;` | 既存の行はそのまま残っており、`publisher`列は全行`NULL`（空欄）になっている（デフォルト値を指定しなかったため） |
+| `ALTER TABLE books ADD COLUMN in_stock INTEGER DEFAULT 1;`の後に`SELECT * FROM books;` | 既存の行も含めて、`in_stock`列が全行`1`になっている（`DEFAULT`を指定すると既存行にも適用される点が`publisher`との違い） |
+
+**正常な状態の見分け方**：`ALTER TABLE`は既存データを削除しません。追加前からあった行数が変わっていない（増減していない）ことも合わせて確認してください。
+
 ---
 
 ## 3. トランザクション
@@ -125,6 +135,17 @@ ROLLBACK;  -- BEGIN 以降の変更がすべて取り消される
 
 1. `BEGIN` / `COMMIT` を使って、2件の INSERT をひとまとまりで確定してください
 2. `BEGIN` の後に `DELETE FROM books WHERE id = 1;` を実行し、`ROLLBACK` で取り消してください
+
+### 動作確認：COMMITとROLLBACKで結果が逆になることを確認する
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `BEGIN;`→2件`INSERT`→`COMMIT;`の後に`SELECT * FROM books;` | 追加した2件（新刊A・新刊B）が**残っている**（`COMMIT`したので確定） |
+| `BEGIN;`→`DELETE FROM books WHERE id = 1;`を実行した直後（`ROLLBACK`する前）に、**別のターミナルを開かず同じセッションで**`SELECT * FROM books;` | `id=1`の行が**削除された状態**で見える（トランザクション内では自分自身には反映済みに見える） |
+| そのまま`ROLLBACK;`を実行してから`SELECT * FROM books;` | `id=1`の行が**元に戻っている**（`DELETE`が取り消された） |
+| `ROLLBACK`を試すのを忘れて`sqlite3`を終了（`.quit`）した場合 | `BEGIN`したまま未確定（`COMMIT`も`ROLLBACK`もしていない）の変更は自動的に`ROLLBACK`扱いになる（保存されない） |
+
+**正常な状態の見分け方**：`COMMIT`した変更は接続を切っても残り、`ROLLBACK`した変更は`BEGIN`前の状態に完全に戻ります。`ROLLBACK`したのにデータが変わったままの場合、`BEGIN`より前に別のトランザクションで既に`COMMIT`してしまっていないか確認してください。
 
 ---
 
@@ -169,6 +190,17 @@ cp books.db books_backup.db
 1. `.dump` を使って `books.db` を `books_backup.sql` に保存してください
 2. `books_backup.sql` から `books_restore.db` として復元し、`.tables` と `SELECT * FROM books;` で内容を確認してください
 
+### 動作確認：復元したDBが元のDBと同じ内容になっているか
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `sqlite3 books.db .dump > books_backup.sql`の後、`cat books_backup.sql`（またはエディタで開く） | `CREATE TABLE`文と`INSERT INTO`文がテキストとして書き出されている（`books.db`の中身がSQLの命令として再現できる形式） |
+| `sqlite3 books_restore.db < books_backup.sql`の後、`sqlite3 books_restore.db`で`.tables` | `books`テーブルが存在する（元のDBには無かった新しいファイルに、同じ構造が再現されている） |
+| `books_restore.db`で`SELECT * FROM books;`を実行し、元の`books.db`の`SELECT * FROM books;`と見比べる | 行数・内容が完全に一致する |
+| `.backup books_backup.db`を実行した後、`ls -la`でファイルサイズを確認する | `.dump`で作った`.sql`ファイル（テキスト）とは違い、`.backup`で作ったファイルは元のDBとほぼ同じサイズのバイナリファイルになっている |
+
+**正常な状態の見分け方**：復元したDBに対する`SELECT`の結果が、バックアップを取った時点の元のDBの内容と一致していれば正常です。テーブルが存在しない・件数が合わない場合は、バックアップ取得時にまだ`COMMIT`されていないデータが含まれていなかった可能性を疑ってください。
+
 ---
 
 ## 5. 練習問題
@@ -205,3 +237,18 @@ sqlite> .read advanced/question/question01.sql
 | 4 | カラムを追加 | ALTER TABLE | [question/answer/answer04.sql](question/answer/answer04.sql) |
 | 5 | 複数件をまとめて追加 | BEGIN / COMMIT | [question/answer/answer05.sql](question/answer/answer05.sql) |
 | 6 | 削除を取り消す | BEGIN / ROLLBACK | [question/answer/answer06.sql](question/answer/answer06.sql) |
+
+### 動作確認：各問題の期待件数
+
+`setup.sql`実行直後は6件（書籍2・電子機器2・文具2、うち「ペン」だけ`stock`が`NULL`）の状態です。
+
+| 問題 | 確認したいこと |
+|---|---|
+| 1 | `category IN ('書籍', '文具')`で**4件**（Python入門・Flask開発・ノート・ペン） |
+| 2 | `price BETWEEN 1000 AND 10000`で**3件**（Python入門2800・Flask開発3200・マウス3500。ノートPCの120000は範囲外） |
+| 3 | `stock IS NULL`で**1件**（ペンのみ） |
+| 4 | `.schema products`に`description TEXT`が追加されている。既存6件のデータは残ったまま |
+| 5 | `COMMIT`後に`SELECT * FROM products;`で**8件**に増えている（元の6件＋新商品A・B） |
+| 6 | `ROLLBACK`後に`SELECT * FROM products;`で`id=1`（Python入門）が**削除されずに残っている** |
+
+**正常な状態の見分け方**：問題5は実行後に件数が増え、問題6は削除操作をしたのに最終的には件数が変わらない（元に戻る）のが正しい状態です。この2つの結果が逆になっている場合は`COMMIT`と`ROLLBACK`を書き間違えていないか確認してください。

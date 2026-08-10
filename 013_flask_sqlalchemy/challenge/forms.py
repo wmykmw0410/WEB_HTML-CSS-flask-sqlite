@@ -1,15 +1,18 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, IntegerField, SubmitField
-from wtforms.validators import DataRequired, Length, NumberRange
+from wtforms import SelectField, StringField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, Length
+
+CATEGORY_CHOICES = [
+    ('家事', '家事'),
+    ('仕事', '仕事'),
+    ('趣味', '趣味'),
+    ('アイデア', 'アイデア'),
+    ('プライベート', 'プライベート'),
+]
 
 
-class BookForm(FlaskForm):
+class MemoForm(FlaskForm):
     title = StringField('タイトル', validators=[DataRequired(), Length(max=100)])
-    author = StringField('著者', validators=[DataRequired(), Length(max=100)])
-    price = IntegerField('価格（円）', validators=[DataRequired(), NumberRange(min=1)])
-    image = FileField(
-        '表紙画像',
-        validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'], '画像ファイル（jpg/png/gif）のみアップロードできます。')],
-    )
+    category = SelectField('カテゴリ', choices=CATEGORY_CHOICES)
+    body = TextAreaField('本文', validators=[DataRequired(), Length(max=500)])
     submit = SubmitField('追加する')

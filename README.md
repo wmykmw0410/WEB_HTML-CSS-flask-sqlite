@@ -12,8 +12,10 @@ Flaskを基礎から学ぶための番号付きチャプター集です。各チ
 
 ## 進捗
 
+`001`〜`025`を通して1つの**メモ帳アプリ**を少しずつ育てていきます（詳細は[000_my_app](000_my_app/)を参照）。
+
 ### 完成形（最初に触ってみる）
-- [ ] 100_bookstore_api — 統合アプリ
+- [ ] 100_memo_api — 統合アプリ
 
 ### 基礎
 - [ ] 001_web_basic — Webサイトの仕組み
@@ -42,7 +44,7 @@ Flaskを基礎から学ぶための番号付きチャプター集です。各チ
 - [ ] 018_ownership_crud — 所有権とCRUDのフルセット
 
 ### 応用機能
-- [ ] 019_cart — カート機能・注文確定
+- [ ] 019_javascript — JavaScriptによる機能追加
 - [ ] 020_testing — pytest・test_client
 - [ ] 021_webapi — requestsで外部APIを呼び出す
 - [ ] 022_flask_api — jsonify・JSON API
@@ -58,7 +60,7 @@ Flaskを基礎から学ぶための番号付きチャプター集です。各チ
 
 ## 進め方
 
-1. まず[100_bookstore_api](100_bookstore_api/)を実行し、最終的にどんなアプリができあがるのかを体験する
+1. まず[100_memo_api](100_memo_api/)を実行し、最終的にどんなアプリができあがるのかを体験する
 2. `001`から順番にチャプターを進める
 3. 各チャプターは`README.md`（学習内容）と`example/`（サンプルコード）で構成される
 4. 学んだ内容は、[000_my_app](000_my_app/)という**自分だけの統合アプリ**に少しずつ積み上げていく（詳細は後述）
@@ -87,7 +89,7 @@ pip install Flask==2.3.3 Flask-WTF==1.2.2 Flask-Login==0.6.3 Flask-SQLAlchemy==3
 | # | チャプター | 学ぶ内容 |
 |---|---|---|
 | 001 | [web_basic](001_web_basic/) | Webサイトの仕組み（HTTP・サーバの役割・MVTモデル・ネットワーク基礎）の座学イントロダクション |
-| 002 | [html_css](002_html_css/) | HTML/CSSの基礎（タグ・ボックスモデル・Flexbox/Grid）。ブックストアのトップページを静的HTML/CSSで再現する |
+| 002 | [html_css](002_html_css/) | HTML/CSSの基礎（タグ・ボックスモデル・Flexbox/Grid）。メモ帳アプリのトップページを静的HTML/CSSで再現する |
 | 003 | [function](003_function/) | Pythonの関数の基本（引数・戻り値・スコープ）・デコレータ・`@app.route()`の仕組み |
 | 004 | [flask_basic](004_flask_basic/) | Hello World・ルーティング・動的URL・render_template・エラーハンドリング |
 | 005 | [redirect](005_redirect/) | `redirect()`・`url_for()`（内部/外部リダイレクト・引数付きURL生成） |
@@ -103,10 +105,10 @@ pip install Flask==2.3.3 Flask-WTF==1.2.2 Flask-Login==0.6.3 Flask-SQLAlchemy==3
 | 015 | [login](015_login/) | Flask-Login・パスワードハッシュ化・ログイン機能 |
 | 016 | [typehints](016_typehints/) | Python型ヒント（基本の型・`Optional`・`Union`） |
 | 017 | [blueprint](017_blueprint/) | Blueprint・`g`オブジェクト |
-| 018 | [ownership_crud](018_ownership_crud/) | ここまでの総合（書籍の所有権とCRUDのフルセット） |
-| 019 | [cart](019_cart/) | セッションを使ったカート機能・注文確定（Order） |
+| 018 | [ownership_crud](018_ownership_crud/) | ここまでの総合（メモの所有権とCRUDのフルセット） |
+| 019 | [javascript](019_javascript/) | JavaScriptによる機能追加（DOM操作・イベント処理・fetch） |
 | 020 | [testing](020_testing/) | 自動テスト（`pytest`・Flaskの`test_client`） |
-| 021 | [webapi](021_webapi/) | `requests`で外部APIを呼び出す（クライアント側） |
+| 021 | [webapi](021_webapi/) | `requests`で外部APIを呼び出す（クライアント側、郵便番号から住所解決） |
 | 022 | [flask_api](022_flask_api/) | `jsonify`・JSON API・地図表示 |
 | 023 | [crud_api](023_crud_api/) | JSON APIのフルCRUD化（POST/PUT/DELETE・入力検証） |
 | 024 | [role_management](024_role_management/) | ロールベースの認可（管理者/一般、is_admin） |
@@ -116,11 +118,15 @@ pip install Flask==2.3.3 Flask-WTF==1.2.2 Flask-Login==0.6.3 Flask-SQLAlchemy==3
 
 | # | チャプター | 学ぶ内容 |
 |---|---|---|
-| 100 | [bookstore_api](100_bookstore_api/) | `018`〜`024`の集大成（所有権・ロール管理・カート・フルCRUD APIを統合したブックストア） |
+| 100 | [memo_api](100_memo_api/) | `001`〜`025`の集大成（所有権・ロール管理・JavaScript機能・外部API連携・フルCRUD APIを統合したメモ帳アプリ） |
 
 ## 000_my_app について
 
-学んだ内容を自分のアプリに積み上げていく専用チャプターです。使い方・進捗チェックリストは[000_my_app/README.md](000_my_app/)を参照してください。
+学んだ内容を自分のアプリに積み上げていく専用チャプターです。`001`から`025`まで、一貫して1つの**メモ帳アプリ**を育てていきます。使い方・進捗チェックリストは[000_my_app/README.md](000_my_app/)を参照してください。
+
+## 補足資料
+
+各チャプターの学習内容には含まれない、実務で役立つ周辺知識をまとめています。[appendix/README.md](appendix/)を参照してください（現在: GitHubへのpush・Dockerでのデプロイ・Renderへのデプロイ）。
 
 ## 参考リンク（公式ドキュメント）
 

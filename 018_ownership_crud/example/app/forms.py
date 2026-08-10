@@ -1,7 +1,14 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, IntegerField, SubmitField
-from wtforms.validators import DataRequired, EqualTo, Length, NumberRange, Optional
+from wtforms import PasswordField, SelectField, StringField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, EqualTo, Length, Optional
+
+CATEGORY_CHOICES = [
+    ('家事', '家事'),
+    ('仕事', '仕事'),
+    ('趣味', '趣味'),
+    ('アイデア', 'アイデア'),
+    ('プライベート', 'プライベート'),
+]
 
 
 class LoginForm(FlaskForm):
@@ -17,13 +24,9 @@ class RegisterForm(FlaskForm):
     submit   = SubmitField('登録')
 
 
-class BookForm(FlaskForm):
-    title  = StringField('タイトル', validators=[DataRequired(), Length(max=100)])
-    author = StringField('著者', validators=[DataRequired(), Length(max=100)])
-    price  = IntegerField('価格（円）', validators=[DataRequired(), NumberRange(min=1)])
-    genre  = StringField('ジャンル', validators=[Optional(), Length(max=50)])
-    image  = FileField(
-        '表紙画像',
-        validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'], '画像ファイル（jpg/png/gif）のみアップロードできます。')],
-    )
-    submit = SubmitField('保存する')
+class MemoForm(FlaskForm):
+    title    = StringField('タイトル', validators=[DataRequired(), Length(max=100)])
+    category = SelectField('カテゴリ', choices=CATEGORY_CHOICES)
+    body     = TextAreaField('本文', validators=[DataRequired(), Length(max=500)])
+    due_date = StringField('期限（任意・例: 2026-08-10）', validators=[Optional(), Length(max=50)])
+    submit   = SubmitField('保存する')

@@ -27,13 +27,13 @@ pip install flask-sqlalchemy
 └── challenge/                 012_sqlalchemyの続き（000_my_appに組み込む機能の変更分）
     ├── challenge.py
     ├── forms.py
-    ├── books.json
+    ├── memos.json
     ├── static/
     ├── templates/
     └── answer/
         ├── challenge.py
         ├── forms.py
-        ├── books.json
+        ├── memos.json
         ├── static/
         └── templates/
 ```
@@ -185,6 +185,16 @@ if __name__ == '__main__':
 2. `with app.app_context():` を使って `db.create_all()` でテーブルを作成してください
 3. 1つの `with app.app_context():` ブロックの中で、INSERT → SELECT を続けて実行してください
 
+### 動作確認：app_contextが無いと何が起きるかを実際に見る
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `if __name__ == '__main__':`ブロックの中で、`with app.app_context():`を**一時的にコメントアウト**して`Task.query.all()`を呼ぶ | `RuntimeError: Working outside of application context.`というエラーが発生する（確認後は必ず元に戻す） |
+| `with app.app_context():`を戻して同じコードを実行する | エラーが出ず、正常にクエリ結果が返る |
+| `@app.route('/tasks')`の中で`with app.app_context():`を**付けて**みる（本来不要） | エラーにはならない（Flaskがすでに用意しているコンテキストの中に、さらにネストしたコンテキストを作るだけで害はないが、冗長なので通常は書かない） |
+
+**正常な状態の見分け方**：`RuntimeError`が出るのは「Flaskのリクエスト処理の外（スクリプト単体実行など）で`app_context`を用意し忘れている」ことを示す、分かりやすいシグナルです。このエラーを見たら、そのコードが`@app.route`の中かどうかをまず確認してください。
+
 ---
 
 ## 3. モデルの定義
@@ -296,17 +306,30 @@ python 013_flask_sqlalchemy/question/question01.py
 | 5 | id=2 の Memo を削除する | `with app.app_context():` | [question/answer/answer05.py](question/answer/answer05.py) |
 | 6 | 最終状態を全件表示する | `with app.app_context():` | [question/answer/answer06.py](question/answer/answer06.py) |
 
+### 動作確認：各問題を実行した結果
+
+| 問題 | 実行コマンド | 確認したいこと |
+|---|---|---|
+| 1 | `python question/question01.py` | エラーなく終了し、テーブルが作成される |
+| 2 | `python question/question02.py` | 3件のMemoが追加される（`add_all()`は複数のオブジェクトをまとめて1回の`commit()`で保存できる） |
+| 3 | `python question/question03.py` | 3件のMemoが表示される |
+| 4 | `python question/question04.py` | 更新後、`id=1`の`title`が変わっている |
+| 5 | `python question/question05.py` | `id=2`のMemoが削除され、残りは2件になる |
+| 6 | `python question/question06.py` | 削除後の最終状態（2件）が表示される |
+
+**正常な状態の見分け方**：どの問題も`with app.app_context():`の外でDB操作をすると`RuntimeError`になります（本章セクション2）。エラーが出た場合はまずインデントの範囲を確認してください。
+
 ---
 
-## 7. 練習問題：書籍データをFlask-SQLAlchemyに移行しよう
+## 7. 練習問題：メモデータをFlask-SQLAlchemyに移行しよう
 
 > [challenge/challenge.py](challenge/challenge.py) — 問題 ｜ [challenge/answer/challenge.py](challenge/answer/challenge.py) — 解答
 
-### 問題：書籍データの保存先を SQLAlchemy（生）から Flask-SQLAlchemy に変更しよう
+### 問題：メモデータの保存先を SQLAlchemy（生）から Flask-SQLAlchemy に変更しよう
 
-`012_sqlalchemy`で作った書籍一覧・詳細・書籍追加フォーム・リダイレクト（`challenge/challenge.py`にすでに実装済み）は、これまで自分で`engine`・`Session`を管理する生のSQLAlchemyで`books.db`を操作していました。これを`Flask-SQLAlchemy`（`db.Model`・`db.session`・`app_context`）に置き換えます。
+`012_sqlalchemy`で作ったメモ一覧・詳細・メモ追加フォーム・リダイレクト（`challenge/challenge.py`にすでに実装済み）は、これまで自分で`engine`・`Session`を管理する生のSQLAlchemyで`memos.db`を操作していました。これを`Flask-SQLAlchemy`（`db.Model`・`db.session`・`app_context`）に置き換えます。
 
-`Book`モデルの定義（問題1）はすでに`db = SQLAlchemy(app)`の準備と合わせて用意されていますが、モデルのカラム定義と`db.create_all()`の呼び出しは`TODO`のままになっているので、まずこれを実装してください。`books.json`は初回起動時にだけ`books`テーブルへ投入するために使われます。
+`Memo`モデルの定義（問題1）はすでに`db = SQLAlchemy(app)`の準備と合わせて用意されていますが、モデルのカラム定義と`db.create_all()`の呼び出しは`TODO`のままになっているので、まずこれを実装してください。`memos.json`は初回起動時にだけ`memos`テーブルへ投入するために使われます。
 
 ```bash
 python 013_flask_sqlalchemy/challenge/challenge.py
@@ -316,13 +339,29 @@ python 013_flask_sqlalchemy/challenge/challenge.py
 
 | エンドポイント | メソッド | 処理 |
 |---|---|---|
-| `/` | GET | `Book.query`で全件取得する（`author`指定時は`filter_by(author=author)`で絞り込み） |
-| `/books/<int:book_id>` | GET | `filter_by(id=book_id).first()`で1件取得する |
-| `/books/new` | POST（バリデーション成功時） | `Book(...)`を作って`db.session.add()`→`db.session.commit()`する |
+| `/` | GET | `Memo.query`で全件取得する（`category`指定時は`filter_by(category=category)`で絞り込み） |
+| `/memos/<int:memo_id>` | GET | `filter_by(id=memo_id).first()`で1件取得する |
+| `/memos/new` | POST（バリデーション成功時） | `Memo(...)`を作って`db.session.add()`→`db.session.commit()`する |
 
 #### ヒント
 
-- モデル定義は`id`（主キー・自動採番）、`title`・`author`・`price`・`image`（すべて`NOT NULL`）の5カラム（`012_sqlalchemy`と同じ、本章セクション3）
+- モデル定義は`id`（主キー・自動採番）、`title`・`category`・`body`（すべて`NOT NULL`）の4カラム（`012_sqlalchemy`と同じ、本章セクション3）
 - `init_db()`のようにスクリプト側からDBを操作する場合は`with app.app_context():`が必要（本章セクション2）。一方`@app.route`の中はFlaskが自動でコンテキストを用意するので不要（セクション2・4）
-- `Book.query.filter_by(...).all()` / `.first()`で結果を取得する（セクション5）
-- 見た目やCSRF・ファイルアップロードの仕組みは`012_sqlalchemy`から変更不要
+- `Memo.query.filter_by(...).all()` / `.first()`で結果を取得する（セクション5）
+- 見た目やCSRFの仕組みは`012_sqlalchemy`から変更不要
+
+### 動作確認：生SQLAlchemyからFlask-SQLAlchemyに変わっても同じ見た目で動くか
+
+```bash
+cd 013_flask_sqlalchemy/challenge
+python challenge.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `http://127.0.0.1:5036/`にアクセスする | `012_sqlalchemy`のときと見た目が変わらずメモ一覧が表示される（`engine`/`Session`を自分で管理する書き方から`db = SQLAlchemy(app)`に変わっただけ） |
+| `?category=仕事`を付けてアクセスする | `Memo.query.filter_by(category='仕事')`で絞り込まれる |
+| メモ詳細ページにアクセスする | `filter_by(id=memo_id).first()`で取得した1件が表示される |
+| `/memos/new`から新しいメモを追加する | 追加後、一覧に反映される |
+
+**正常な状態の見分け方**：`012_sqlalchemy`のときと画面の動作が変わらないのが正しい状態です。起動時に`RuntimeError`が出る場合は、`init_db()`など`@app.route`の外でDBを操作している箇所に`with app.app_context():`が付いているか確認してください（本章セクション2）。

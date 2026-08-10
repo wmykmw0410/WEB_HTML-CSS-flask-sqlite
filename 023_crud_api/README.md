@@ -20,7 +20,7 @@
 │   └── api/
 │       └── views.py            書籍APIのフルCRUD + 入力検証（ダミーデータ）
 └── challenge/                  022_flask_apiの続き（000_my_appに組み込む機能の変更分・完成版）
-    ├── app.py / models.py / ...   022_flask_apiと同じアプリ本体
+    ├── app.py / models.py / ...   022_flask_apiと同じアプリ本体（メモ帳）
     └── api/views.py                書き込み系（POST/PUT/DELETE）・入力検証・所有者チェックを追加
 ```
 
@@ -94,6 +94,19 @@ curl -X PUT http://127.0.0.1:5067/api/books/1 -H "Content-Type: application/json
 curl -i -X DELETE http://127.0.0.1:5067/api/books/1
 ```
 
+### 動作確認：作成・検証エラー・更新・削除のステータスコードとJSONの違い
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `curl -X POST ... -d '{"title": "新しい本", "price": 1000}'` | `id:3`が採番された新しい本のJSONが返る（`-i`を付ければステータスコードが**201**であることも確認できる） |
+| `curl -X POST ... -d '{"price": 1000}'`（`title`が無い） | 本文が作られず、`{"detail": "title is required"}`がステータス**400**で返る |
+| `curl -X POST ... -d '{"title": "本", "price": "高い"}'`（`price`が文字列） | `{"detail": "price must be an integer"}`が**400**で返る（`isinstance(data.get('price'), int)`のチェックに引っかかる） |
+| `curl -X PUT .../api/books/1 -d '{"title": "更新後のタイトル", "price": 2200}'` | `id:1`の`title`と`price`が書き換わったJSONが**200**で返る（`POST`の201とは異なる） |
+| `curl -X PUT .../api/books/999 -d '{"title": "x", "price": 1}'`（存在しないid） | `{"detail": "Book not found"}`が**404**で返る |
+| `curl -i -X DELETE .../api/books/1` | 本文が空でステータスコードが**204**になる（`-i`を付けないと何も表示されないので注意） |
+
+**正常な状態の見分け方**：入力に問題があるときは常に400、対象が存在しないときは常に404、成功時は操作に応じて200/201/204のいずれかになります。同じ「本文が空」でも、204（成功して返す内容がない）と404（そもそも見つからない、`detail`付き）は別物なので、`-i`でステータスコードまで確認する習慣をつけてください。
+
 ---
 
 ## 3. ログイン中のAPIで @login_required が使えない理由
@@ -130,11 +143,11 @@ csrf.exempt(api_bp)   # JSON APIはCSRF保護の対象外にする
 
 ---
 
-## 5. 書籍API（フルCRUD版）の使い方
+## 5. メモAPI（フルCRUD版）の使い方
 
 > [challenge/](challenge/)
 
-`022_flask_api`で作った書籍一覧・詳細・追加・カート・チェックアウトの機能に加えて、書籍APIが参照専用（`GET`）からフルCRUD（`GET`/`POST`/`PUT`/`DELETE`）になっています。書き込み系は`018_ownership_crud`と同じ所有権パターンで保護されており、**自分が追加した本だけ**編集・削除できます。
+`022_flask_api`で作ったメモ一覧・詳細・追加・編集・削除・ピン留めの機能に加えて、メモAPIが参照専用（`GET`）からフルCRUD（`GET`/`POST`/`PUT`/`DELETE`）になっています。書き込み系は`018_ownership_crud`と同じ所有権パターンで保護されており、**自分が追加したメモだけ**編集・削除できます。
 
 ### 起動方法
 
@@ -150,24 +163,24 @@ python app.py
 
 | メソッド | パス | 認可 | 説明 |
 |---|---|---|---|
-| GET | `/api/books` | 誰でも | 書籍一覧（`?author=`で絞り込み可） |
-| GET | `/api/books/<id>` | 誰でも | 書籍詳細 |
-| POST | `/api/books` | ログイン必須 | 書籍を追加（追加者が`owner`になる） |
-| PUT | `/api/books/<id>` | 所有者のみ | 書籍を更新 |
-| DELETE | `/api/books/<id>` | 所有者のみ | 書籍を削除 |
+| GET | `/api/memos` | 誰でも | メモ一覧（`?category=`で絞り込み可） |
+| GET | `/api/memos/<id>` | 誰でも | メモ詳細 |
+| POST | `/api/memos` | ログイン必須 | メモを追加（追加者が`owner`になる） |
+| PUT | `/api/memos/<id>` | 所有者のみ | メモを更新 |
+| DELETE | `/api/memos/<id>` | 所有者のみ | メモを削除 |
 
 ### 使用例
 
 参照系は`curl`だけで確認できます。
 
 ```bash
-curl http://127.0.0.1:5068/api/books
-curl http://127.0.0.1:5068/api/books?author=夏目漱石
+curl http://127.0.0.1:5082/api/memos
+curl http://127.0.0.1:5082/api/memos?category=仕事
 
 # 未ログインで書き込むと401
-curl -i -X POST http://127.0.0.1:5068/api/books \
+curl -i -X POST http://127.0.0.1:5082/api/memos \
      -H "Content-Type: application/json" \
-     -d '{"title": "新しい本", "author": "著者名", "price": 1000}'
+     -d '{"title": "新しいメモ", "category": "仕事", "body": "本文"}'
 # => 401 {"detail": "Login required"}
 ```
 
@@ -177,7 +190,7 @@ curl -i -X POST http://127.0.0.1:5068/api/books \
 import re
 import requests
 
-BASE = 'http://127.0.0.1:5068'
+BASE = 'http://127.0.0.1:5082'
 session = requests.Session()
 
 # ログインページからCSRFトークンを取り出してログインする
@@ -186,24 +199,38 @@ token = re.search(r'name="csrf_token"[^>]*value="([^"]+)"', r.text).group(1)
 session.post(f'{BASE}/auth/login', data={'username': 'alice', 'password': 'pass1234', 'csrf_token': token})
 
 # 以降は session を使えばCookieが自動で送られる
-r2 = session.post(f'{BASE}/api/books', json={'title': '新しい本', 'author': '著者名', 'price': 1000})
-print(r2.status_code, r2.json())   # 201 {'id': ..., 'title': '新しい本', ...}
+r2 = session.post(f'{BASE}/api/memos', json={'title': '新しいメモ', 'category': '仕事', 'body': '本文'})
+print(r2.status_code, r2.json())   # 201 {'id': ..., 'title': '新しいメモ', ...}
 
-# 必須項目が無い、または型が違うと400
-r3 = session.post(f'{BASE}/api/books', json={'price': 1000})
+# 必須項目が無いと400
+r3 = session.post(f'{BASE}/api/memos', json={'category': '仕事'})
 print(r3.status_code, r3.json())   # 400 {'detail': 'title is required'}
 
-# 更新・削除は所有者本人のみ（他人の本を指定すると403、存在しないIDは404）
-book_id = r2.json()['id']
-session.put(f'{BASE}/api/books/{book_id}', json={'title': '更新後のタイトル', 'author': '著者名', 'price': 1200})
-session.delete(f'{BASE}/api/books/{book_id}')
+# 更新・削除は所有者本人のみ（他人のメモを指定すると403、存在しないIDは404）
+memo_id = r2.json()['id']
+session.put(f'{BASE}/api/memos/{memo_id}', json={'title': '更新後のタイトル', 'category': '仕事', 'body': '更新後の本文'})
+session.delete(f'{BASE}/api/memos/{memo_id}')
 ```
+
+### 動作確認：所有者本人・他人・未ログインでレスポンスがどう変わるか
+
+上のスクリプトの`alice`とは別に、もう1人ユーザーを登録して（`bob`とする）同じ`requests.Session`のパターンで挙動を比べます。
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `alice`のセッションで`session.post(f'{BASE}/api/memos', json={...})`を実行する | `201`で、`owner`が`alice`になっているメモのJSONが返る |
+| 別の`requests.Session()`で`bob`としてログインし、`alice`のメモの`id`を指定して`session_bob.put(f'{BASE}/api/memos/{memo_id}', json={...})`を実行する | ステータス**403**と`{"detail": "Forbidden"}`が返る（`memo.user_id != current_user.id`に引っかかる） |
+| 同じ`bob`のセッションで、存在しない`id`（例：`99999`）を指定して`PUT`する | ステータス**404**と`{"detail": "Memo not found"}`が返る（403とは区別される） |
+| ログインしていない`requests.Session()`（ログイン処理を挟まない）で`session_anon.post(f'{BASE}/api/memos', json={...})`を実行する | ステータス**401**と`{"detail": "Login required"}`が返る |
+| `alice`本人のセッションで、自分のメモを`PUT`・`DELETE`する | 両方とも成功する（`PUT`は**200**、`DELETE`は**204**） |
+
+**正常な状態の見分け方**：「誰であるか分からない」ときは401、「誰であるかは分かるが権限がない」ときは403、「対象が存在しない」ときは404、というセクション1で説明した使い分け通りにステータスコードが変わることを確認してください。所有者本人の操作だけが200/204で成功する、という一点が崩れていないかが最終チェックポイントです。
 
 ### 実装のポイント
 
-- `validate_book_payload(data)`：`title`・`author`が無い、または`price`が整数でなければエラーメッセージを返す共通の検証関数（本章セクション1）
+- `validate_memo_payload(data)`：`title`・`category`・`body`のいずれかが無ければエラーメッセージを返す共通の検証関数（本章セクション1）
 - 未ログイン判定は`current_user.is_authenticated`を自分でチェックする方式（`@login_required`は使わない。セクション3）
-- 所有者チェックは`book.user_id != current_user.id`（`018_ownership_crud`と同じ考え方）
+- 所有者チェックは`memo.user_id != current_user.id`（`018_ownership_crud`と同じ考え方）
 - `csrf.exempt(api_bp)`を`app.py`に設定済み。これが無いと書き込み系が「CSRF token is missing」で弾かれる（セクション4）
 
 ## 次のステップ

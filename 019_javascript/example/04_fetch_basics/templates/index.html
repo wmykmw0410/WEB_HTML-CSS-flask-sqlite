@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>4. fetch()の基本</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 40px auto; }
+        li { list-style: none; padding: 8px 0; border-bottom: 1px solid #e1e5eb; }
+        button.like { border: none; background: none; font-size: 1.2em; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>お気に入りトグル（fetch版）</h1>
+    <ul id="item-list">
+        {% for item in items %}
+        <li data-id="{{ item.id }}">
+            {{ item.name }}
+            <button class="like">{{ '★' if item.liked else '☆' }}</button>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

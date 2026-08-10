@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ title }} - ブックストア</title>
+    <title>{{ title }} - メモ帳</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <header>
         <nav>
-            <strong>ブックストア</strong>
-            <a href="/">書籍一覧</a>
+            <strong>メモ帳</strong>
+            <a href="/">メモ一覧</a>
         </nav>
     </header>
 
     <main class="detail">
-        <img src="{{ image }}" alt="{{ title }}">
+        <span class="tag">{{ category }}</span>
         <h1>{{ title }}</h1>
-        <p>{{ author_line }}</p>
-        <p>{{ price_line }}</p>
+        <p>{{ body }}</p>
         <a class="back-link" href="/">一覧へ戻る</a>
     </main>
 
     <footer>
-        &copy; ブックストア
+        &copy; メモ帳
     </footer>
 </body>
 </html>

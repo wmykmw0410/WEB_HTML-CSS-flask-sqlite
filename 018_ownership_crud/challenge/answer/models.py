@@ -12,7 +12,7 @@ class User(UserMixin, db.Model):
     id       = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(128), nullable=False)
-    books    = relationship('Book', back_populates='owner')
+    memos    = relationship('Memo', back_populates='owner')
 
     def set_password(self, raw: str) -> None:
         self.password = generate_password_hash(raw)
@@ -21,14 +21,13 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password, raw)
 
 
-class Book(db.Model):
-    __tablename__ = 'books'
+class Memo(db.Model):
+    __tablename__ = 'memos'
 
-    id      = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title   = db.Column(db.String(100), nullable=False)
-    author  = db.Column(db.String(100), nullable=False)
-    price   = db.Column(db.Integer, nullable=False)
-    genre   = db.Column(db.String(50))
-    image   = db.Column(db.String(200))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)   # 誰が追加したか
-    owner   = relationship('User', back_populates='books')
+    id       = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title    = db.Column(db.String(100), nullable=False)
+    category = db.Column(db.String(50), nullable=False)
+    body     = db.Column(db.String(500), nullable=False)
+    due_date = db.Column(db.String(50))
+    user_id  = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)   # 誰が追加したか
+    owner    = relationship('User', back_populates='memos')

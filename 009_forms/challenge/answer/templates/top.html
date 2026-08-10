@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>書籍一覧</h1>
+<h1>メモ一覧</h1>
 <div class="card-grid">
-    {% for book in books %}
-    <a class="card" href="/books/{{ book.id }}">
-        <img src="/static/img/{{ book.image }}" alt="{{ book.title }}">
-        <h3>{{ book.title }}</h3>
-        <p>{{ book.author }}</p>
-        <p>¥{{ book.price }}</p>
+    {% for memo in memos %}
+    <a class="card" href="/memos/{{ memo.id }}">
+        <span class="tag">{{ memo.category }}</span>
+        <h3>{{ memo.title }}</h3>
+        <p>{{ memo.body }}</p>
     </a>
     {% endfor %}
 </div>

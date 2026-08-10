@@ -1,7 +1,0 @@
-[
-    {"title": "吾輩は猫である", "author": "夏目漱石", "price": 770, "image": "wagahai_neko.png"},
-    {"title": "坊っちゃん", "author": "夏目漱石", "price": 660, "image": "bocchan.png"},
-    {"title": "羅生門", "author": "芥川龍之介", "price": 550, "image": "rashomon.png"},
-    {"title": "銀河鉄道の夜", "author": "宮沢賢治", "price": 480, "image": "ginga_tetsudo.png"},
-    {"title": "走れメロス", "author": "太宰治", "price": 440, "image": "hashire_merosu.png"}
-]

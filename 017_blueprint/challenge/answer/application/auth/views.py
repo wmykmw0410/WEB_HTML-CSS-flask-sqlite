@@ -38,7 +38,7 @@ def login() -> str | Response:
     ユーザー名とパスワードでログインする
 
     該当ユーザーが存在し、かつパスワードが一致すればログイン状態にして
-    書籍一覧にリダイレクトする。それ以外はエラーメッセージ付きで
+    メモ一覧にリダイレクトする。それ以外はエラーメッセージ付きで
     ログインフォームを再表示する。
 
     Returns:
@@ -51,7 +51,7 @@ def login() -> str | Response:
         if user and user.check_password(form.password.data):
             login_user(user)
             flash(f'ようこそ、{user.username} さん！')
-            return redirect(url_for('books.book_list'))
+            return redirect(url_for('memos.memo_list'))
         flash('ユーザー名またはパスワードが正しくありません。')
 
     return render_template('login.html', form=form)
@@ -62,4 +62,4 @@ def login() -> str | Response:
 def logout() -> Response:
     logout_user()
     flash('ログアウトしました。')
-    return redirect(url_for('books.book_list'))
+    return redirect(url_for('memos.memo_list'))

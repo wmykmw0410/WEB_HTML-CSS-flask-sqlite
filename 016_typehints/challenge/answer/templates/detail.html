@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}{{ title }} - ブックストア{% endblock %}
+{% block title %}{{ title }} - メモ帳{% endblock %}
 
 {% block content %}
 <div class="detail">
-    <img src="{{ image }}" alt="{{ title }}">
+    <span class="tag">{{ category }}</span>
     <h1>{{ title }}</h1>
-    <p>{{ author_line }}</p>
-    <p>{{ price_line }}</p>
-    {% if genre_line %}<p>{{ genre_line }}</p>{% endif %}
+    <p>{{ body }}</p>
+    {% if due_date_line %}<p>{{ due_date_line }}</p>{% endif %}
     <a class="back-link" href="/">一覧へ戻る</a>
 </div>
 {% endblock %}

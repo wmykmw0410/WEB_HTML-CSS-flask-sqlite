@@ -5,6 +5,7 @@
     --color-text: #262b33;
     --color-muted: #6b7280;
     --color-border: #e1e5eb;
+    --color-tag-bg: #e8edfb;
 }
 
 body {
@@ -37,7 +38,7 @@ nav a:hover {
 
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 200px);
+    grid-template-columns: repeat(auto-fill, 220px);
     justify-content: center;
     gap: 16px;
 }
@@ -49,93 +50,40 @@ nav a:hover {
     border-radius: 6px;
     padding: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    text-align: center;
     color: inherit;
     text-decoration: none;
 }
 
-.card img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-    border-radius: 4px;
+.tag {
+    display: inline-block;
+    background: var(--color-tag-bg);
+    color: var(--color-primary);
+    font-size: 0.75em;
+    padding: 2px 10px;
+    border-radius: 999px;
+    margin-bottom: 6px;
 }
 
 .card h3 {
-    margin: 8px 0 4px;
+    margin: 4px 0;
     font-size: 1em;
 }
 
 .card p {
     margin: 2px 0;
     color: var(--color-muted);
+    font-size: 0.9em;
 }
 
 /* 004_flask_basicで追加：詳細ページ用のスタイル */
-.detail {
-    text-align: center;
-}
-
-.detail img {
-    width: 200px;
-    height: 260px;
-    object-fit: cover;
-    border-radius: 4px;
+.detail p {
+    color: var(--color-text);
+    line-height: 1.6;
 }
 
 .back-link {
     display: inline-block;
     margin-top: 16px;
-}
-
-/* 009_formsで追加：書籍追加フォーム用のスタイル */
-.field {
-    margin-bottom: 16px;
-    text-align: left;
-}
-
-.field label {
-    display: block;
-    margin-bottom: 4px;
-    font-weight: bold;
-}
-
-.field input[type="text"],
-.field input[type="number"],
-.field input[type="password"],
-.field input[type="file"] {
-    width: 100%;
-    padding: 6px;
-    box-sizing: border-box;
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
-}
-
-.field .errors {
-    color: #d1495b;
-    font-size: 0.85em;
-    margin: 4px 0 0;
-    padding: 0;
-    list-style: none;
-}
-
-/* 015_loginで追加：フラッシュメッセージ用のスタイル */
-.flash {
-    background: #eef4ff;
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
-    padding: 10px 16px;
-    margin-bottom: 16px;
-    list-style: none;
-}
-
-form button {
-    padding: 8px 20px;
-    background: var(--color-primary);
-    color: #ffffff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
 footer {
@@ -155,7 +103,7 @@ footer {
     }
 
     .card-grid {
-        grid-template-columns: repeat(2, 200px);
+        grid-template-columns: repeat(2, 220px);
         gap: 12px;
     }
 }
@@ -167,7 +115,53 @@ footer {
     }
 
     .card-grid {
-        grid-template-columns: repeat(1, 200px);
+        grid-template-columns: repeat(1, 220px);
         gap: 8px;
     }
 }
+
+/* 009_formsで追加：メモ追加フォーム用のスタイル */
+.field {
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.field input[type="text"],
+.field select,
+.field textarea {
+    width: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.field textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.field .errors {
+    color: #d1495b;
+    font-size: 0.85em;
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+form button {
+    padding: 8px 20px;
+    background: var(--color-primary);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+

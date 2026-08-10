@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}新規登録 - ブックストア{% endblock %}
+{% block title %}新規登録 - メモ帳{% endblock %}
 
 {% block content %}
 <h1>新規登録</h1>
@@ -46,6 +46,5 @@
 
     {{ form.submit() }}
 </form>
-{# TODO: 問題3 'login' を Blueprint 形式のエンドポイント名に書き換える #}
 <p><a href="{{ url_for('login') }}">すでにアカウントをお持ちの方はこちら</a></p>
 {% endblock %}

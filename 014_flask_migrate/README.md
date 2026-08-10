@@ -31,13 +31,13 @@ pip install flask-migrate
 └── challenge/              013_flask_sqlalchemyの続き（000_my_appに組み込む機能の変更分）
     ├── challenge.py
     ├── forms.py
-    ├── books.json
+    ├── memos.json
     ├── static/
     ├── templates/
     └── answer/
         ├── challenge.py
         ├── forms.py
-        ├── books.json
+        ├── memos.json
         ├── static/
         └── templates/
 ```
@@ -101,6 +101,17 @@ flask db upgrade
 | `flask db history` | マイグレーションの履歴を一覧表示 |
 | `flask db current` | 現在適用されているバージョンを確認 |
 
+### 動作確認：3つのコマンドを実行した後の状態
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `flask db init`実行後、フォルダを確認する | `migrations/`フォルダが新規作成され、`migrations/versions/`は空の状態 |
+| `flask db migrate -m "create tasks table"`実行後 | `migrations/versions/`に1つマイグレーションファイル（`xxxx_create_tasks_table.py`）が生成される。**この時点ではまだDBに反映されていない** |
+| `flask db upgrade`実行前に`.db`ファイルを確認する | `tasks`テーブルはまだ存在しない |
+| `flask db upgrade`実行後 | `.db`ファイルに`tasks`テーブルが作成される。`flask db current`を実行すると、直前に生成したマイグレーションのリビジョンIDが表示される |
+
+**正常な状態の見分け方**：`flask db migrate`は「変更点を記録するファイルを作るだけ」で、実際のDBはまだ変わりません。DBが実際に変わるのは`flask db upgrade`を実行した後です。この2段階を混同していないか、`migrate`だけ実行してテーブルが無いと勘違いしていないか確認してください。
+
 ---
 
 ## 3. マイグレーションファイルの中身
@@ -159,6 +170,16 @@ def downgrade():
 
 > **SQLite の注意点**: SQLite は `ALTER TABLE` でのカラム変更が制限されているため、Flask-Migrate は `batch_alter_table` を使ってテーブルの再作成で対応します。
 
+### 動作確認：既存データを保ったままカラムが追加されるか
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| カラム追加前に何件かタスクを登録しておく | 例えば3件のタスクが存在する状態にする |
+| `flask db migrate -m "add is_completed column"` → `flask db upgrade`を実行する | エラーなく完了する |
+| `.db`ファイルの中身を確認する（`sqlite3`コマンドや拡張機能で） | **既存の3件のデータが消えずに残っており**、新しく追加された`is_completed`列には`NULL`（または`nullable=False`なら指定したデフォルト値）が入っている |
+
+**正常な状態の見分け方**：カラム追加のマイグレーションは既存データを消しません。もし`nullable=False`なのにデフォルト値を指定していないカラムを追加しようとすると、既存行にどんな値を入れればいいか分からずマイグレーションがエラーになります。エラーが出た場合は`nullable=True`にするか`server_default`を指定してください。
+
 ---
 
 ## 5. 実用アプリ（タスク管理）
@@ -191,6 +212,21 @@ python app.py
 | `/tasks/<id>/complete` | POST | タスクを完了にする |
 | `/tasks/<id>/uncompleted` | POST | タスクを未完了に戻す |
 
+### 動作確認：タスクの完了・未完了の切り替えが反映されるか
+
+```bash
+cd 014_flask_migrate/example/02_app
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `http://127.0.0.1:5038/new`からタスクを追加する | 一覧（`/`）の「未完了」に追加したタスクが表示される |
+| 一覧でタスクの「完了」ボタンを押す | そのタスクが「未完了」の欄から消え、「完了済み」の欄に移動する |
+| 「未完了に戻す」ボタンを押す | 「完了済み」から「未完了」に戻る |
+| アプリを再起動する | 再起動前の完了/未完了の状態がそのまま保持されている（`.db`ファイルに保存されているため） |
+
+**正常な状態の見分け方**：タスクが「未完了」と「完了済み」のどちらか一方にだけ表示され、両方に重複して表示されないことを確認してください。
+
 ---
 
 ## 6. 練習問題
@@ -218,15 +254,25 @@ python question.py
 | 3 | `Memo` モデルに `created_at`（`db.String`）カラムを追加して再マイグレーションする |
 | 4 | `flask db history` と `flask db current` でバージョンを確認する |
 
+### 動作確認：マイグレーション履歴が積み重なっていくか
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| ステップ2完了後に`flask --app question db current` | 最初のマイグレーション（テーブル作成）のリビジョンIDが表示される |
+| ステップ3（`created_at`追加）完了後に`flask --app question db history` | マイグレーションが**2件**、新しい順に表示される（テーブル作成 → `created_at`追加） |
+| ステップ3完了後に`flask --app question db current` | 2件のうち**新しい方**（`created_at`追加）のリビジョンIDに変わっている |
+
+**正常な状態の見分け方**：`flask db history`に表示される件数は、これまでに`flask db migrate`を実行した回数と一致します。件数が増えていない場合は`flask db migrate`を実行し忘れて`flask db upgrade`だけ行っていないか確認してください（`upgrade`は既存のマイグレーションを適用するだけで、新しい変更を検出しません）。
+
 ---
 
-## 7. 練習問題：書籍データの管理に Flask-Migrate を組み込もう
+## 7. 練習問題：メモデータの管理に Flask-Migrate を組み込もう
 
 > [challenge/challenge.py](challenge/challenge.py) — 問題 ｜ [challenge/answer/challenge.py](challenge/answer/challenge.py) — 解答
 
-### 問題：db.create_all() から Flask-Migrate に切り替えて genre カラムを追加しよう
+### 問題：db.create_all() から Flask-Migrate に切り替えて due_date カラムを追加しよう
 
-`013_flask_sqlalchemy`で作った書籍一覧・詳細・書籍追加フォーム・リダイレクト（`challenge/challenge.py`にすでに実装済み）は、これまで`db.create_all()`でテーブルが無ければ作るだけでした。これを`Flask-Migrate`で管理する方式に変更し、既存の`books`テーブルに`genre`（ジャンル）カラムを追加します。
+`013_flask_sqlalchemy`で作ったメモ一覧・詳細・メモ追加フォーム・リダイレクト（`challenge/challenge.py`にすでに実装済み）は、これまで`db.create_all()`でテーブルが無ければ作るだけでした。これを`Flask-Migrate`で管理する方式に変更し、既存の`memos`テーブルに`due_date`（期限）カラムを追加します。
 
 この課題は`python challenge.py`だけでは完結せず、`flask db`コマンドを挟みながら進めます。
 
@@ -235,15 +281,15 @@ cd 014_flask_migrate/challenge
 
 # 問題1：Migrate(app, db) を追加したら、まず既存のテーブルをマイグレーション管理下に置く
 flask --app challenge db init
-flask --app challenge db migrate -m "create books table"
+flask --app challenge db migrate -m "create memos table"
 flask --app challenge db upgrade
 python challenge.py   # これまで通り動くことを確認
 
-# 問題2：Book モデルに genre カラムを追加したら、再度マイグレーション
-flask --app challenge db migrate -m "add genre column"
+# 問題2：Memo モデルに due_date カラムを追加したら、再度マイグレーション
+flask --app challenge db migrate -m "add due_date column"
 flask --app challenge db upgrade
 
-# 問題3：ルートを genre 対応にしたら、書籍追加フォームで動作確認
+# 問題3：ルートを due_date 対応にしたら、メモ追加フォームで動作確認
 python challenge.py
 ```
 
@@ -252,13 +298,29 @@ python challenge.py
 | 問題 | 内容 |
 |---|---|
 | 1 | `Migrate(app, db)` を追加してマイグレーションを有効にする（`db.create_all()`は使わない） |
-| 2 | `Book`モデルに`genre`カラムを追加する（既存の5件のデータが壊れないよう`nullable`にする） |
-| 3 | `/books/<int:book_id>`で`book.genre`から`genre_line`を作り、`/books/new`で`new.genre = form.genre.data`を設定する |
+| 2 | `Memo`モデルに`due_date`カラムを追加する（既存の5件のデータが壊れないよう`nullable`にする） |
+| 3 | `/memos/<int:memo_id>`で`memo.due_date`から`due_date_line`を作り、`/memos/new`で`new.due_date = form.due_date.data`を設定する |
 
 #### ヒント
 
-- モデルへのカラム追加は`db.Column(db.String, nullable=True)`のように書く（本章セクション4）。`nullable`にしないと、既存の5件（genreを持たない行）へのマイグレーションが失敗する
-- `flask db migrate`を実行すると`books.genre`カラムの追加が自動検出される（セクション3・4）
-- `genre_line`は`book.genre`が未設定（`None`）のときに空文字にしておくと、テンプレート側の`{% if genre_line %}`で表示を切り替えられる
-- フォーム（`forms.py`）とテンプレート（`new_book.html`・`detail.html`）の`genre`対応はすでに用意されているので、Pythonコードのみ変更すればよい。`forms.py`の`genre`フィールドには`wtforms.validators`の`Optional()`（入力必須にしない）が使われている。`016_typehints`で学ぶ`typing.Optional`とは**別物**（こちらはWTFormsのバリデーター）なので注意
-- 見た目やCSRF・ファイルアップロードの仕組みは`013_flask_sqlalchemy`から変更不要
+- モデルへのカラム追加は`db.Column(db.String, nullable=True)`のように書く（本章セクション4）。`nullable`にしないと、既存の5件（due_dateを持たない行）へのマイグレーションが失敗する
+- `flask db migrate`を実行すると`memos.due_date`カラムの追加が自動検出される（セクション3・4）
+- `due_date_line`は`memo.due_date`が未設定（`None`）のときに空文字にしておくと、テンプレート側の`{% if due_date_line %}`で表示を切り替えられる
+- フォーム（`forms.py`）とテンプレート（`new_memo.html`・`detail.html`）の`due_date`対応はすでに用意されているので、Pythonコードのみ変更すればよい。`forms.py`の`due_date`フィールドには`wtforms.validators`の`Optional()`（入力必須にしない）が使われている。`016_typehints`で学ぶ`typing.Optional`とは**別物**（こちらはWTFormsのバリデーター）なので注意
+- 見た目やCSRFの仕組みは`013_flask_sqlalchemy`から変更不要
+
+### 動作確認：db.create_all()からの移行後も既存メモが壊れていないか
+
+```bash
+cd 014_flask_migrate/challenge
+python challenge.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| 問題1の`flask db upgrade`実行後に`http://127.0.0.1:5039/`にアクセスする | `013_flask_sqlalchemy`から引き継いだ既存の5件のメモが、これまで通り表示される |
+| 問題2の`flask db migrate -m "add due_date column"` → `upgrade`実行後 | エラーなく完了する（`nullable=True`にしていれば、既存5件に`due_date`が無くてもマイグレーションが失敗しない） |
+| 問題3完了後、既存メモ（`due_date`未設定）の詳細ページを見る | エラーにならず、期限の表示欄が空になっている（`due_date_line`が空文字になる分岐が効いている） |
+| 問題3完了後、`/memos/new`で期限を指定して新しいメモを追加する | 詳細ページに指定した期限が表示される |
+
+**正常な状態の見分け方**：カラム追加の前後で、既存のメモ（元々あった5件）が消えたり内容が変わったりしていないことが最も重要な確認ポイントです。既存メモの詳細ページでエラーになる場合は、`nullable`の指定漏れか、`due_date`が`None`のケースを考慮していないテンプレート分岐を疑ってください。

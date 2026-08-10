@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ memo.title }} - メモ帳{% endblock %}
+
+{% block content %}
+<div class="detail">
+    <span class="tag">{{ memo.category }}</span>
+    <h1>{{ memo.title }}</h1>
+    <p>{{ memo.body }}</p>
+    {% if memo.due_date %}<p>期限: {{ memo.due_date }}</p>{% endif %}
+    {% if memo.owner %}<p>追加したユーザー: {{ memo.owner.username }}</p>{% endif %}
+
+    {% if current_user.is_authenticated and current_user.id == memo.user_id %}
+    <div class="owner-actions">
+        <a href="{{ url_for('memos.update', memo_id=memo.id) }}">編集</a>
+        <form method="post" action="{{ url_for('memos.delete', memo_id=memo.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" onclick="return confirm('削除しますか？')">削除</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <a class="back-link" href="{{ url_for('memos.index') }}">一覧へ戻る</a>
+</div>
+{% endblock %}

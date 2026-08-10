@@ -2,8 +2,8 @@
 Blueprint の基本
 
 実行:
-    python example/01_blueprint/app.py
-    ブラウザで http://localhost:5000 にアクセス
+python example/01_blueprint/app.py
+ブラウザで http://localhost:5000 にアクセス
 """
 from flask import Flask, render_template
 

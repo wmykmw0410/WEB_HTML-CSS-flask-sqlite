@@ -2,8 +2,8 @@
 Flask g オブジェクト — リクエスト内でデータを共有する
 
 実行:
-    python example/02_g.py
-    ブラウザで http://localhost:5000 / /morning / /evening にアクセス
+python example/02_g.py
+ブラウザで http://localhost:5000 / /morning / /evening にアクセス
 """
 from flask import Flask, g
 

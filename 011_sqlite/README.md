@@ -4,7 +4,7 @@ Python 標準ライブラリの `sqlite3` モジュールを使って、Python �
 
 `010_sql` で学んだ SQL 命令（CREATE / INSERT / SELECT / UPDATE / DELETE）を Python コードの中から実行します。
 
-各章は「機能の学習」と「`000_my_app`を完成させるための機能追加」の2部構成です。前者は`example/`で単体のサンプルとして学び、後者は`challenge/`で`100_bookstore_api`を完成形の参考にしながら取り組みます。
+各章は「機能の学習」と「`000_my_app`を完成させるための機能追加」の2部構成です。前者は`example/`で単体のサンプルとして学び、後者は`challenge/`でメモ帳アプリを組み立てながら取り組みます。
 
 ## 前提
 
@@ -31,14 +31,14 @@ Python 標準ライブラリの `sqlite3` モジュールを使って、Python �
 │       └── answer01.py〜answer07.py
 └── challenge/             # 009_formsの続き（000_my_appに組み込む機能の追加分）
     ├── challenge.py
-    ├── forms.py           # BookForm（009_formsと同じ）
-    ├── books.json         # 初回起動時のシードデータ
+    ├── forms.py           # MemoForm（009_formsと同じ）
+    ├── memos.json         # 初回起動時のシードデータ
     ├── static/
     ├── templates/
     └── answer/
         ├── challenge.py
         ├── forms.py
-        ├── books.json
+        ├── memos.json
         ├── static/
         └── templates/
 ```
@@ -156,6 +156,21 @@ print(f"最後に追加した id: {cur.lastrowid}")
 | `cur.executemany(sql, data)` | 同じ SQL を複数回まとめて実行 |
 | `cur.lastrowid` | 最後に INSERT したレコードの id |
 
+### 動作確認：プレースホルダーがSQLインジェクションを防ぐことを確認する
+
+```bash
+python 011_sqlite/example/03_insert.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| スクリプトを実行し`SELECT * FROM books`で確認する | 1件目（`Python入門`）と`executemany`で追加した2件（`Flask入門`・`SQLite実践`）、合計3件が登録されている |
+| `print(f"最後に追加した id: {cur.lastrowid}")`の出力を見る | `3`と表示される（3件目に追加した`SQLite実践`のid） |
+| 試しに`title`の値を`"'; DROP TABLE books; --"`のような文字列にして`?`プレースホルダー経由で`INSERT`する | エラーにならず、その**文字列がそのままtitleの値として1件追加される**だけで、テーブルは破壊されない（`?`に渡した値はSQLの一部として解釈されないため） |
+| （比較用、実行非推奨）同じ値をf文字列で`f"INSERT INTO books (title, ...) VALUES ('{title}', ...)"`のように直接埋め込んで実行した場合 | `books`テーブルが削除されてしまう（SQLインジェクション）。**危険なので実際に試すのは避け、`?`を使う理由として理解するだけにとどめる** |
+
+**正常な状態の見分け方**：どんな文字列を値として渡しても、`?`プレースホルダー経由であれば「ただのデータ」として扱われ、SQLの構造が変わることはありません。SQL文字列を`f"..."`や`+`で組み立てている箇所を見つけたら、`?`への置き換えを検討してください。
+
 ---
 
 ## 4. データ取得
@@ -238,6 +253,21 @@ for row in rows:
 
 Flask のテンプレートで `{{ book.title }}` のように辞書アクセスしたい場合に必須です。
 
+### 動作確認：row_factory設定の前後で取得結果の型が変わることを確認する
+
+```bash
+python 011_sqlite/example/07_row_factory.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `conn.row_factory = sqlite3.Row`を設定する**前**に`cur.fetchall()`した結果を`print()`する | `[(1, 'Python入門', '山田太郎', 2800), ...]`のような**タプルのリスト**が出力される |
+| `conn.row_factory = sqlite3.Row`を設定した**後**に同じSELECTをして`print(rows[0])`する | `<sqlite3.Row object at ...>`のように表示され、タプルのまま見た目は変わらないが、`row['title']`で値を取り出せるようになる |
+| `print(row['title'], row['price'])`を実行する | `Python入門 2800`のように、インデックス番号ではなくカラム名で値を取得できる |
+| `print(row[0], row[1])`（`row_factory`設定後）も試す | インデックスでも引き続きアクセスでき、`row['title']`と`row[1]`が同じ値を指す（後方互換） |
+
+**正常な状態の見分け方**：`row_factory`を設定する前は`row['title']`のようなアクセスをすると`TypeError: tuple indices must be integers`のようなエラーになります。このエラーが出た場合は、`conn.row_factory = sqlite3.Row`を**カーソル作成前**に設定しているか確認してください。
+
 ---
 
 ## 8. コンテキストマネージャー（with 文）
@@ -279,6 +309,20 @@ finally:
 | `sqlite3.OperationalError` | テーブルが存在しない、SQL 構文エラーなど |
 | `sqlite3.Error` | 上記すべての親クラス |
 
+### 動作確認：withブロックの自動COMMIT・エラー時の挙動を確認する
+
+```bash
+python 011_sqlite/example/08_context.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| スクリプトを実行後、`sqlite3 books.db "SELECT * FROM books;"`で確認する | `with sqlite3.connect(...) as conn:`ブロックの中で追加した「新刊」が**`commit()`を明示的に呼ばなくても**保存されている |
+| `try / except`のブロックで、`title`を`NULL`にして`INSERT`を試す（`NOT NULL`制約に違反させる） | 例外が発生せずにプログラムが落ちる代わりに、`except sqlite3.IntegrityError as e:`で捕まえられ、「制約エラー: ...」が表示される |
+| そのエラー発生後に`SELECT * FROM books`で確認する | 制約違反した行は追加されておらず、`conn.rollback()`によってそれ以前の状態が保たれている |
+
+**正常な状態の見分け方**：`with conn:`ブロックが例外無く終わればデータは保存され、例外が起きればそのブロック内の変更は保存されません。制約違反なのにデータが保存されてしまう場合は、`except`で捕まえた後に誤って`conn.commit()`を呼んでいないか確認してください。
+
 ---
 
 ## 9. 練習問題
@@ -315,17 +359,31 @@ python 011_sqlite/question/question01.py
 | 6 | `row_factory` で辞書形式に変換する | `row_factory` | [question/answer/answer06.py](question/answer/answer06.py) |
 | 7 | `with conn:` で安全に INSERT する | コンテキストマネージャー | [question/answer/answer07.py](question/answer/answer07.py) |
 
+### 動作確認：各問題を実行した結果
+
+| 問題 | 実行コマンド | 確認したいこと |
+|---|---|---|
+| 1 | `python question/question01.py` | エラーなく終了する。同じフォルダで`sqlite3 <対象db> ".schema library"`を実行すると定義が表示される |
+| 2 | `python question/question02.py` | 実行後に全件取得すると5件のデータが入っている |
+| 3 | `python question/question03.py` | 5件分のタプルが標準出力に表示される |
+| 4 | `python question/question04.py` | 指定した`id`のレコード1件だけが表示される。存在しない`id`を指定すると`None`が表示される |
+| 5 | `python question/question05.py` | 更新件数（`rowcount`）が`1`と表示され、該当レコードの価格が変わっている |
+| 6 | `python question/question06.py` | `row['title']`のようにカラム名でアクセスした結果が表示される（タプルのインデックスではない） |
+| 7 | `python question/question07.py` | `with conn:`のブロックを抜けた後、追加した行が保存されている |
+
+**正常な状態の見分け方**：各`questionN.py`はファイル内で必要なテーブル・データを作り直してから問題に取り組む構成です。前の問題の実行結果が残っていなくても、それぞれ単独で正しい結果が出れば正常です。
+
 ---
 
-## 10. 練習問題：書籍データをSQLiteに保存しよう
+## 10. 練習問題：メモデータをSQLiteに保存しよう
 
 > [challenge/challenge.py](challenge/challenge.py) — 問題 ｜ [challenge/answer/challenge.py](challenge/answer/challenge.py) — 解答
 
-### 問題：書籍データの保存先を books.json から SQLite に変更しよう
+### 問題：メモデータの保存先を memos.json から SQLite に変更しよう
 
-`009_forms`で作った書籍一覧・詳細・書籍追加フォーム・リダイレクト（`challenge/challenge.py`にすでに実装済み）は、これまで`books.json`を`with open() + json.load()`で読み込み、Python辞書として保持していました。これを`sqlite3`モジュールで操作する`books.db`に置き換えます。
+`009_forms`で作ったメモ一覧・詳細・メモ追加フォーム・リダイレクト（`challenge/challenge.py`にすでに実装済み）は、これまで`memos.json`を`with open() + json.load()`で読み込み、Python辞書として保持していました。これを`sqlite3`モジュールで操作する`memos.db`に置き換えます。
 
-`get_db()`（接続の取得）・`init_db()`（テーブル作成と初回シード投入）はすでに実装済みです。`books.json`は初回起動時にだけ`books`テーブルへ投入するために使われます。
+`get_db()`（接続の取得）・`init_db()`（テーブル作成と初回シード投入）はすでに実装済みです。`memos.json`は初回起動時にだけ`memos`テーブルへ投入するために使われます。
 
 ```bash
 python 011_sqlite/challenge/challenge.py
@@ -335,14 +393,32 @@ python 011_sqlite/challenge/challenge.py
 
 | エンドポイント | メソッド | 処理 |
 |---|---|---|
-| `/` | GET | `books`テーブルから`SELECT`する（`author`指定時は`WHERE author = ?`で絞り込み） |
-| `/books/<int:book_id>` | GET | `WHERE id = ?`で1件`SELECT`する |
-| `/books/new` | POST（バリデーション成功時） | `with conn:`を使って`INSERT INTO books`する |
+| `/` | GET | `memos`テーブルから`SELECT`する（`category`指定時は`WHERE category = ?`で絞り込み） |
+| `/memos/<int:memo_id>` | GET | `WHERE id = ?`で1件`SELECT`する |
+| `/memos/new` | POST（バリデーション成功時） | `with conn:`を使って`INSERT INTO memos`する |
 
 #### ヒント
 
 - `conn.execute(sql, params).fetchall()` / `.fetchone()`で結果を取得する（本章セクション4）
 - `get_db()`は`conn.row_factory = sqlite3.Row`を設定済みなので、`row['title']`のようにカラム名でアクセスできる（セクション7）
-- `dict(row)`で`sqlite3.Row`を辞書に変換できる（テンプレート側の`book.title`のような書き方のため）
-- `/books/new`では`with conn:`のブロックの中で`conn.execute("INSERT INTO books (...) VALUES (...)", (...))`を呼ぶ（セクション8）。`with conn:`を使うと、ブロックを正常に抜けたときに自動で`commit()`される
-- 見た目やCSRF・ファイルアップロードの仕組みは`009_forms`から変更不要
+- `dict(row)`で`sqlite3.Row`を辞書に変換できる（テンプレート側の`memo.title`のような書き方のため）
+- `/memos/new`では`with conn:`のブロックの中で`conn.execute("INSERT INTO memos (...) VALUES (...)", (...))`を呼ぶ（セクション8）。`with conn:`を使うと、ブロックを正常に抜けたときに自動で`commit()`される
+- 見た目やCSRFの仕組みは`009_forms`から変更不要
+
+### 動作確認：memos.jsonからmemos.dbに置き換わっても同じ見た目で動くか
+
+```bash
+cd 011_sqlite/challenge
+python challenge.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| 初回起動後、フォルダに`memos.db`が作成されているか確認する | `init_db()`によって`memos.db`ファイルが新規作成され、`memos.json`の内容がシードデータとして投入されている |
+| `http://127.0.0.1:5032/`にアクセスする | `memos.json`を読み込んでいた`009_forms`のときと**見た目が変わらず**メモ一覧が表示される（データの取得元がJSONからSQLiteに変わっただけ） |
+| `?category=仕事`のようにカテゴリを指定してアクセスする | `WHERE category = ?`で絞り込んだ結果が表示される（`008_request`のクエリパラメータ絞り込みと同じ見た目） |
+| メモ詳細ページ（`/memos/<id>`）にアクセスする | `WHERE id = ?`で1件だけ取得した内容が表示される。存在しない`id`を指定すると404になる |
+| 新しいメモを`/memos/new`から追加する | 追加後、一覧に反映される。`sqlite3 memos.db "SELECT * FROM memos;"`をターミナルで実行しても、追加したメモが実際にDBに保存されていることを確認できる |
+| アプリを再起動する | `memos.json`は初回起動時にしか使われないため、再起動しても`memos.json`の内容で上書きされず、DBに保存した内容がそのまま残っている |
+
+**正常な状態の見分け方**：`009_forms`のときと画面の見た目・動作が変わらないのが正しい状態です。裏側のデータ保存先がJSONファイルからSQLiteに変わったことが、`sqlite3 memos.db`コマンドで中身を覗いたときにだけ確認できれば成功です。

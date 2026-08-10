@@ -2,7 +2,7 @@
 テスト対象の最小Flaskアプリ（DB不使用）
 
 実行:
-    python example/02_app.py
+python example/02_app.py
 """
 from flask import Flask, jsonify, request
 

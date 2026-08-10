@@ -7,15 +7,15 @@ from flask import Flask, g
 from flask_migrate import Migrate
 from flask_login import LoginManager
 
-from models import db, Book, User
+from models import db, Memo, User
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 
 base_dir = os.path.dirname(__file__)
-app.config['SQLALCHEMY_DATABASE_URI']        = 'sqlite:///' + os.path.join(base_dir, 'books.db')
+app.config['SQLALCHEMY_DATABASE_URI']        = 'sqlite:///' + os.path.join(base_dir, 'memos.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-SEED_JSON_PATH = os.path.join(base_dir, 'books.json')
+SEED_JSON_PATH = os.path.join(base_dir, 'memos.json')
 
 # models.py で db = SQLAlchemy() として作っているので、ここで app と結びつける
 # （Blueprint から models.py をimportする際の循環importを避けるため）
@@ -42,10 +42,10 @@ def load_user(user_id: str) -> Optional[User]:
     return User.query.get(int(user_id))
 
 
-from application.books.views import books_bp
+from application.memos.views import memos_bp
 from application.auth.views import auth_bp
 
-app.register_blueprint(books_bp)
+app.register_blueprint(memos_bp)
 app.register_blueprint(auth_bp)
 
 
@@ -56,11 +56,11 @@ def set_access_time() -> None:
 
 def init_db() -> None:
     with app.app_context():
-        count = Book.query.count()
+        count = Memo.query.count()
         if count == 0:
             with open(SEED_JSON_PATH, encoding='utf-8') as f:
-                books_data = json.load(f)
-            db.session.add_all([Book(**data) for data in books_data])
+                memos_data = json.load(f)
+            db.session.add_all([Memo(**data) for data in memos_data])
             db.session.commit()
 
 

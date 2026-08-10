@@ -2,7 +2,7 @@
 パスワードのハッシュ化 — werkzeug.security
 
 実行:
-    python example/01_password_hash.py
+python example/01_password_hash.py
 """
 from werkzeug.security import generate_password_hash, check_password_hash
 

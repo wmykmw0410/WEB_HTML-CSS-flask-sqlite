@@ -2,7 +2,7 @@
 
 Flaskの`request`オブジェクトを使って、クエリパラメータの絞り込みとHTTPメソッドの使い分けを学びます。
 
-各章は「機能の学習」と「`000_my_app`を完成させるための機能追加」の2部構成です。前者は`example/`で単体のサンプルとして学び、後者は`challenge/`で`100_bookstore_api`を完成形の参考にしながら取り組みます。
+各章は「機能の学習」と「`000_my_app`を完成させるための機能追加」の2部構成です。前者は`example/`で単体のサンプルとして学び、後者は`challenge/`でメモ帳アプリを組み立てながら取り組みます。
 
 ### requestオブジェクトとは
 
@@ -38,7 +38,7 @@ Flaskの`request`オブジェクトを使って、クエリパラメータの絞
 │   └── app3.py            # パスパラメータでの1件取得（jsonify・404）
 └── challenge/               # 007_withの続き（000_my_appに組み込む機能の追加分）
     ├── challenge.py
-    ├── books.json          # 007_withで学んだJSON読み込みで使うデータ
+    ├── memos.json          # 007_withで学んだJSON読み込みで使うデータ
     ├── static/
     ├── templates/          # base.htmlを継承する構成（006_jinja2の練習問題より）
     └── answer/
@@ -122,6 +122,19 @@ curl -X DELETE http://127.0.0.1:5018/items/1
 python 008_request/example/app1.py
 ```
 
+### 動作確認：メソッドごとに返る内容と、許可されていないメソッドの挙動
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `curl http://127.0.0.1:5018/items` | `GET: アイテム一覧を取得`と表示される |
+| `curl -X POST http://127.0.0.1:5018/items` | `POST: アイテムを新規作成`と表示される |
+| `curl -X PUT http://127.0.0.1:5018/items/1` | `PUT: アイテム 1 を更新（全体置換）`と表示される |
+| `curl -X DELETE http://127.0.0.1:5018/items/1` | `DELETE: アイテム 1 を削除`と表示される |
+| `curl -i -X POST http://127.0.0.1:5018/items/1`（`/items/<id>`にPOSTを送ってみる） | ボディは表示されず`405 METHOD NOT ALLOWED`が返る（`/items/<int:item_id>`は`PUT`と`DELETE`しか`methods`に指定していないため） |
+| `curl -X GET http://127.0.0.1:5018/method-check`と`curl -X POST http://127.0.0.1:5018/method-check`を続けて実行する | `リクエストメソッド: `の後ろが`GET`→`POST`と、実際に送ったメソッドに応じて変わる |
+
+**正常な状態の見分け方**：`methods`引数で許可していないメソッドでアクセスすると、200 OKではなく`405 Method Not Allowed`が返るのが正しい挙動です。想定外のメソッドでも200が返ってしまう場合は、`methods=[...]`の指定漏れを疑ってください。
+
 ---
 
 ## 2. クエリパラメータでの絞り込み
@@ -174,6 +187,23 @@ curl http://127.0.0.1:5019/books/
 curl "http://127.0.0.1:5019/books/?category=comics"
 # => category が comics の書籍のみ
 ```
+
+### 動作確認：カテゴリ指定の有無で結果がどう変わるか
+
+```bash
+cd 008_request/example
+python app2.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `curl http://127.0.0.1:5019/books/` | `books`の全6件がJSON配列で返る |
+| `curl "http://127.0.0.1:5019/books/?category=comics"` | `category`が`comics`の2件（`進撃の巨人`・`DBおやじ`）だけが返る |
+| `curl "http://127.0.0.1:5019/books/?category=technical"` | `category`が`technical`の2件（`python`・`はじめてのプログラミング`）だけが返る |
+| `curl "http://127.0.0.1:5019/books/?category=novel"`（存在しないカテゴリ） | 空の配列`[]`が返る（該当する本が無いだけでエラーにはならない） |
+| `curl -i "http://127.0.0.1:5019/books/"`でレスポンスヘッダーを確認する | `Content-Type: application/json`になっている（`jsonify()`が自動で設定するヘッダー） |
+
+**正常な状態の見分け方**：`category`を指定しなければ常に全件、指定すれば一致する件数だけが返り、一致が0件でもエラーにならず空配列`[]`が返るのが正しい挙動です。
 
 ---
 
@@ -230,15 +260,26 @@ curl -i http://127.0.0.1:5020/users/99
 python 008_request/example/app3.py
 ```
 
+### 動作確認：存在するIDと存在しないIDでレスポンスがどう変わるか
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `curl http://127.0.0.1:5020/users/1` | `{"user_id":1,"username":"Tom"}`が返る |
+| `curl http://127.0.0.1:5020/users/3` | `{"user_id":3,"username":"John"}`が返る |
+| `curl -i http://127.0.0.1:5020/users/99`（存在しないID） | ステータス行が`404 NOT FOUND`になり、ボディは`{"detail":"User not found"}` |
+| `curl -i http://127.0.0.1:5020/users/abc`（整数に変換できない値） | `<int:user_id>`のルール自体に一致しないため、この`get_user`には到達せず`404 NOT FOUND`（Flask標準のエラーページ）が返る |
+
+**正常な状態の見分け方**：存在するIDなら`200`でユーザー情報、存在しないIDなら`404`で`{"detail": "User not found"}`が返るのが正しい挙動です。存在しないIDなのに`200`が返る、または存在するIDなのに`404`になる場合は`users.get(user_id)`の判定を疑ってください。
+
 ---
 
 ## 4. 練習問題
 
 > [challenge/challenge.py](challenge/challenge.py) — 問題 ｜ [challenge/answer/challenge.py](challenge/answer/challenge.py) — 解答
 
-### 問題：書籍一覧を著者名で絞り込めるようにしよう
+### 問題：メモ一覧をカテゴリで絞り込めるようにしよう
 
-`007_with`で作った書籍一覧・詳細ページ・リダイレクト（`challenge/challenge.py`にすでに実装済み。書籍データは`books.json`から読み込み）に、著者名で絞り込むクエリパラメータを追加します。`top.html`はすでに`{% for %}`で書籍一覧をループ表示するようになっているので、Python側で渡す`books`の中身を絞り込むだけです。
+`007_with`で作ったメモ一覧・詳細ページ・リダイレクト（`challenge/challenge.py`にすでに実装済み。メモデータは`memos.json`から読み込み）に、カテゴリで絞り込むクエリパラメータを追加します。`top.html`はすでに`{% for %}`でメモ一覧をループ表示するようになっているので、Python側で渡す`memos`の中身を絞り込むだけです。
 
 ```bash
 python 008_request/challenge/challenge.py
@@ -248,12 +289,27 @@ python 008_request/challenge/challenge.py
 
 | エンドポイント | メソッド | 処理 |
 |---|---|---|
-| `/` | GET | クエリパラメータ`author`が指定されていれば、その著者の書籍だけに絞り込んで表示する |
-| `/?author=夏目漱石` | GET | 夏目漱石の書籍（2冊）のみ表示する |
-| `/`（`author`指定なし） | GET | 全件表示する |
+| `/` | GET | クエリパラメータ`category`が指定されていれば、そのカテゴリのメモだけに絞り込んで表示する |
+| `/?category=仕事` | GET | カテゴリが「仕事」のメモ（1件）のみ表示する |
+| `/`（`category`指定なし） | GET | 全件表示する |
 
 #### ヒント
 
-- `request.args.get('author')`でクエリパラメータを取得する（無ければ`None`）
-- `author`が`None`でなければ、リスト内包表記で`books`を絞り込む（`2. クエリパラメータでの絞り込み`と同じ考え方）
+- `request.args.get('category')`でクエリパラメータを取得する（無ければ`None`）
+- `category`が`None`でなければ、リスト内包表記で`memos`を絞り込む（`2. クエリパラメータでの絞り込み`と同じ考え方）
 - テンプレート側の`{% for %}`はすでに実装済みなので変更不要
+
+### 動作確認：カテゴリ絞り込みが一覧ページに反映されるか
+
+```bash
+python 008_request/challenge/challenge.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `http://127.0.0.1:5021/`にアクセスする | `category`を指定していないので、`memos.json`の全件が表示される |
+| `http://127.0.0.1:5021/?category=仕事`にアクセスする | カテゴリが「仕事」のメモだけに絞り込まれて表示される |
+| 存在しないカテゴリ（例: `?category=旅行`）を指定する | 該当するメモが無いため、一覧が空（0件）になる |
+| 絞り込んだ状態からメモの詳細ページに遷移し、一覧に戻る | 一覧ページに戻ると絞り込みが解除され、再び全件表示になる（`category`はURLのクエリパラメータとして保持されないため） |
+
+**正常な状態の見分け方**：URLの`?category=...`の値と、実際に表示されているメモのカテゴリが一致していれば正常です。指定したカテゴリ以外のメモが混ざって表示される場合は、絞り込みのリスト内包表記の条件を疑ってください。

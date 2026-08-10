@@ -1,3 +1,13 @@
+"""
+練習問題：メモデータを参照するJSON APIを追加しよう（解答）
+
+実行:
+cd challenge/answer
+flask db init
+flask db migrate -m "create tables"
+flask db upgrade
+python app.py
+"""
 from typing import Optional
 from flask import Flask, Response, redirect, url_for
 from flask_migrate import Migrate
@@ -6,8 +16,7 @@ from flask_wtf.csrf import CSRFProtect
 
 from models import db, User
 from auth.views import auth_bp
-from books.views import books_bp
-from cart.views import cart_bp
+from memos.views import memos_bp
 from api.views import api_bp
 
 app = Flask(__name__)
@@ -15,7 +24,7 @@ app.config.from_object('config.Config')
 
 db.init_app(app)
 Migrate(app, db)
-CSRFProtect(app)  # books/index.html等でテンプレート内から直接 csrf_token() を呼ぶために必要
+CSRFProtect(app)  # memos/index.html等でテンプレート内から直接 csrf_token() を呼ぶために必要
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -26,15 +35,14 @@ def load_user(user_id: str) -> Optional[User]:
     return User.query.get(int(user_id))
 
 app.register_blueprint(auth_bp)
-app.register_blueprint(books_bp)
-app.register_blueprint(cart_bp)
+app.register_blueprint(memos_bp)
 app.register_blueprint(api_bp)
 
 
 @app.route('/')
 def index() -> Response:
-    return redirect(url_for('books.index'))
+    return redirect(url_for('memos.index'))
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5066)
+    app.run(debug=True, port=5081)

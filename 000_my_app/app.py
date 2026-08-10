@@ -5,7 +5,7 @@
 「その章で何を学び、このアプリのどこに反映したか」を README.md のチェックリストで管理する。
 
 実行:
-    python app.py
+python app.py
 """
 from flask import Flask
 

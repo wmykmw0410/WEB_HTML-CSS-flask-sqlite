@@ -14,7 +14,7 @@ def login() -> str | Response:
         user: Optional[User] = User.query.filter_by(username=form.username.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
-            return redirect(url_for('books.index'))
+            return redirect(url_for('memos.index'))
         flash('ユーザー名またはパスワードが正しくありません。')
     return render_template('auth/login.html', form=form)
 

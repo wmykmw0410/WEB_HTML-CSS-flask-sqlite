@@ -1,0 +1,8 @@
+Flask==2.3.3
+Flask-WTF==1.2.2
+Flask-Login==0.6.3
+Flask-SQLAlchemy==3.0.3
+Flask-Migrate==4.0.4
+SQLAlchemy==2.0.48
+requests==2.33.1
+gunicorn==23.0.0

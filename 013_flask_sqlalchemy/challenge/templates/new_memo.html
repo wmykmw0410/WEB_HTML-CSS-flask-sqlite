@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}メモを追加 - メモ帳{% endblock %}
+
+{% block content %}
+<h1>メモを追加</h1>
+
+<form method="post">
+    {{ form.csrf_token }}
+
+    <div class="field">
+        {{ form.title.label }}
+        {{ form.title() }}
+        {% if form.title.errors %}
+        <ul class="errors">
+            {% for error in form.title.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="field">
+        {{ form.category.label }}
+        {{ form.category() }}
+    </div>
+
+    <div class="field">
+        {{ form.body.label }}
+        {{ form.body() }}
+        {% if form.body.errors %}
+        <ul class="errors">
+            {% for error in form.body.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    {{ form.submit() }}
+</form>
+{% endblock %}

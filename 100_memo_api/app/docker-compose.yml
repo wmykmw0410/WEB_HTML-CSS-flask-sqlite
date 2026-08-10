@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5085:5085"
+    volumes:
+      - instance_data:/app/instance
+    environment:
+      - SECRET_KEY=change-me-in-production
+
+volumes:
+  instance_data:

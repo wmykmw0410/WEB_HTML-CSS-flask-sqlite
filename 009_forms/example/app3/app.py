@@ -18,7 +18,7 @@ def show_enter():
         return render_template('result.html', form=form)
         
     # When except for POST or function 'form.validates()' is false.
-    return render_template('enter2.html', form=form)
+    return render_template('enter.html', form=form)
 
 
 # Run

@@ -39,7 +39,7 @@ def login() -> str | Response:
     ユーザー名とパスワードでログインする
 
     該当ユーザーが存在し、かつパスワードが一致すればログイン状態にして
-    書籍一覧にリダイレクトする。それ以外はエラーメッセージ付きで
+    メモ一覧にリダイレクトする。それ以外はエラーメッセージ付きで
     ログインフォームを再表示する。
 
     Returns:
@@ -52,8 +52,8 @@ def login() -> str | Response:
         if user and user.check_password(form.password.data):
             login_user(user)
             flash(f'ようこそ、{user.username} さん！')
-            # TODO: 問題2 'book_list' を Blueprint 形式のエンドポイント名に書き換える
-            return redirect(url_for('book_list'))
+            # TODO: 問題2 'memo_list' を Blueprint 形式のエンドポイント名に書き換える
+            return redirect(url_for('memo_list'))
         flash('ユーザー名またはパスワードが正しくありません。')
 
     return render_template('login.html', form=form)
@@ -64,5 +64,5 @@ def login() -> str | Response:
 def logout() -> Response:
     logout_user()
     flash('ログアウトしました。')
-    # TODO: 問題2 'book_list' を Blueprint 形式のエンドポイント名に書き換える
-    return redirect(url_for('book_list'))
+    # TODO: 問題2 'memo_list' を Blueprint 形式のエンドポイント名に書き換える
+    return redirect(url_for('memo_list'))

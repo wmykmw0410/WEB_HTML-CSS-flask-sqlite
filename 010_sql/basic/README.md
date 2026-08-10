@@ -164,6 +164,22 @@ DROP TABLE IF EXISTS books;
 
 作成後、`.schema products` で定義を確認してください。
 
+### 動作確認：制約が実際に効いているか
+
+```bash
+sqlite3 practice.db
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `.schema products` | 各カラムの型・`NOT NULL`・`CHECK`・`DEFAULT`が定義通りに表示される |
+| `INSERT INTO products (name, price) VALUES ('ノート', 100);` | 成功する。`category`を指定していないので`DEFAULT`の`'その他'`が入る |
+| `SELECT * FROM products;` | 追加した行の`category`が`その他`になっている |
+| `INSERT INTO products (price) VALUES (100);`（`name`を省略） | `NOT NULL constraint failed: products.name`というエラーになる |
+| `INSERT INTO products (name, price) VALUES ('赤字商品', -100);` | `CHECK constraint failed: products`というエラーになり、追加されない |
+
+**正常な状態の見分け方**：制約に違反する`INSERT`は必ずエラーメッセージが表示されて**追加されない**のが正しい状態です。エラーが出ずに追加できてしまう場合は、`CREATE TABLE`の制約の書き方（`NOT NULL`や`CHECK`のスペルミスなど）を疑ってください。
+
 ---
 
 ## 3. INSERT
@@ -324,6 +340,20 @@ HAVING COUNT(*) >= 2;
 4. 著者ごとの書籍数を取得してください（GROUP BY）
 5. 書籍数が 2 件以上の著者だけ取得してください（HAVING）
 
+### 動作確認：クエリの結果件数で正しさを判断する
+
+`example/02_insert.sql`まで実行済み（6件のデータが入っている状態）であることを前提にした、各問題の期待結果です。
+
+| 問題 | 実行するSQL | 確認したいこと |
+|---|---|---|
+| 1 | `SELECT * FROM books WHERE price >= 2500;` | **4件**取得できる（Python入門2800・Flask入門3200・データベース設計4500・Python応用3500） |
+| 2 | `SELECT * FROM books WHERE title LIKE '%入門%' ORDER BY price ASC;` | **3件**、価格の低い順（HTML & CSS入門2200 → Python入門2800 → Flask入門3200）に並ぶ |
+| 3 | `SELECT DISTINCT author FROM books;` | **5件**（山田太郎は2冊登録されているが、DISTINCTにより1回だけ表示される） |
+| 4 | `SELECT author, COUNT(*) FROM books GROUP BY author;` | **5行**、山田太郎の行だけ`COUNT(*)`が`2`、他は`1` |
+| 5 | `SELECT author, COUNT(*) FROM books GROUP BY author HAVING COUNT(*) >= 2;` | **1件**（山田太郎のみ）。問題4の結果から2冊以上の著者だけに絞り込まれている |
+
+**正常な状態の見分け方**：件数が期待と違う場合、`WHERE`と`HAVING`を取り違えている（`HAVING`はGROUP BY後の集計結果にしか使えない）か、`LIKE`のワイルドカード`%`の位置を間違えている可能性が高いです。
+
 ---
 
 ## 5. UPDATE
@@ -462,6 +492,22 @@ ORDER BY b.price DESC;
 2. LEFT JOIN で著者不明の本も含めて表示し、著者列が NULL になることを確認してください
 3. INNER JOIN と GROUP BY を組み合わせて、著者ごとの書籍数と平均価格を取得してください
 
+### 動作確認：INNER JOINとLEFT JOINで件数が変わることを確認する
+
+`06_join.sql`は`books`に4件（うち1件は`author_id`が`NULL`の「著者不明の本」）、`authors`に3件のデータを用意しています。
+
+```bash
+sqlite3 join.db < example/06_join.sql
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| 1つ目のSELECT（INNER JOIN）の結果件数を数える | **3件**（「著者不明の本」は`author_id`が`NULL`で`authors`側に一致するレコードが無いため、結果から除外される） |
+| 2つ目のSELECT（LEFT JOIN）の結果件数を数える | **4件**（`books`の全件が含まれる）。「著者不明の本」の行だけ`author`と`country`が`NULL`（表示上は空欄）になっている |
+| 3つ目のSELECT（別名 AS + ORDER BY）の結果を見る | `INNER JOIN`なので3件のみ、価格の高い順（Flask Webアプリ開発3200 → Python入門2800 → SQLite実践1980）に並ぶ |
+
+**正常な状態の見分け方**：`INNER JOIN`と`LEFT JOIN`で件数が同じになってしまう場合、そもそも結合条件に一致しないレコード（今回は「著者不明の本」）が無いデータで試している可能性があります。件数の差（3件 vs 4件）こそが2つのJOINの違いです。
+
 ---
 
 ## 8. データファイルへの出力
@@ -543,3 +589,19 @@ sqlite> .read basic/question/question05.sql
 | 6 | `example/06_join.sql`のデータに対してJOINクエリを書く | [question/answer/answer06.sql](question/answer/answer06.sql) |
 
 問題6は`example/06_join.sql`で作成する別のデータベース（`join.db`）を使います。詳しくは[question/question06.sql](question/question06.sql)を参照してください。
+
+### 動作確認：各問題の期待件数・期待値
+
+| 問題 | 確認する操作 | 確認したいこと |
+|---|---|---|
+| 1 | `.schema members` | `id`・`name`・`department`・`salary`の4カラムが定義通りに表示される |
+| 2 | `SELECT * FROM members;` | 5件のデータが登録されている |
+| 3-(2) | 開発部のメンバーを取得 | **2件**（山田太郎・佐藤次郎） |
+| 3-(3) | salaryが300000以上、降順 | **4件**、佐藤次郎(400000)→山田太郎(350000)→鈴木花子(320000)→伊藤四郎(310000)の順（田中三郎の280000は含まれない） |
+| 3-(4) | 平均salaryを取得 | `332000`（5人の合計1,660,000円 ÷ 5人） |
+| 3-(6) | 部署ごとの人数と平均salary | 開発部=2人・平均375000、営業部=2人・平均315000、総務部=1人・平均280000の3行 |
+| 3-(7) | 平均salaryが330000以上の部署 | **開発部のみ1件**（問題3-(6)の結果のうち375000だけが条件を満たす） |
+| 4 | 山田太郎のsalaryを380000に更新後、`SELECT * FROM members WHERE name = '山田太郎';` | `salary`が`380000`になっている |
+| 5 | 削除後の`SELECT * FROM members;`（question05.sqlの末尾で自動実行される） | **4件**に減っている（salaryが280000だった田中三郎が削除された） |
+
+**正常な状態の見分け方**：件数や平均値が上記と異なる場合、`WHERE`の比較演算子（`>=`と`>`の取り違えなど）や、UPDATE・DELETEを実行する前の初期データの状態（問題1〜2を実行し忘れていないか）を確認してください。

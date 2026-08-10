@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>3. クライアント側での絞り込み</title>
+    <style>
+        body { font-family: sans-serif; max-width: 700px; margin: 40px auto; }
+        .filters { display: flex; gap: 8px; margin-bottom: 16px; }
+        .filters button { padding: 6px 14px; border: 1px solid #ccc; border-radius: 999px; background: #fff; cursor: pointer; }
+        .filters button.active { background: #3f6fd1; color: #fff; border-color: #3f6fd1; }
+        .card-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+        .card { border: 1px solid #e1e5eb; border-radius: 6px; padding: 12px; width: 160px; }
+        .card.hidden { display: none; }
+        .tag { font-size: 0.75em; color: #3f6fd1; }
+    </style>
+</head>
+<body>
+    <h1>カテゴリ絞り込み（ページ再読み込みなし）</h1>
+
+    <div class="filters">
+        <button data-category="all" class="active">すべて</button>
+        <button data-category="家事">家事</button>
+        <button data-category="仕事">仕事</button>
+        <button data-category="趣味">趣味</button>
+    </div>
+
+    <div class="card-grid">
+        <div class="card" data-category="家事"><span class="tag">家事</span><h3>買い物リスト</h3></div>
+        <div class="card" data-category="仕事"><span class="tag">仕事</span><h3>企画会議メモ</h3></div>
+        <div class="card" data-category="趣味"><span class="tag">趣味</span><h3>読書メモ</h3></div>
+        <div class="card" data-category="仕事"><span class="tag">仕事</span><h3>資料作成</h3></div>
+    </div>
+
+    <script src="03_client_filter.js"></script>
+</body>
+</html>

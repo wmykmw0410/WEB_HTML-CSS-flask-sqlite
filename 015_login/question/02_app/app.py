@@ -8,12 +8,12 @@
     問題4: 重複ユーザー名での登録をブロック（forms.py の validate_username）
 
 実行:
-    cd question/02_app
-    flask db init
-    flask db migrate -m "create users table"
-    flask db upgrade
-    python app.py
-    ブラウザで http://localhost:5000 にアクセス
+cd question/02_app
+flask db init
+flask db migrate -m "create users table"
+flask db upgrade
+python app.py
+ブラウザで http://localhost:5000 にアクセス
 """
 import os
 from typing import Optional

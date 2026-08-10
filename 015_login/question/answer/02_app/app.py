@@ -7,11 +7,11 @@
 問題4: 重複ユーザー名での登録をブロック（forms.py の validate_username）
 
 実行:
-    cd question/answer/02_app
-    flask db init
-    flask db migrate -m "create users table"
-    flask db upgrade
-    python app.py
+cd question/answer/02_app
+flask db init
+flask db migrate -m "create users table"
+flask db upgrade
+python app.py
 """
 import os
 from flask import Flask, render_template, redirect, url_for, flash

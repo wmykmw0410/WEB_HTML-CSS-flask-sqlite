@@ -1,8 +1,8 @@
-# 018 書籍アプリの所有権とCRUD（総合）
+# 018 メモアプリの所有権とCRUD（総合）
 
-これまで学んだ知識を組み合わせて、`017_blueprint`のブックストアに**所有権**（誰が追加した本か）と**CRUDのフルセット**（追加・一覧・詳細・編集・削除）を実装します。
+これまで学んだ知識を組み合わせて、メモ帳アプリに**所有権**（誰が追加したメモか）と**CRUDのフルセット**（追加・一覧・詳細・編集・削除）を実装します。
 
-`017_blueprint`までのブックストアは「ログインしていれば誰でも書籍を追加できる」だけで、追加・閲覧はできても編集・削除する機能自体がありませんでした。このチャプターでは、書籍に「誰が追加したか」を記録し、**自分が追加した書籍だけ**編集・削除できるようにします。
+`001`〜`017`ではメモ帳アプリを少しずつ積み上げてきましたが、これまでは「ログインしていれば誰でもメモを追加できる」だけで、追加・閲覧はできても編集・削除する機能自体がありませんでした。このチャプターでは、メモに「誰が追加したか」を記録し、**自分が追加したメモだけ**編集・削除できるようにします。メモ帳アプリはこの後も`019_javascript`でJavaScriptによる機能追加、`020_testing`で自動テスト、`021`〜`025`で外部API連携・JSON APIのフルCRUD化・ロールベースの認可と、引き続き同じアプリに機能を積み上げていきます（詳細は[000_my_app/README.md](../000_my_app/)を参照）。
 
 ## 前提
 
@@ -22,14 +22,14 @@
 新規登録           /auth/register           誰でも
 ログイン           /auth/login              誰でも
 ログアウト         /auth/logout             ログイン必須
-書籍一覧           /books/                  誰でも（全員分が見える）
-書籍詳細           /books/<id>              誰でも
-書籍追加           /books/new               ログイン必須
-書籍編集           /books/<id>/edit         ログイン必須（自分が追加した本のみ）
-書籍削除           /books/<id>/delete       ログイン必須（自分が追加した本のみ）
+メモ一覧           /memos/                  誰でも（全員分が見える）
+メモ詳細           /memos/<id>              誰でも
+メモ追加           /memos/new               ログイン必須
+メモ編集           /memos/<id>/edit         ログイン必須（自分が追加したメモのみ）
+メモ削除           /memos/<id>/delete       ログイン必須（自分が追加したメモのみ）
 ```
 
-書籍**一覧・詳細は全員に公開**したままにして、**編集・削除だけ**を追加者本人に制限しているのがポイントです。「所有権 = 非公開にする」とは限らず、「操作できる人を制限する」ケースもあることを、bookstore という現実的な題材で体感します。
+メモ**一覧・詳細は全員に公開**したままにして、**編集・削除だけ**を追加者本人に制限しているのがポイントです。「所有権 = 非公開にする」とは限らず、「操作できる人を制限する」ケースもあることを、メモ帳という現実的な題材で体感します。
 
 ## フォルダ構成と各ファイルの役割
 
@@ -37,25 +37,25 @@
 example/app/
 ├── app.py              アプリ初期化・Blueprint 登録・LoginManager セットアップ
 ├── config.py           設定（SECRET_KEY・DB パス）
-├── models.py           User・Book モデル（1対多のリレーション）
-├── forms.py            LoginForm・RegisterForm・BookForm
+├── models.py           User・Memo モデル（1対多のリレーション）
+├── forms.py            LoginForm・RegisterForm・MemoForm
 ├── auth/
 │   └── views.py        認証 Blueprint（login / register / logout）
-├── books/
-│   └── views.py        書籍 Blueprint（index / detail / create / update / delete）
+├── memos/
+│   └── views.py        メモ Blueprint（index / detail / create / update / delete）
 └── templates/
     ├── base.html        共通レイアウト（ナビ・フラッシュメッセージ）
     ├── auth/
     │   ├── login.html
     │   └── register.html
-    └── books/
+    └── memos/
         ├── index.html
         ├── detail.html
         ├── create.html
         └── update.html
 
-challenge/                 017_blueprintの続き（000_my_appに組み込む機能の変更分）
-├── app.py / models.py / ...   017_blueprintと同じアプリ本体（所有権・編集・削除は未実装）
+challenge/                 000_my_appに組み込む機能の変更分
+├── app.py / models.py / ...   メモ帳アプリのアプリ本体（所有権・編集・削除は未実装）
 └── answer/
     └── app.py / models.py / ...   example/app/ と同じ完成版
 ```
@@ -69,40 +69,39 @@ challenge/                 017_blueprintの続き（000_my_appに組み込む機
 ```python
 class Config:
     SECRET_KEY                     = 'dev-secret-key'
-    SQLALCHEMY_DATABASE_URI        = 'sqlite:///instance/books.sqlite'
+    SQLALCHEMY_DATABASE_URI        = 'sqlite:///instance/memos.sqlite'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 ```
 
 `app.config.from_object('config.Config')` でまとめて読み込みます。
 
-### models.py — User と Book の 1 対多
+### models.py — User と Memo の 1 対多
 
 ```python
 class User(UserMixin, db.Model):
     id       = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(128), nullable=False)
-    books    = relationship('Book', back_populates='owner')   # 1対多（User側）
+    memos    = relationship('Memo', back_populates='owner')   # 1対多（User側）
 
-class Book(db.Model):
-    id      = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title   = db.Column(db.String(100), nullable=False)
-    author  = db.Column(db.String(100), nullable=False)
-    price   = db.Column(db.Integer, nullable=False)
-    genre   = db.Column(db.String(50))
-    image   = db.Column(db.String(200))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    owner   = relationship('User', back_populates='books')   # 多対1（Book側）
+class Memo(db.Model):
+    id       = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title    = db.Column(db.String(100), nullable=False)
+    category = db.Column(db.String(50), nullable=False)
+    body     = db.Column(db.String(500), nullable=False)
+    due_date = db.Column(db.String(50))
+    user_id  = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    owner    = relationship('User', back_populates='memos')   # 多対1（Memo側）
 ```
 
-`user_id` 外部キーで「誰が追加した本か」を管理します。
+`user_id` 外部キーで「誰が追加したメモか」を管理します。
 
 ### app.py — 全体の初期化
 
 ```python
 db.init_app(app)
 Migrate(app, db)
-CSRFProtect(app)   # books/index.html等でテンプレート内から直接 csrf_token() を呼ぶために必要
+CSRFProtect(app)   # memos/index.html等でテンプレート内から直接 csrf_token() を呼ぶために必要
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -113,15 +112,15 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 app.register_blueprint(auth_bp)
-app.register_blueprint(books_bp)
+app.register_blueprint(memos_bp)
 ```
 
 ### ポイント：CSRFProtect(app) が必要な理由
 
-`LoginForm`・`BookForm`のような`FlaskForm`は`{{ form.csrf_token }}`で自分のCSRFトークンを出力できますが、削除ボタンのような**`FlaskForm`を使わない素のHTML`<form>`**では、この仕組みが使えません。
+`LoginForm`・`MemoForm`のような`FlaskForm`は`{{ form.csrf_token }}`で自分のCSRFトークンを出力できますが、削除ボタンのような**`FlaskForm`を使わない素のHTML`<form>`**では、この仕組みが使えません。
 
 ```html
-<form method="POST" action="{{ url_for('books.delete', book_id=book.id) }}">
+<form method="POST" action="{{ url_for('memos.delete', memo_id=memo.id) }}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <button type="submit">削除</button>
 </form>
@@ -139,13 +138,12 @@ class LoginForm(FlaskForm):
     password = PasswordField('パスワード', validators=[DataRequired()])
     submit   = SubmitField('ログイン')
 
-class BookForm(FlaskForm):
-    title  = StringField('タイトル', validators=[DataRequired(), Length(max=100)])
-    author = StringField('著者', validators=[DataRequired(), Length(max=100)])
-    price  = IntegerField('価格（円）', validators=[DataRequired(), NumberRange(min=1)])
-    genre  = StringField('ジャンル', validators=[Optional(), Length(max=50)])
-    image  = FileField('表紙画像', validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'], '...')])
-    submit = SubmitField('保存する')
+class MemoForm(FlaskForm):
+    title    = StringField('タイトル', validators=[DataRequired(), Length(max=100)])
+    category = SelectField('カテゴリ', choices=CATEGORY_CHOICES)
+    body     = TextAreaField('本文', validators=[DataRequired(), Length(max=500)])
+    due_date = StringField('期限（任意）', validators=[Optional(), Length(max=50)])
+    submit   = SubmitField('保存する')
 ```
 
 `RegisterForm` は `LoginForm` に加えて `confirm`（`EqualTo('password')`）を持ちます。
@@ -172,46 +170,39 @@ if user and user.check_password(form.password.data):
 
 ---
 
-## ステップ 4：書籍 Blueprint（books/views.py）
+## ステップ 4：メモ Blueprint（memos/views.py）
 
 | ルート | 処理 |
 |---|---|
-| `/books/` | 全件取得（所有者にかかわらず全員分表示） |
-| `/books/<id>` | `Book.query.get_or_404(book_id)` で1件取得（誰の本でも見られる） |
-| `/books/new` | `Book(user_id=current_user.id)` で追加者を紐づける |
-| `/books/<id>/edit` | `filter_by(id=..., user_id=current_user.id)` で自分の本のみ編集可能 |
-| `/books/<id>/delete` | 同上。`first_or_404()` で他人の ID は 404 に |
+| `/memos/` | 全件取得（所有者にかかわらず全員分表示） |
+| `/memos/<id>` | `Memo.query.get_or_404(memo_id)` で1件取得（誰のメモでも見られる） |
+| `/memos/new` | `Memo(user_id=current_user.id)` で追加者を紐づける |
+| `/memos/<id>/edit` | `filter_by(id=..., user_id=current_user.id)` で自分のメモのみ編集可能 |
+| `/memos/<id>/delete` | 同上。`first_or_404()` で他人の ID は 404 に |
 
 ### ポイント：get_or_404() と first_or_404() の使い分け
 
 ```python
 # 詳細ページ：所有者を問わないので主キー検索でよい
-book: Book = Book.query.get_or_404(book_id)
+memo: Memo = Memo.query.get_or_404(memo_id)
 
-# 編集・削除：自分の本だけに絞り込んだ上で検索する
-book: Book = Book.query.filter_by(id=book_id, user_id=current_user.id).first_or_404()
+# 編集・削除：自分のメモだけに絞り込んだ上で検索する
+memo: Memo = Memo.query.filter_by(id=memo_id, user_id=current_user.id).first_or_404()
 ```
 
-`.get_or_404(主キー)`は`013_flask_sqlalchemy`で学んだ`.query.get()`に「無ければ404」を足したショートカットです。書籍詳細は誰の本でも見られてよいので、所有権の絞り込みをしないこの形で十分です。
+`.get_or_404(主キー)`は`013_flask_sqlalchemy`で学んだ`.query.get()`に「無ければ404」を足したショートカットです。メモ詳細は誰のメモでも見られてよいので、所有権の絞り込みをしないこの形で十分です。
 
-一方、編集・削除は`user_id=current_user.id`を条件に加えた`.filter_by(...).first_or_404()`を使います。`user_id`を条件に含めることで、他のユーザーの`book_id`を指定されても404になります。`.first()`とは違い`.first_or_404()`は「無ければ即404」なので、型ヒントは`Optional[Book]`ではなく`Book`のままで済みます。
+一方、編集・削除は`user_id=current_user.id`を条件に加えた`.filter_by(...).first_or_404()`を使います。`user_id`を条件に含めることで、他のユーザーの`memo_id`を指定されても404になります。`.first()`とは違い`.first_or_404()`は「無ければ即404」なので、型ヒントは`Optional[Memo]`ではなく`Memo`のままで済みます。
 
-一覧（`index`）は`filter_by(user_id=...)`を**付けていない**点に注意してください。書籍は全員に見えるべきものなので、絞り込みは「編集・削除のときだけ」行います。
+一覧（`index`）は`filter_by(user_id=...)`を**付けていない**点に注意してください。メモは全員に見えるべきものなので、絞り込みは「編集・削除のときだけ」行います。
 
 ### ポイント：編集フォームへの既存値の埋め込み
 
 ```python
-form = BookForm(obj=book)   # book の title / author / price / genre がフォームに自動セットされる
+form = MemoForm(obj=memo)   # memo の title / category / body / due_date がフォームに自動セットされる
 ```
 
-`obj=` に渡したオブジェクトのカラム名とフォームのフィールド名が一致していれば自動で値が入ります。ただし`image`は`FileField`なので、`obj=`によって`book.image`の**文字列**（ファイル名）がそのまま`form.image.data`に入ってしまいます。新しい画像が選択されたかどうかは`FileStorage`かどうかで判定します。
-
-```python
-from werkzeug.datastructures import FileStorage
-
-if isinstance(form.image.data, FileStorage) and form.image.data.filename:
-    book.image = _save_image(form)   # 新しい画像が選択されたときだけ保存し直す
-```
+`obj=` に渡したオブジェクトのカラム名とフォームのフィールド名が一致していれば自動で値が入ります。`MemoForm`のフィールドはすべて文字列系（`StringField`・`SelectField`・`TextAreaField`）なので、`009_forms`で扱った`FileField`のような特別な変換は不要です。
 
 ---
 
@@ -220,12 +211,25 @@ if isinstance(form.image.data, FileStorage) and form.image.data.filename:
 ```bash
 cd 018_ownership_crud/example/app
 flask db init
-flask db migrate -m "create users and books tables"
+flask db migrate -m "create users and memos tables"
 flask db upgrade
 python app.py
 ```
 
 ブラウザで `http://localhost:5053/auth/register` にアクセスしてユーザーを登録してください。
+
+### 動作確認：本人と他人でメモの編集・削除の可否が変わるか
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| ユーザーA（例: `alice`）で登録・ログインし、メモを1件追加する | 一覧・詳細ページにそのメモが表示され、詳細ページに「追加したユーザー: alice」と表示される |
+| そのままメモの編集・削除ボタンを押す | 編集フォームが開く／削除が成功する（自分が追加したメモなので操作できる） |
+| ログアウトし、別のユーザーB（例: `bob`）で登録・ログインする | `bob`としてログインした状態になる |
+| `bob`でログインしたまま、`alice`のメモの詳細ページ（`/memos/<id>`）にアクセスする | メモの内容は**見える**（一覧・詳細は誰でも閲覧可能） |
+| `bob`でログインしたまま、`alice`のメモの編集URL（`/memos/<id>/edit`）に直接アクセスする | **404 Not Found**になる（`filter_by(id=..., user_id=current_user.id)`の条件に一致しないため） |
+| `bob`でログインしたまま、`alice`のメモの削除を試す（フォームのURLを直接POSTする、または開発者ツールで確認する） | 同様に404になり、削除されない |
+
+**正常な状態の見分け方**：メモの**閲覧**は誰でもでき、**編集・削除**は追加した本人でなければ404になる、という非対称な制限が正しい状態です。他人のメモが編集・削除できてしまう場合は、`update()`・`delete()`の`filter_by`に`user_id=current_user.id`が含まれているか確認してください。
 
 ---
 
@@ -233,14 +237,14 @@ python app.py
 
 > [challenge/](challenge/) — 問題 ｜ [challenge/answer/](challenge/answer/) — 解答
 
-### 問題：017_blueprintのブックストアに所有権とCRUDのフルセットを実装しよう
+### 問題：メモ帳アプリに所有権とCRUDのフルセットを実装しよう
 
-`017_blueprint`で作った書籍一覧・詳細・追加・認証の機能はそのままです（`challenge/`にすでに実装済み）。ここに「誰が追加したか」を記録する所有権の仕組みと、編集・削除のルートを実装します。
+メモ一覧・詳細・追加・認証の機能はそのままです（`challenge/`にすでに実装済み）。ここに「誰が追加したか」を記録する所有権の仕組みと、編集・削除のルートを実装します。
 
 ```bash
 cd 018_ownership_crud/challenge
 flask db init
-flask db migrate -m "create users and books tables"
+flask db migrate -m "create users and memos tables"
 flask db upgrade
 python app.py
 ```
@@ -249,35 +253,36 @@ python app.py
 
 | 問題 | 内容 |
 |---|---|
-| 1 | `models.py`に`Book.user_id`（`ForeignKey('users.id')`）と`owner`リレーション、`User.books`リレーションを追加する |
-| 2 | `books/views.py`の`create()`で、`Book(...)`に`user_id=current_user.id`を追加して追加者を記録する |
-| 3 | `books/views.py`に`update()`を実装する。`filter_by(id=book_id, user_id=current_user.id).first_or_404()`で自分の本だけ取得し、`BookForm(obj=book)`でフォームに事前入力する |
-| 4 | `books/views.py`に`delete()`を実装する。同様に自分の本だけ取得して削除する |
+| 1 | `models.py`に`Memo.user_id`（`ForeignKey('users.id')`）と`owner`リレーション、`User.memos`リレーションを追加する |
+| 2 | `memos/views.py`の`create()`で、`Memo(...)`に`user_id=current_user.id`を追加して追加者を記録する |
+| 3 | `memos/views.py`に`update()`を実装する。`filter_by(id=memo_id, user_id=current_user.id).first_or_404()`で自分のメモだけ取得し、`MemoForm(obj=memo)`でフォームに事前入力する |
+| 4 | `memos/views.py`に`delete()`を実装する。同様に自分のメモだけ取得して削除する |
 
 #### ヒント
 
-- 問題1が終わるまでは、書籍詳細ページに「追加したユーザー」が表示されない（`book.owner`が無いため）。これは正常な状態
-- `first_or_404()`は見つからなければ404で処理を中断するため、戻り値は`Optional`にならず`Book`型のまま使える（本章ステップ4）
-- 画像の差し替えは`isinstance(form.image.data, FileStorage) and form.image.data.filename`のときだけ行う。`obj=book`によって`image`に既存のファイル名（文字列）が入ってしまうため
-- 見た目やCSRF・ファイルアップロードの仕組みは`017_blueprint`から変更不要
+- 問題1が終わるまでは、メモ詳細ページに「追加したユーザー」が表示されない（`memo.owner`が無いため）。これは正常な状態
+- `first_or_404()`は見つからなければ404で処理を中断するため、戻り値は`Optional`にならず`Memo`型のまま使える（本章ステップ4）
+- 見た目やCSRFの仕組みは変更不要（`015_login`と同じパターン）
 
 解答は`challenge/answer/`を参照してください。
 
----
+### 動作確認：問題を1つずつ実装するたびに何が変わるか
 
-## 100_bookstore_api との対応
+```bash
+cd 018_ownership_crud/challenge
+python app.py
+```
 
-`100_bookstore_api`は、このアプリを土台に`019_cart`〜`024_role_management`までの機能を積み上げた最終形です。
-
-| | このアプリ（018） | 100_bookstore_api（最終形） |
+| 進捗 | 確認する操作 | 確認したいこと |
 |---|---|---|
-| 権限モデル | **所有権**のみ（`user_id`で「自分の本か」を判定） | **所有権 + ロール**（追加した本人 または 管理者）（`024_role_management`で追加） |
-| 誰が書籍を編集できるか | 追加した本人のみ | 追加した本人 または 管理者 |
-| 書籍一覧・詳細 | 全員に公開 | 同じ |
-| カート・チェックアウト | なし | あり（`019_cart`で追加） |
-| JSON API | なし | あり、フルCRUD（`022_flask_api`・`023_crud_api`で追加） |
+| 問題1完了前 | メモ詳細ページ（`http://127.0.0.1:5054/memos/<id>`）を見る | 「追加したユーザー」の表示が出ない、または`memo.owner`関連でエラーになる（ヒントにある通り正常） |
+| 問題2完了後 | 新しいメモを追加してから詳細ページを見る | 「追加したユーザー」に自分のユーザー名が表示される |
+| 問題3完了後 | 自分が追加したメモの編集ページ（`/memos/<id>/edit`）にアクセスする | フォームに既存の`title`・`category`・`body`・`due_date`が事前入力された状態で表示される |
+| 問題3完了後 | 別ユーザーでログインし、他人のメモの編集URLに直接アクセスする | **404**になる |
+| 問題4完了後 | 自分が追加したメモを削除する | 一覧から消える |
+| 問題4完了後 | 別ユーザーでログインし、他人のメモの削除を試す | **404**になり、削除されない |
 
-「自分のデータだけ操作できる（所有権）」と「特定の役割の人だけ操作できる（ロール）」は、どちらも認可（authorization）の実装パターンですが目的が異なります。`100_bookstore_api`では「所有者 **または** 管理者」という形でこの2つを組み合わせています。
+**正常な状態の見分け方**：問題を1つ実装するごとに、上の表の該当行の挙動だけが変化し、それ以外（メモ一覧・詳細の閲覧など）は変わらないことを確認してください。
 
 ---
 
@@ -288,6 +293,10 @@ python app.py
 | 問題 | 内容 |
 |---|---|
 | 1 | 登録済みのユーザー名での二重登録をブロックする（`forms.py` に `validate_username` を追加） |
-| 2 | ログイン済みのユーザーが `/auth/login` にアクセスしたら `/books/` にリダイレクトする |
-| 3 | 書籍一覧で自分が追加した本にだけ「自分の投稿」のようなラベルを表示する |
+| 2 | ログイン済みのユーザーが `/auth/login` にアクセスしたら `/memos/` にリダイレクトする |
+| 3 | メモ一覧で自分が追加したメモにだけ「自分の投稿」のようなラベルを表示する |
 | 4 | 削除フォームに確認ダイアログ（`confirm()`）以外の対策（例：削除前に確認ページを挟む）を考える |
+
+## 次のステップ
+
+続きは [019_javascript](../019_javascript) です。このメモ帳アプリにJavaScriptで機能を追加します。

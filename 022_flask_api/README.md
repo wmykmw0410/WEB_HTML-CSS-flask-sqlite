@@ -17,6 +17,7 @@
 3. [`@app.get` / `@app.post` ショートカット](#3-appget--apppost-ショートカット)
 4. [ステータスコードの使い分け](#4-ステータスコードの使い分け)
 5. [地図に表示するデータを提供する](#5-地図に表示するデータを提供する)
+6. [練習問題：メモデータを返すJSON APIを追加しよう](#6-練習問題メモデータを返すjson-apiを追加しよう)
 
 ---
 
@@ -31,8 +32,8 @@ example/
     └── map.html          # Leafletで地図を表示するページ
 
 challenge/               021_webapiの続き（000_my_appに組み込む機能の変更分）
-├── app.py / models.py / ...   021_webapiと同じアプリ本体
-├── api/views.py                書籍データを返すJSON API（新規）
+├── app.py / models.py / ...   021_webapiと同じアプリ本体（メモ帳・postal_code対応済み）
+├── api/views.py                メモデータを返すJSON API（新規）
 └── answer/
     └── app.py / models.py / ...
 ```
@@ -200,6 +201,19 @@ curl -i -X DELETE http://127.0.0.1:5064/api/books/1
 curl -i http://127.0.0.1:5064/api/books/99
 ```
 
+### 動作確認：ステータスコードとJSONレスポンスの違い
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `curl http://127.0.0.1:5064/api/books` | 初期データ2件（`{"id":1,"title":"python"}`・`{"id":2,"title":"flask"}`）を含むJSON配列がそのまま返る |
+| `curl http://127.0.0.1:5064/api/books/1` | `id`が一致する1件分のJSON（`{"id":1,"title":"python"}`）だけが返る（配列ではなく単一オブジェクト） |
+| `curl -X POST ... -d '{"title": "新しい本"}'` | `id:3`が自動採番された新しい本のJSONが返る（`-i`を付ければステータスコードが**201**であることも確認できる） |
+| `curl -i -X DELETE .../api/books/1` | レスポンスボディが空で、ステータスコードだけが**204**と表示される（`-i`を付けないと画面に何も表示されず失敗したように見えるので注意） |
+| `curl -i http://127.0.0.1:5064/api/books/99` | 存在しない`id`なのでステータスコード**404**と`{"detail": "Book not found"}`が返る |
+| DELETE実行後に`curl http://127.0.0.1:5064/api/books`をもう一度実行する | `id:1`の本が消えている（サーバーを再起動するとダミーデータの`books`リストが初期状態に戻る点に注意） |
+
+**正常な状態の見分け方**：取得・作成が成功したときは200/201で本文にJSONが入り、削除成功時は204で本文が空、存在しないIDを指定したときだけ404で`{"detail": ...}`が返ります。本文が空なのに200が返る、あるいは404なのに本文が空、という組み合わせが出たら実装ミスを疑ってください。
+
 ---
 
 ## 5. 地図に表示するデータを提供する
@@ -280,15 +294,25 @@ python app.py
 
 ブラウザで `http://127.0.0.1:5064/map` にアクセスすると、3つの地点にピンが立った地図が表示される。
 
+### 動作確認：APIのデータ件数と地図のピンの数が一致するか
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `curl http://127.0.0.1:5064/api/shops` | 3件の地点データ（本店・支店A・支店B）を含むJSON配列がステータス200で返る |
+| ブラウザで`http://127.0.0.1:5064/map`にアクセスする | 地図上にピンが**3つ**表示される |
+| 地図上のピンをそれぞれクリックする | ポップアップに`curl`で確認した`name`（例：「本店（東京駅）」）と同じ文字列が表示される |
+
+**正常な状態の見分け方**：`/api/shops`が返すJSON配列の件数と、地図上のピンの数が常に一致していることが正しい状態です。ピンが1つも表示されない場合は、ブラウザの開発者ツール（コンソール／ネットワークタブ）で`fetch('/api/shops')`がエラーになっていないか確認してください。
+
 ---
 
-## 6. 練習問題：書籍データを返すJSON APIを追加しよう
+## 6. 練習問題：メモデータを返すJSON APIを追加しよう
 
 > [challenge/api/views.py](challenge/api/views.py) — 問題 ｜ [challenge/answer/api/views.py](challenge/answer/api/views.py) — 解答
 
-### 問題：画面用のBlueprintとは別に、書籍データを返すAPIを追加しよう
+### 問題：画面用のBlueprintとは別に、メモデータを返すAPIを追加しよう
 
-`021_webapi`で作った書籍一覧・詳細・追加・カート・チェックアウトの機能はそのままです。ここに、画面用のBlueprint（`books_bp`など）とは別の`api_bp`を追加し、書籍データをJSONで参照できるようにします。
+`021_webapi`で作ったメモ一覧・詳細・追加・編集・削除・ピン留めの機能はそのままです。ここに、画面用のBlueprint（`memos_bp`など）とは別の`api_bp`を追加し、メモデータをJSONで参照できるようにします。
 
 ```bash
 cd 022_flask_api/challenge
@@ -299,27 +323,40 @@ python app.py
 ```
 
 ```bash
-curl http://127.0.0.1:5065/api/books
-curl http://127.0.0.1:5065/api/books?author=夏目漱石
-curl http://127.0.0.1:5065/api/books/1
-curl -i http://127.0.0.1:5065/api/books/999
+curl http://127.0.0.1:5080/api/memos
+curl http://127.0.0.1:5080/api/memos?category=仕事
+curl http://127.0.0.1:5080/api/memos/1
+curl -i http://127.0.0.1:5080/api/memos/999
 ```
+
+### 動作確認：一覧・絞り込み・詳細取得・404の違い
+
+問題3（`api_bp`の登録）を完成させるまでは、以下のどの`curl`も**404**（Blueprint未登録のため`/api/memos`自体が存在しない）になります。まずは`http://127.0.0.1:5080/memos/new`から画面でメモを1件追加してから確認してください。
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `curl http://127.0.0.1:5080/api/memos` | 追加したメモを含むJSON配列がステータス200で返る |
+| `curl http://127.0.0.1:5080/api/memos?category=仕事` | 追加したメモのカテゴリが「仕事」なら、そのメモだけに絞り込まれた配列が返る（一致するメモが無ければ空配列`[]`） |
+| 追加したメモの`id`（例：`1`）を指定して`curl http://127.0.0.1:5080/api/memos/1` | そのメモ1件分のJSON（`title`・`category`・`body`・`owner`など）が返る |
+| `curl -i http://127.0.0.1:5080/api/memos/999`（存在しないid） | ステータスコード**404**と`{"detail": "Memo not found"}`が返る。HTMLの404ページではなくJSONである点に注意（本章セクション6のヒント） |
+
+**正常な状態の見分け方**：存在するidを指定したときは200＋メモのJSON、存在しないidのときは404＋`{"detail": ...}`のJSONになっているのが正しい状態です。問題3が未完成のうちは全てのURLが404（Blueprint未登録によるFlask標準の404）になりますが、これは「メモが見つからない404」とは別物なので混同しないよう注意してください。
 
 #### 仕様
 
 | 問題 | 内容 |
 |---|---|
-| 1 | `GET /api/books`で書籍一覧をJSONで返す（`?author=`が指定されていれば絞り込む） |
-| 2 | `GET /api/books/<id>`で1件をJSONで返す。無ければ`{"detail": "Book not found"}`を404で返す |
+| 1 | `GET /api/memos`でメモ一覧をJSONで返す（`?category=`が指定されていれば絞り込む） |
+| 2 | `GET /api/memos/<id>`で1件をJSONで返す。無ければ`{"detail": "Memo not found"}`を404で返す |
 | 3 | `app.py`で`api_bp`を`app.register_blueprint()`する |
 
 #### ヒント
 
-- `book_to_dict()`はすでに用意されている。`Book`オブジェクトを辞書に変換して`jsonify()`に渡す（本章セクション1）
-- 一覧の絞り込みは`books.index`と同じ`request.args.get('author')` + `filter_by(author=author)`のパターン
-- 1件取得は`Book.query.get(book_id)`を使い、`get_or_404()`は使わない（HTMLの404ページではなくJSONのエラーレスポンスを返したいため。本章セクション4のステータスコードの考え方）
-- 問題3が終わるまでは`/api/books`にアクセスしても404になる（Blueprintが未登録のため）。これは正常な状態
-- 見た目やCSRF・所有権・カート・チェックアウトの仕組みは`021_webapi`から変更不要
+- `memo_to_dict()`はすでに用意されている。`Memo`オブジェクトを辞書に変換して`jsonify()`に渡す（本章セクション1）
+- 一覧の絞り込みは`memos.index`と同じ`request.args.get('category')` + `filter_by(category=category)`のパターン
+- 1件取得は`Memo.query.get(memo_id)`を使い、`get_or_404()`は使わない（HTMLの404ページではなくJSONのエラーレスポンスを返したいため。本章セクション4のステータスコードの考え方）
+- 問題3が終わるまでは`/api/memos`にアクセスしても404になる（Blueprintが未登録のため）。これは正常な状態
+- 見た目やCSRF・所有権・ピン留めの仕組みは`021_webapi`から変更不要
 
 ## 次のステップ
 

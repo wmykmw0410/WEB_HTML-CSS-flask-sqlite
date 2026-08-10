@@ -2,7 +2,7 @@
 
 生の HTML フォームから始め、WTForms・Flask-WTF・session・ファイルアップロードまで段階的にフォーム処理を学びます。
 
-各章は「機能の学習」と「`000_my_app`を完成させるための機能追加」の2部構成です。前者は`example/`で単体のサンプルとして学び、後者は`challenge/`で`100_bookstore_api`を完成形の参考にしながら取り組みます。
+各章は「機能の学習」と「`000_my_app`を完成させるための機能追加」の2部構成です。前者は`example/`で単体のサンプルとして学び、後者は`challenge/`でメモ帳アプリを組み立てながら取り組みます。
 
 ## 前提
 
@@ -17,7 +17,7 @@
 5. [session + PRG パターン](#5-session--prg-パターン) — session によるデータ保持とリダイレクト
 6. [ファイルアップロード](#6-ファイルアップロード) — FileField・secure_filename・画像の保存と表示
 7. [練習問題](#7-練習問題) — お問い合わせフォーム（1〜4の総合）
-8. [練習問題：書籍を追加するフォーム](#8-練習問題書籍を追加するフォーム) — 000_my_appへの機能追加
+8. [練習問題：メモを追加するフォーム](#8-練習問題メモを追加するフォーム) — 000_my_appへの機能追加
 
 ---
 
@@ -35,15 +35,15 @@
 │   └── app6/   ファイルアップロード（FileField・secure_filename）
 └── challenge/            # 008_requestの続き（000_my_appに組み込む機能の追加分）
     ├── challenge.py
-    ├── forms.py          # BookForm（title/author/price/image）
-    ├── books.json
+    ├── forms.py          # MemoForm（title/category/body）
+    ├── memos.json
     ├── static/
     ├── templates/
-    │   └── new_book.html # 書籍追加フォーム（完成済み）
+    │   └── new_memo.html # メモ追加フォーム（完成済み）
     └── answer/
         ├── challenge.py
         ├── forms.py
-        ├── books.json
+        ├── memos.json
         ├── static/
         └── templates/
 ```
@@ -145,6 +145,23 @@ def do_get_post():
     """
 ```
 
+### 動作確認：GETとPOSTで何が違うかを確かめる
+
+```bash
+cd 009_forms/example/app1
+python app.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| ブラウザで`http://127.0.0.1:5023/get?name=Taro`にアクセスする | `Hello, Taro!`と表示される。**アドレスバーに`?name=Taro`が見えている**（GETはデータがURLの一部になる） |
+| `?name=`を`?name=Jiro`に書き換えて再アクセスする | 表示が`Hello, Jiro!`に変わる。URLを直接書き換えるだけで値を変更できることを確認する |
+| `http://127.0.0.1:5023/get`に`?name=...`を付けずにアクセスする | `Hello, None!`と表示される（`request.args.get('name')`が値を渡されないと`None`を返すため） |
+| `http://127.0.0.1:5023/`にアクセスし、フォームに名前を入力して送信する | `Hello, ...!`と表示される。**送信後もURLは`/`のまま**（POSTのデータはURLに出ない） |
+| POST送信後にブラウザの再読み込み（リロード）をする | ブラウザによっては「フォームを再送信しますか」という警告が出る（POSTの二重送信問題。対策は本章セクション5のPRGパターンで学ぶ） |
+
+この2つを見比べることで、「GETはURLにデータが乗るので共有・ブックマークできる代わりに機微な情報には向かない」「POSTはURLに出ないが、リロードで再送信されうる」という違いが体感できます。
+
 ### ポイント
 
 | 取得方法 | 対象 | 説明 |
@@ -205,6 +222,21 @@ def show_enter():
 <li>Name: {{ form.name.data }}</li>
 <li>Age: {{ form.age.data }}</li>
 ```
+
+### 動作確認：フィールドの種類ごとの見た目と、送信後の値の表示
+
+```bash
+cd 009_forms/example/app2
+python app.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `http://127.0.0.1:5024/`にアクセスする | `enter.html`が表示され、`Name`（テキスト）・`Age`（数値）・`Gender`（ラジオボタン）・`Area`（セレクトボックス）・`Remarks`（複数行）と、フィールドの種類ごとに違う入力要素が表示される |
+| 何か値を入力（または未入力のまま）して送信する | `result.html`に遷移し、`form.フィールド名.data`で入力した値がそのまま表示される |
+| **Name欄を空欄のまま**、**Ageに文字列を入力**して送信する | それでも正常に送信・表示されてしまう（**バリデーションが無いため**）。この「何を入れても通ってしまう」状態が、次のセクション3で解決する課題 |
+
+最後の確認が重要です。ここではまだ`DataRequired()`のようなバリデーターを付けていないため、空欄や不正な値でも弾かれません。「本来は弾きたいのに弾けていない」状態を体感してから、セクション3のバリデーションに進みましょう。
 
 ### 主なフィールド種類
 
@@ -276,6 +308,23 @@ def validate_password(self, password):
 {% endfor %}
 ```
 
+### 動作確認：バリデーション成功時と失敗時の違い
+
+```bash
+cd 009_forms/example/app3
+python app.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `http://127.0.0.1:5025/`でName欄を空欄のまま送信する | `result.html`に**進まず**、同じ入力画面が再表示され、「名前は必須です。」という赤字のエラーメッセージが出る（セクション2では素通りしていた入力が、ここでは弾かれる） |
+| Ageに`17`や`101`のような範囲外の値を入力して送信する | 「18〜100 の範囲で入力してください。」と表示され、再度入力画面に戻る |
+| PasswordとPassword(確認)に**違う値**を入力して送信する | 「パスワードが一致しません。」と表示される（`EqualTo`によるチェック） |
+| Passwordに**英字だけ**（記号・数字を含まない）を入力して送信する | カスタムバリデーター`validate_password`のメッセージ「英字・数字・記号...をすべて含めてください。」が表示される |
+| すべての項目を仕様通りに正しく入力して送信する | 今度は`result.html`に遷移し、入力した値が表示される |
+
+**正常な状態の見分け方**：エラーがある間は「送信してもURLが変わらず、同じ入力画面にエラーメッセージだけが増える」のが正しい挙動です。逆に、不正な値なのに`result.html`に進んでしまう場合はバリデーターの設定ミスを疑ってください。
+
 ### 主なバリデーター
 
 | バリデーター | 用途 |
@@ -339,6 +388,21 @@ def input():
 
 `{{ form.csrf_token }}` を忘れると送信時に **400 Bad Request** になります。
 
+### 動作確認：CSRFトークンがあるとき・ないとき
+
+```bash
+cd 009_forms/example/app4
+python app.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `http://127.0.0.1:5026/`で正しく入力して送信する | `output.html`に遷移し、入力した`name`・`email`が表示される（ここまではセクション3と同じ挙動） |
+| テンプレートの`{{ form.csrf_token }}`を一時的にコメントアウトしてアプリを再起動し、同じフォームを送信する | 画面遷移せず**400 Bad Request**（`The CSRF token is missing.`）になる。確認後は必ずコメントアウトを元に戻す |
+| フォームを開いたタブをそのままにして`app.py`を再起動し、そのタブから送信する | `SECRET_KEY = os.urandom(24)`が起動のたびに変わるため、以前発行されたCSRFトークンが無効になり、400エラーになる（**なぜSECRET_KEYの管理が重要か**を体感できるポイント） |
+
+**正常な状態の見分け方**：CSRFトークンが有効なら「バリデーション結果に応じて画面遷移する／しない」というセクション3までと同じ挙動になります。トークンが無効・欠落しているときだけ、バリデーションの結果に関係なく400エラーで止まるのが正しい違いです。
+
 ### WTForms との違い
 
 | | WTForms（`Form`） | Flask-WTF（`FlaskForm`） |
@@ -397,6 +461,22 @@ def output():
 <li>Name: {{ session['name'] }}</li>
 <li>Email: {{ session['email'] }}</li>
 ```
+
+### 動作確認：リダイレクトと二重送信対策
+
+```bash
+cd 009_forms/example/app5
+python app.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `http://127.0.0.1:5027/`で入力して送信する | 送信後、**アドレスバーが`/output`に変わり**、入力した`name`・`email`が表示される（`/`のままだったセクション1〜4との違い） |
+| `/output`が表示された状態でブラウザの再読み込み（リロード）をする | セクション1のPOSTで出た「フォームを再送信しますか」という警告が**出ない**。`/output`はGETリクエストなので、リロードしても同じデータを取得し直すだけで再送信は起きない |
+| `/output`から`/`に戻る（アドレスバーに直接入力するか戻るボタン） | フォームの`Name`・`Email`欄に**さっき送信した値が入った状態**で表示される（`session`に保存した値で事前入力される） |
+| ブラウザの開発者ツールでCookieを確認する | `session`という名前のCookieが発行されている（暗号署名された状態でブラウザ側に保存されている） |
+
+**正常な状態の見分け方**：POST送信後は必ずURLが`/output`に変わることが正しい状態です。もしURLが`/`のままデータだけ表示されている場合は、`redirect(url_for('output'))`が呼ばれていない＝PRGパターンになっていない可能性があります。
 
 ### ポイント
 
@@ -503,14 +583,22 @@ DBには**ファイル名のみ**を保存し、表示時は`url_for('static', .
 {% endif %}
 ```
 
-### 実行方法
+### 動作確認：アップロードした画像がそのまま表示されるか
 
 ```bash
 cd 009_forms/example/app6
 python app.py
 ```
 
-ブラウザで `http://127.0.0.1:5028` にアクセスし、画像を選択してアップロードすると、そのまま下に表示されます。`.exe`など許可していない拡張子を選ぶと`FileAllowed`のエラーメッセージが表示されます。
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `http://127.0.0.1:5028/`で名前を入力し、`.jpg`や`.png`の画像を選んでアップロードする | 送信後、選んだ画像がページにそのまま表示される |
+| アップロード先のフォルダ（`example/app6/static/uploads/`）を確認する | アップロードした画像ファイルが実際に保存されている |
+| 同じ操作をもう一度、**画像を選ばずに**送信する | `image`は必須にしていないため、画像無しでも送信できる（`form.image.data`が空文字列相当になり、`if`文でスキップされる） |
+| `.exe`や`.pdf`など許可していない拡張子のファイルを選んで送信する | 画面遷移せず、`FileAllowed`のエラーメッセージ（「画像ファイル（jpg/png/gif）のみアップロードできます。」）が表示される |
+| ファイル名に日本語や空白を含むファイルをアップロードする | `secure_filename()`によって安全なファイル名に変換されて保存される（元のファイル名と多少見た目が変わることがあるのは正常） |
+
+**正常な状態の見分け方**：許可された拡張子の画像はアップロード後にそのまま表示され、許可されていない拡張子はエラーメッセージだけが表示されて画像は保存されません。両方を試して、成功と失敗の両方の挙動を確認しておきましょう。
 
 ---
 
@@ -554,13 +642,13 @@ python 009_forms/answer/app.py
 
 ---
 
-## 8. 練習問題：書籍を追加するフォーム
+## 8. 練習問題：メモを追加するフォーム
 
 > [challenge/challenge.py](challenge/challenge.py) — 問題 ｜ [challenge/answer/challenge.py](challenge/answer/challenge.py) — 解答
 
-### 問題：書籍を追加するフォームを作ろう
+### 問題：メモを追加するフォームを作ろう
 
-`008_request`で作った書籍一覧・詳細ページ・リダイレクト（`challenge/challenge.py`にすでに実装済み）に、新しい書籍を追加するフォームを追加します。フォームの定義（[challenge/forms.py](challenge/forms.py)）とテンプレート（[challenge/templates/new_book.html](challenge/templates/new_book.html)）は完成済みなので、Python側のルーティングだけを実装します。
+`008_request`で作ったメモ一覧・詳細ページ・リダイレクト（`challenge/challenge.py`にすでに実装済み）に、新しいメモを追加するフォームを追加します。フォームの定義（[challenge/forms.py](challenge/forms.py)）とテンプレート（[challenge/templates/new_memo.html](challenge/templates/new_memo.html)）は完成済みなので、Python側のルーティングだけを実装します。`MemoForm`は`title`（`StringField`）・`category`（`SelectField`）・`body`（`TextAreaField`）の3フィールドで、画像アップロードは扱いません（ファイルアップロード自体は本章セクション6の`example/app6`で学習済みです）。
 
 ```bash
 python 009_forms/challenge/challenge.py
@@ -570,15 +658,30 @@ python 009_forms/challenge/challenge.py
 
 | エンドポイント | メソッド | 処理 |
 |---|---|---|
-| `/books/new` | GET | `new_book.html`を描画する（`form`を渡す） |
-| `/books/new` | POST（バリデーション成功時） | 画像を保存し、書籍データを`books.json`に追記して、書籍一覧（`/`）へリダイレクトする |
-| `/books/new` | POST（バリデーション失敗時） | エラーメッセージ付きで`new_book.html`を再描画する |
+| `/memos/new` | GET | `new_memo.html`を描画する（`form`を渡す） |
+| `/memos/new` | POST（バリデーション成功時） | メモデータを`memos.json`に追記して、メモ一覧（`/`）へリダイレクトする |
+| `/memos/new` | POST（バリデーション失敗時） | エラーメッセージ付きで`new_memo.html`を再描画する |
 
 #### ヒント
 
-- `BookForm`は`FlaskForm`を継承済みなので、CSRF保護と`validate_on_submit()`がそのまま使える（セクション4）
-- 画像は`form.image.data`から取得し、`secure_filename()`で安全なファイル名にしてから`static/img/`に保存する（セクション6）
-- 画像が選択されていない場合は`'not_found.png'`を使う（`if form.image.data and form.image.data.filename:`で判定する）
-- `books_list`（`books.json`から読み込んだリスト）に新しい書籍の辞書を`append`し、`books`（idをキーにした辞書）にも追加する
-- 最後に`with open(BOOKS_PATH, 'w', encoding='utf-8') as f: json.dump(books_list, f, ...)`で`books.json`に書き戻す（`007_with`で学んだJSON書き込み）
+- `MemoForm`は`FlaskForm`を継承済みなので、CSRF保護と`validate_on_submit()`がそのまま使える（セクション4）
+- `memos_list`（`memos.json`から読み込んだリスト）に新しいメモの辞書を`append`し、`memos`（idをキーにした辞書）にも追加する
+- 最後に`with open(MEMOS_PATH, 'w', encoding='utf-8') as f: json.dump(memos_list, f, ...)`で`memos.json`に書き戻す（`007_with`で学んだJSON書き込み）
 - 保存が終わったら`redirect(url_for('book_list'))`で一覧に戻る（PRGパターン、セクション5）
+
+#### 動作確認の流れ
+
+```bash
+cd 009_forms/challenge
+python challenge.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `http://127.0.0.1:5030/memos/new`にアクセスする | タイトル・カテゴリ・本文の3項目を持つフォームが表示される |
+| タイトルまたは本文を**空欄**のまま送信する | 画面遷移せず、`new_memo.html`が再表示されてエラーメッセージが出る（`DataRequired()`によるチェック。セクション3・4と同じ挙動） |
+| 3項目すべて入力して送信する | メモ一覧ページ（`/`）に**リダイレクト**され、追加したメモがURLの変化とともに表示される（PRGパターン。セクション5と同じ挙動） |
+| `memos.json`をエディタで開く | 追加したメモのデータ（`title`・`category`・`body`）が新しい要素として追記されている |
+| 追加したメモの詳細ページ（`/memos/<id>`）にアクセスする | `008_request`で作った詳細ページに、今追加したメモの内容が表示される |
+
+**正常な状態の見分け方**：バリデーションに失敗している間はURLが`/memos/new`のまま変わらず、成功すると`/`にリダイレクトされる、という一貫した挙動になっているか確認してください。

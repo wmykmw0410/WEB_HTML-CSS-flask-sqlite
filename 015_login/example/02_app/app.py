@@ -2,12 +2,12 @@
 ログイン機能付き最小アプリ
 
 実行:
-    cd example/02_app
-    flask db init
-    flask db migrate -m "create users table"
-    flask db upgrade
-    python app.py
-    ブラウザで http://localhost:5000 にアクセス
+cd example/02_app
+flask db init
+flask db migrate -m "create users table"
+flask db upgrade
+python app.py
+ブラウザで http://localhost:5000 にアクセス
 """
 import os
 from typing import Optional

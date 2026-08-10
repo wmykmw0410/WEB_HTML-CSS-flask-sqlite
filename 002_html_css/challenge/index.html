@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ブックストア</title>
+    <title>メモ帳</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!--
-        ここから100_bookstore_apiのトップページを、Flaskを使わずに
+        ここから、シンプルなメモ帳アプリのトップページを、Flaskを使わずに
         静的なHTML/CSSだけで再現してください。
 
         作るもの:
         1. header
-           - <nav>の中に、サイト名(strong)と「書籍一覧」リンクを置く
+           - <nav>の中に、サイト名(strong)と「メモ一覧」リンクを置く
         2. main
-           - class="card-grid" の div の中に、書籍カード(class="card")を5つ並べる
-           - 各カードには 表紙画像(img) / タイトル(h3) / 著者(p) / 価格(p) を入れる
-           - 画像は img/ フォルダに5枚用意してある(wagahai_neko.png / bocchan.png / rashomon.png / ginga_tetsudo.png / hashire_merosu.png)
+           - class="card-grid" の div の中に、メモカード(class="card")を5つ並べる
+           - 各カードには カテゴリ(span.tag) / タイトル(h3) / 本文の冒頭(p) を入れる
+           - 画像は使わない（メモ帳アプリなので表紙画像は不要）
         3. footer
            - コピーライト表示
 
@@ -29,9 +29,9 @@
     </header>
 
     <main>
-        <h1>書籍一覧</h1>
+        <h1>メモ一覧</h1>
         <div class="card-grid">
-            <!-- TODO: 書籍カードを5つ並べる -->
+            <!-- TODO: メモカードを5つ並べる -->
         </div>
     </main>
 

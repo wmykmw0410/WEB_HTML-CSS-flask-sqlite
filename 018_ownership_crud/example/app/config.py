@@ -7,5 +7,5 @@ os.makedirs(instance_dir, exist_ok=True)  # SQLiteは親ディレクトリを自
 
 class Config:
     SECRET_KEY                     = 'dev-secret-key'
-    SQLALCHEMY_DATABASE_URI        = 'sqlite:///' + os.path.join(instance_dir, 'books.sqlite')
+    SQLALCHEMY_DATABASE_URI        = 'sqlite:///' + os.path.join(instance_dir, 'memos.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = False

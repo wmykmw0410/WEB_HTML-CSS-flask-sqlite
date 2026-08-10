@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}ブックストア{% endblock %}</title>
+    <title>{% block title %}メモ帳{% endblock %}</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <header>
         <nav>
-            <strong>ブックストア</strong>
-            <a href="/">書籍一覧</a>
+            <strong>メモ帳</strong>
+            <a href="/">メモ一覧</a>
             {% if current_user.is_authenticated %}
-            <a href="/books/new">書籍を追加</a>
+            <a href="/memos/new">メモを追加</a>
             <span>{{ current_user.username }} さん</span>
             <a href="/logout">ログアウト</a>
             {% else %}
@@ -37,7 +37,7 @@
     </main>
 
     <footer>
-        &copy; ブックストア
+        &copy; メモ帳
     </footer>
 </body>
 </html>

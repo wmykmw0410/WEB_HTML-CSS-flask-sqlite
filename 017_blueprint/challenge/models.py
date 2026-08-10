@@ -18,11 +18,10 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password, raw)
 
 
-class Book(db.Model):
-    __tablename__ = 'books'
-    id     = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title  = db.Column(db.String, nullable=False)
-    author = db.Column(db.String, nullable=False)
-    price  = db.Column(db.Integer, nullable=False)
-    image  = db.Column(db.String, nullable=False)
-    genre  = db.Column(db.String, nullable=True)
+class Memo(db.Model):
+    __tablename__ = 'memos'
+    id       = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title    = db.Column(db.String, nullable=False)
+    category = db.Column(db.String, nullable=False)
+    body     = db.Column(db.String, nullable=False)
+    due_date = db.Column(db.String, nullable=True)

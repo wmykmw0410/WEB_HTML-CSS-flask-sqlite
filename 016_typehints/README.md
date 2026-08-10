@@ -21,13 +21,13 @@
 └── challenge/           015_loginの続き（000_my_appに組み込む機能の変更分）
     ├── challenge.py
     ├── forms.py
-    ├── books.json
+    ├── memos.json
     ├── static/
     ├── templates/
     └── answer/
         ├── challenge.py
         ├── forms.py
-        ├── books.json
+        ├── memos.json
         ├── static/
         └── templates/
 ```
@@ -64,6 +64,19 @@ def count_characters(word_list: list[str]) -> dict[str, int]:
 | `dict[str, int]` | キーが `str`、値が `int` の辞書 |
 
 型ヒントは実行時に強制されるものではなく、あくまで**注釈**（IDE補完・静的解析・可読性向上のため）。
+
+### 動作確認：実行結果で型ヒントの意味を確かめる
+
+```bash
+python 016_typehints/01_typehints.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| そのまま実行する | `The result of addition => 30` → `Hello, Tom.` → `The result of division => 5.0` → `A` `B` `C` → `The string for the character is {'apple': 5, 'amazon': 6, 'google': 6}` の順に表示される |
+| `add(10, 20)`の呼び出しを`add("10", "20")`のように文字列に変えて実行する | 型ヒントは`int`のままだが、実行時エラーにはならず`The result of addition => 1020`のように**文字列連結**の結果が返る（型ヒントは実行時には強制されないことの確認） |
+
+**正常な状態の見分け方**：型ヒントを守った呼び出しでは意図通りの計算結果が、型ヒントに反した呼び出しでも（型エラーにはならず）Pythonの通常の演算規則どおりの結果が返ることを確認してください。
 
 ## 2. Annotated — メタデータ付き型
 
@@ -180,18 +193,18 @@ help(add)
 
 ---
 
-## 6. 練習問題：書籍データの管理コードに型ヒントとdocstringを付けよう
+## 6. 練習問題：メモデータの管理コードに型ヒントとdocstringを付けよう
 
 > [challenge/challenge.py](challenge/challenge.py) — 問題 ｜ [challenge/answer/challenge.py](challenge/answer/challenge.py) — 解答
 
 ### 問題：既存のコードに型ヒント・docstringを後付けしよう
 
-`015_login`で作った書籍一覧・詳細・追加フォーム・新規登録・ログイン・ログアウトの機能はそのままです（新しい機能は追加しません）。このチャプターで学んだ`Optional`・`Union`（`str | Response`）とdocstringを、既存のコードに付けていきます。
+`015_login`で作ったメモ一覧・詳細・追加フォーム・新規登録・ログイン・ログアウトの機能はそのままです（新しい機能は追加しません）。このチャプターで学んだ`Optional`・`Union`（`str | Response`）とdocstringを、既存のコードに付けていきます。
 
 ```bash
 cd 016_typehints/challenge
 flask --app challenge db init
-flask --app challenge db migrate -m "create books and users tables"
+flask --app challenge db migrate -m "create memos and users tables"
 flask --app challenge db upgrade
 python challenge.py
 ```
@@ -202,7 +215,7 @@ python challenge.py
 |---|---|
 | 1 | `User`モデルの`set_password`/`check_password`に型ヒントを付ける |
 | 2 | `load_user`に型ヒントを付ける（戻り値は`Optional[User]`） |
-| 3 | `book_list`・`book_detail`・`register`・`login`・`logout`・`new_book`・`old_books`に型ヒントを付ける（`str`を返しうる関数は`str \| Response`） |
+| 3 | `memo_list`・`memo_detail`・`register`・`login`・`logout`・`new_memo`・`old_memos`に型ヒントを付ける（`str`を返しうる関数は`str \| Response`） |
 | 4 | `load_user`・`register`・`login`にGoogle形式のdocstringを追加する |
 
 #### ヒント
@@ -211,7 +224,25 @@ python challenge.py
 - `load_user(user_id: str) -> Optional[User]`。`.get()`は該当データが無ければ`None`を返す（セクション3、`015_login`セクション3の`Optional[User]`と同じ考え方）
 - `render_template(...)`は`str`、`redirect(...)`は`Response`を返すため、両方の可能性がある関数は`str | Response`と書く（セクション4）
 - docstringは概要1行 + `Args:` + `Returns:`のGoogle形式で書く（セクション5）
-- 見た目やCSRF・ファイルアップロードの仕組み、ルーティングやビジネスロジックは`015_login`から変更不要（型ヒントとdocstringのみを追加する）
+- 見た目やCSRFの仕組み、ルーティングやビジネスロジックは`015_login`から変更不要（型ヒントとdocstringのみを追加する）
+
+### 動作確認：型ヒントを付けても挙動が変わっていないか
+
+この練習問題は型ヒントとdocstringを**追加するだけ**で、ロジックは変更しません。そのため確認すべきは「見た目上の動作が`015_login`と完全に同じままか」です。
+
+```bash
+cd 016_typehints/challenge
+python challenge.py
+```
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `http://127.0.0.1:5047/`にアクセスする | `015_login`のときと同じメモ一覧が表示される |
+| 新規登録・ログイン・ログアウトを一通り試す | すべて`015_login`と同じ流れで動作する（型ヒントの追加によって処理内容が変わっていないため） |
+| VSCode（Pylance導入済み）でこのファイルを開く | 型の不一致を示す波線（例えば`str`を返すべき関数が`None`を返しているなど）が表示されない |
+| `load_user`関数にカーソルを合わせる | 戻り値の型が`Optional[User]`（`User \| None`）とエディタ上に表示される |
+
+**正常な状態の見分け方**：画面の動作が一切変わっていないことが最も重要です。もし動作が変わってしまった場合、型ヒントを追加する際に誤ってロジックの一部（`if`の条件など）まで書き換えてしまった可能性があります。
 
 ## 実行方法
 
