@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ゴミ箱マップ{% endblock %}</title>
+    <style>
+        body { margin: 0; font-family: sans-serif; }
+        header.site-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 48px;
+            padding: 0 16px;
+            background-color: #2f5233;
+            color: #fff;
+            box-sizing: border-box;
+            position: relative;
+        }
+        header.site-header .site-title {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        header.site-header .header-right {
+            display: flex;
+            align-items: center;
+        }
+        header.site-header nav.main-nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 16px;
+        }
+        header.site-header nav.main-nav a:hover {
+            text-decoration: underline;
+        }
+        .hamburger-btn {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+            width: 32px;
+            height: 32px;
+            margin-left: 16px;
+            padding: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .hamburger-btn span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+        }
+        .hamburger-menu {
+            position: absolute;
+            top: 100%;
+            right: 16px;
+            min-width: 160px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+        }
+        .hamburger-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 8px 0;
+        }
+        .hamburger-menu li a {
+            display: block;
+            padding: 8px 16px;
+            color: #333;
+            text-decoration: none;
+        }
+        .hamburger-menu li a:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header class="site-header">
+        <p class="site-title">ゴミ箱マップ</p>
+        <div class="header-right">
+            <nav class="main-nav">
+                <a href="{{ url_for('index_page') }}">地図</a>
+                <a href="{{ url_for('add_page') }}">登録</a>
+            </nav>
+            <button type="button" class="hamburger-btn" id="hamburgerBtn"
+                    aria-label="ゴミの種類一覧を開く" aria-expanded="false" aria-controls="hamburgerMenu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <nav class="hamburger-menu" id="hamburgerMenu" hidden>
+            <ul>
+                {% for key, label in garbage_types %}
+                <li><a href="{{ url_for('type_list_page', type_key=key) }}">{{ label }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </header>
+    {% block content %}{% endblock %}
+    <script src="{{ url_for('static', filename='js/header.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

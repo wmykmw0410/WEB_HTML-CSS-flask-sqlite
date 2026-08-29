@@ -1,0 +1,14 @@
+body {
+    color: green;
+    background-color: white;
+}
+
+.add-form-wrapper {
+    max-width: 480px;
+    margin: 40px auto;
+    padding: 0 16px;
+}
+
+.add-form-wrapper h1 {
+    text-align: center;
+}

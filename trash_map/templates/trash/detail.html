@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item.name }}{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='detail.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="detail-wrapper">
+        <h1>{{ item.name }}</h1>
+        {% if item.photo_filename %}
+        <img src="{{ url_for('static', filename='uploads/' + item.photo_filename) }}" alt="{{ item.name }}" width="300">
+        {% endif %}
+        <p>
+            {% if item.postal_code %}〒{{ item.postal_code }}<br>{% endif %}
+            {{ item.full_address }}
+        </p>
+        <p>緯度: {{ item.latitude }} / 経度: {{ item.longitude }}</p>
+        <p>ゴミの種類: {{ type_labels | join('、') }}</p>
+        <p>更新日: {{ item.updated_at.strftime('%Y年%m月%d日') }}</p>
+        <p>
+            <a href="{{ url_for('edit_page', trash_id=item.id) }}">編集する</a>
+            ・
+            <a href="{{ url_for('index_page', focus=item.id) }}">地図で見る</a>
+        </p>
+    </div>
+{% endblock %}

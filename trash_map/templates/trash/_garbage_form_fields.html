@@ -1,0 +1,51 @@
+<p>
+    {{ form.name.label }}<br>
+    {{ form.name(size=32) }}
+    {% for e in form.name.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>
+<p>
+    {{ form.postal_code.label }}<br>
+    {{ form.postal_code(size=32) }}
+    {% for e in form.postal_code.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>
+<p>
+    {{ form.prefecture.label }}<br>
+    {{ form.prefecture() }}
+    {% for e in form.prefecture.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>
+<p>
+    {{ form.city.label }}<br>
+    {{ form.city(size=32) }}
+    {% for e in form.city.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>
+<p>
+    {{ form.address_line.label }}<br>
+    {{ form.address_line(size=32) }}
+    {% for e in form.address_line.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>
+<p>
+    {{ form.latitude.label }}<br>
+    {{ form.latitude(size=32) }}
+    {% for e in form.latitude.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>
+<p>
+    {{ form.longitude.label }}<br>
+    {{ form.longitude(size=32) }}
+    {% for e in form.longitude.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>
+<fieldset>
+    <legend>{{ form.type.label.text }}</legend>
+    <ul>
+        {% for subfield in form.type %}
+        <li>
+            <label>{{ subfield(required=false) }} {{ subfield.label.text }}</label>
+        </li>
+        {% endfor %}
+    </ul>
+    {% for e in form.type.errors %}<span class="error">{{ e }}</span>{% endfor %}
+</fieldset>
+<p>
+    {{ form.photo.label }}<br>
+    {{ form.photo() }}
+    {% for e in form.photo.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>

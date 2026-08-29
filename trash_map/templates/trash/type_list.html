@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}{{ label }}の一覧{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='type_list.css') }}">
+{% endblock %}
+
+{% block content %}
+    <h1>{{ label }}の一覧</h1>
+    <form class="filter-form" method="get">
+        <label>
+            都道府県:
+            <select name="prefecture">
+                <option value="">すべて</option>
+                {% for p in prefectures %}
+                <option value="{{ p }}" {% if p == selected_prefecture %}selected{% endif %}>{{ p }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            市区町村:
+            <input type="text" name="city" value="{{ city_query }}" placeholder="(例)千代田区">
+        </label>
+        <button type="submit">絞り込む</button>
+        <a href="{{ url_for('type_list_page', type_key=type_key) }}">クリア</a>
+    </form>
+    {% if items %}
+    <div class="trash-list">
+        {% for item in items %}
+        <a class="trash-card" href="{{ url_for('detail_page', trash_id=item.id) }}">
+            {% if item.photo_filename %}
+            <img class="photo" src="{{ url_for('static', filename='uploads/' + item.photo_filename) }}" alt="{{ item.name }}">
+            {% else %}
+            <div class="photo-placeholder">写真なし</div>
+            {% endif %}
+            <div class="info">
+                <h2>{{ item.name }}</h2>
+                <p>{% if item.postal_code %}〒{{ item.postal_code }}<br>{% endif %}{{ item.full_address }}</p>
+                <p>緯度: {{ item.latitude }} / 経度: {{ item.longitude }}</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>登録されている{{ label }}のゴミ箱はまだありません。</p>
+    {% endif %}
+{% endblock %}

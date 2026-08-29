@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}ゴミ箱を追加{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="add-form-wrapper">
+        <h1>ゴミ箱を追加</h1>
+        <form action="{{ url_for('add_page') }}" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {% include "trash/_garbage_form_fields.html" %}
+            <p>{{ form.submit() }}</p>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/postal_lookup.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}ゴミ箱一覧{% endblock %}
+
+{% block content %}
+    <h1>ゴミ箱一覧</h1>
+    <table border="1">
+        <thead>
+            <tr><th>住所</th><th>名前</th><th>ごみの種類</th></tr>
+        </thead>
+        <tbody>
+            {% for item in items%}
+            <tr>
+                <td><a href="/add">{{item.location}}</a></td>
+                <td>{{item.name}}</td>
+                <td>{{item.type}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

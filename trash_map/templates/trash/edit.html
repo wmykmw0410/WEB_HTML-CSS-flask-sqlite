@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}ゴミ箱を編集{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="add-form-wrapper">
+        <h1>ゴミ箱を編集</h1>
+        {% if item.photo_filename %}
+        <p>
+            現在の写真:<br>
+            <img src="{{ url_for('static', filename='uploads/' + item.photo_filename) }}" alt="{{ item.name }}" width="200">
+        </p>
+        {% endif %}
+        <form action="{{ url_for('edit_page', trash_id=item.id) }}" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {% include "trash/_garbage_form_fields.html" %}
+            <p>{{ form.submit(value="更新する") }}</p>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/postal_lookup.js') }}"></script>
+{% endblock %}

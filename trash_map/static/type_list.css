@@ -1,0 +1,69 @@
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+}
+
+.filter-form label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.trash-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    padding: 16px;
+}
+
+.trash-card {
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    color: inherit;
+    text-decoration: none;
+    transition: box-shadow 0.15s ease;
+}
+
+.trash-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.trash-card .photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.trash-card .photo-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: #eee;
+    color: #999;
+    font-size: 0.85rem;
+}
+
+.trash-card .info {
+    padding: 8px 12px;
+}
+
+.trash-card .info h2 {
+    margin: 0 0 4px;
+    font-size: 1rem;
+}
+
+.trash-card .info p {
+    margin: 2px 0;
+    font-size: 0.85rem;
+    color: #555;
+}

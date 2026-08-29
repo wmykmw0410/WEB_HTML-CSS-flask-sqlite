@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}ゴミ箱マップ{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='trash.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="map-controls">
+        <button type="button" id="nearbySearchBtn">現在地から探す</button>
+        <label>
+            半径:
+            <select id="nearbyRadius">
+                <option value="500">500m</option>
+                <option value="1000" selected>1km</option>
+                <option value="3000">3km</option>
+            </select>
+        </label>
+        <button type="button" id="nearbyClearBtn">クリア</button>
+        <span id="nearbyStatus"></span>
+    </div>
+    <div id="map" data-api-url="{{ url_for('api_trashcans') }}" data-focus-id="{{ request.args.get('focus', '') }}"></div>
+    <div id="nearbyList" class="nearby-list" hidden>
+        <h2>近くのゴミ箱</h2>
+        <ul id="nearbyListItems"></ul>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}

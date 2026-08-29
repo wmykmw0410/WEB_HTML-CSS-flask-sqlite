@@ -1,0 +1,11 @@
+.detail-wrapper {
+    max-width: 480px;
+    margin: 40px auto;
+    padding: 0 16px;
+    text-align: center;
+}
+
+.detail-wrapper img {
+    max-width: 100%;
+    height: auto;
+}
