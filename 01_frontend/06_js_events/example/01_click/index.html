@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>1. 最初の動き：クリックで文字が変わる</title>
+    <style>
+        body { font-family: sans-serif; max-width: 640px; margin: 40px auto; padding: 0 16px; color: #262b33; }
+        section { border: 1px solid #e1e5eb; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; }
+        button { padding: 8px 16px; border: 1px solid #3f6fd1; border-radius: 6px; background: #fff; color: #3f6fd1; cursor: pointer; }
+        .output { background: #f4f6f9; padding: 8px; border-radius: 4px; min-height: 1.5em; }
+        .output.highlight { background: #fff3bf; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>最初の動き</h1>
+
+    <section>
+        <h2>1. ボタンを押すと文字が変わる</h2>
+        <button type="button" id="hello-button">押してみてください</button>
+        <p class="output" id="message">まだ押されていません</p>
+    </section>
+
+    <section>
+        <h2>2. ボタンを押すたびに見た目が切り替わる</h2>
+        <button type="button" id="toggle-button">色を切り替える</button>
+        <p class="output" id="toggle-target">このボックスの色が切り替わります</p>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

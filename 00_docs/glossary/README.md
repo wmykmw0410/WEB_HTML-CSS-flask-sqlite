@@ -35,7 +35,7 @@
 | **ドメイン・DNS** | ドメインは`example.com`のような人が覚えやすい名前。DNSは、ドメインをIPアドレスに変換するしくみ | [web_basic](../web_basic/) 8節 |
 | **IPアドレス** | ネットワーク上のコンピュータの番号。`127.0.0.1`（自分自身）など | [web_basic](../web_basic/) 9節 |
 | **ポート** | 1台のコンピュータの中で、どのプログラムに通信を届けるかを表す番号。`http://127.0.0.1:5000/`の`5000` | [04_flask_basic](../../02_backend/04_flask_basic/) 1節 |
-| **API** | プログラムどうしがやりとりするための窓口。Webでは、URLにリクエストを送るとJSONでデータを返すものを指すことが多い（**Web API**・**JSON API**） | [08_js_data](../../01_frontend/08_js_data/) 6節・[08_request](../../02_backend/08_request/) 2節 |
+| **API** | プログラムどうしがやりとりするための窓口。Webでは、URLにリクエストを送るとJSONでデータを返すものを指すことが多い（**Web API**・**JSON API**） | [10_js_data](../../01_frontend/10_js_data/) 6節・[08_request](../../02_backend/08_request/) 2節 |
 | **CRUD** | データに対する4つの基本操作。Create（作成）・Read（読み取り）・Update（更新）・Delete（削除） | [web_basic](../web_basic/) 4節・[10_sql](../../02_backend/10_sql/) |
 | **開発者ツール** | ブラウザに付いている、HTML・CSS・通信の中身などを確かめる道具。F12キーで開く | [web_basic](../web_basic/) 10節・[01_html_basics](../../01_frontend/01_html_basics/) 0節 |
 
@@ -62,15 +62,15 @@
 
 | 用語 | 意味 | 詳しく学ぶ章 |
 |---|---|---|
-| **DOM** | ブラウザが、HTMLを読み込んで作る「要素の木構造」。JavaScriptはDOMを通してページを書き換える | [06_js_dom_events](../../01_frontend/06_js_dom_events/) 1節 |
-| **イベント** | クリック・入力・送信など、ページの上で起きたできごと。`addEventListener()`で、起きたときの処理を登録する | [06_js_dom_events](../../01_frontend/06_js_dom_events/) 2節 |
+| **DOM** | ブラウザが、HTMLを読み込んで作る「要素の木構造」。JavaScriptはDOMを通してページを書き換える | [07_js_dom](../../01_frontend/07_js_dom/) 1節 |
+| **イベント** | クリック・入力・送信など、ページの上で起きたできごと。`addEventListener()`で、起きたときの処理を登録する | [06_js_events](../../01_frontend/06_js_events/) 1節 |
 | **コールバック関数** | 「あとで呼び出してもらう」ために、別の関数に渡す関数 | [05_js_basics](../../01_frontend/05_js_basics/) 2節 |
-| **XSS**（クロスサイトスクリプティング） | 入力された文字列をHTMLとして表示してしまい、悪意あるスクリプトが動いてしまう攻撃。`innerHTML`ではなく`textContent`を使うのが基本の対策 | [06_js_dom_events](../../01_frontend/06_js_dom_events/) 1節 |
-| **JSON** | `{"title": "買い物", "is_pinned": true}`のように、データを文字で表す書き方。ブラウザとサーバーのやりとりや、ファイルへの保存に使う | [08_js_data](../../01_frontend/08_js_data/) 1節・[07_with](../../02_backend/07_with/) 7節 |
-| **非同期処理** | 通信など時間のかかる処理の完了を待たずに、ほかの処理を進めるしくみ。`async`／`await`で書く | [08_js_data](../../01_frontend/08_js_data/) 2節 |
-| **fetch()** | JavaScriptからサーバーにリクエストを送る関数 | [08_js_data](../../01_frontend/08_js_data/) 2節 |
-| **Ajax** | ページを再読み込みせずに、通信して画面の一部だけを書き換えるやり方 | [08_js_data](../../01_frontend/08_js_data/) 2節 |
-| **localStorage** | ブラウザの中にデータ（文字列）を保存するしくみ。ページを閉じても消えないが、そのブラウザの中にしか無い | [08_js_data](../../01_frontend/08_js_data/) 4節・[02_memo_app_frontend](../../02_backend/02_memo_app_frontend/) |
+| **XSS**（クロスサイトスクリプティング） | 入力された文字列をHTMLとして表示してしまい、悪意あるスクリプトが動いてしまう攻撃。`innerHTML`ではなく`textContent`を使うのが基本の対策 | [07_js_dom](../../01_frontend/07_js_dom/) 1節 |
+| **JSON** | `{"title": "買い物", "is_pinned": true}`のように、データを文字で表す書き方。ブラウザとサーバーのやりとりや、ファイルへの保存に使う | [10_js_data](../../01_frontend/10_js_data/) 1節・[07_with](../../02_backend/07_with/) 7節 |
+| **非同期処理** | 通信など時間のかかる処理の完了を待たずに、ほかの処理を進めるしくみ。`async`／`await`で書く | [10_js_data](../../01_frontend/10_js_data/) 2節 |
+| **fetch()** | JavaScriptからサーバーにリクエストを送る関数 | [10_js_data](../../01_frontend/10_js_data/) 2節 |
+| **Ajax** | ページを再読み込みせずに、通信して画面の一部だけを書き換えるやり方 | [10_js_data](../../01_frontend/10_js_data/) 2節 |
+| **localStorage** | ブラウザの中にデータ（文字列）を保存するしくみ。ページを閉じても消えないが、そのブラウザの中にしか無い | [10_js_data](../../01_frontend/10_js_data/) 4節・[02_memo_app_frontend](../../02_backend/02_memo_app_frontend/) |
 
 ---
 
@@ -170,6 +170,6 @@
 | **pip** | Pythonのライブラリをインストールするコマンド。`pip install -r 00_docs/setup/requirements.txt`で、一覧に書いたライブラリをまとめて入れられる | [setup/backend.md](../setup/backend.md) |
 | **仮想環境（venv）** | プロジェクトごとに、ライブラリを分けて入れておく場所。このカリキュラムでは`flaskenv` | [setup/backend.md](../setup/backend.md) |
 | **ターミナル** | 文字でコマンドを打ってコンピュータを操作する画面 | [setup/frontend.md](../setup/frontend.md) |
-| **ローカルサーバー** | 自分のパソコンの中で動かすサーバー。`python -m http.server`やFlaskの`app.run()`。`127.0.0.1`（`localhost`）でアクセスする | [08_js_data](../../01_frontend/08_js_data/) 0節・[04_flask_basic](../../02_backend/04_flask_basic/) 1節 |
+| **ローカルサーバー** | 自分のパソコンの中で動かすサーバー。`python -m http.server`やFlaskの`app.run()`。`127.0.0.1`（`localhost`）でアクセスする | [10_js_data](../../01_frontend/10_js_data/) 0節・[04_flask_basic](../../02_backend/04_flask_basic/) 1節 |
 | **curl** | ターミナルからHTTPリクエストを送るコマンド。ブラウザでは送りにくいPOST・PUT・DELETEを試すのに使う | [08_request](../../02_backend/08_request/) 1節 |
 | **Git・GitHub** | Gitはファイルの変更履歴を記録する道具。GitHubは、Gitで記録したものをネット上に置いて共有するサービス | [github/](../github/) |

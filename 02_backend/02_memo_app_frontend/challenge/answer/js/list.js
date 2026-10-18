@@ -1,7 +1,7 @@
 /*
 list.js：メモ一覧ページ（index.html）の処理
 
-「データ → 画面」の考え方（01_frontend/08_js_data 5節）で作る。
+「データ → 画面」の考え方（01_frontend/10_js_data 5節）で作る。
     - memos：全メモの配列（storage.js で読み込み・保存する）
     - selectedCategory・keyword：今の絞り込み・検索の条件
 画面は render() で、これらの「状態」から毎回作り直す。

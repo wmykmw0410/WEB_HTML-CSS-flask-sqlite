@@ -87,10 +87,11 @@ const memos = [
     { id: 1, title: '買い物リスト', category: '家事' },
     { id: 2, title: '企画会議メモ', category: '仕事' },
 ];
+console.log(memos.length);   // 2（配列の要素数は length。() は付けない）
 
-// filter()：条件に一致する要素だけを集めた新しい配列を作る
-const workMemos = memos.filter((m) => m.category === '仕事');
-console.log(workMemos);   // [{ id: 2, title: '企画会議メモ', category: '仕事' }]
+// push()：配列の最後に要素を追加する（Pythonの append）
+memos.push({ id: 3, title: '読書メモ', category: '趣味' });
+console.log(memos.length);   // 3
 
 
 // ============================================================
@@ -116,7 +117,11 @@ console.log(missing);                              // null（「無い」こと�
 //   false, 0, ''（空文字）, null, undefined, NaN
 const values = [false, 0, '', null, undefined, 'a', 1, [], {}];
 values.forEach((value) => {
-    console.log(value, '→', value ? 'truthy' : 'falsy');
+    if (value) {
+        console.log(value, '→ truthy');
+    } else {
+        console.log(value, '→ falsy');
+    }
 });
 
 // この性質を使うと「要素があるときだけ処理する」が短く書ける
@@ -128,8 +133,12 @@ if (missing) {
 }
 
 // 入力欄が空かどうかの判定にも使える（空文字は falsy）
-const input = '   ';
-console.log(input.trim() ? '入力あり' : '空欄');   // 空欄（trim() で前後の空白を除いてから判定）
+const input = '';
+if (input) {
+    console.log('入力あり');
+} else {
+    console.log('空欄');   // 空欄
+}
 
 
 // ============================================================

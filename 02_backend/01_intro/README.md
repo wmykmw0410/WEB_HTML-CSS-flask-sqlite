@@ -1,6 +1,6 @@
 # 01 イントロダクション：FlaskとSQLiteを1時間で体験する
 
-> バックエンド編 ／ 前の章：[01_frontend/09_homepage](../../01_frontend/09_homepage/) ／ 次の章：[02_memo_app_frontend](../02_memo_app_frontend/)
+> バックエンド編 ／ 前の章：[01_frontend/11_homepage](../../01_frontend/11_homepage/) ／ 次の章：[02_memo_app_frontend](../02_memo_app_frontend/)
 
 バックエンド編の入り口です。このREADMEを上から読みながら、**サーバーを動かしたまま**コードを貼り付けていき、そのたびにブラウザで動きを確かめます。最後には、サーバー（Flask）とデータベース（SQLite）で動く小さなメモ帳ができあがります。
 

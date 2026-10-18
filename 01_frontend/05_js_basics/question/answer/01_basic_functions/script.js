@@ -33,11 +33,11 @@ const sumTo = (n) => {
 };
 
 
-// TODO 4：trim() した結果が空文字でないかを比べ、その結果（true / false）をそのまま返す
+// TODO 4：空文字でないかを比べ、その結果（true / false）をそのまま返す
 const isFilled = (text) => {
-    return text.trim() !== '';
+    return text !== '';
 };
-// 別解：if (text.trim()) { return true; } return false;
+// 別解：if (text) { return true; } return false;
 //       （空文字は falsy なので、if の条件にそのまま書ける）
 
 
@@ -89,7 +89,6 @@ check('TODO 2：formatMemo', formatMemo(memos[1]), '[仕事] 企画会議メモ'
 check('TODO 3：sumTo(3)', sumTo(3), 6);
 check('TODO 3：sumTo(10)', sumTo(10), 55);
 check('TODO 4：isFilled(\'メモ\')', isFilled('メモ'), true);
-check('TODO 4：isFilled(\'   \')', isFilled('   '), false);
 check('TODO 4：isFilled(\'\')', isFilled(''), false);
 check('TODO 5：countByCategory(仕事)', countByCategory(memos, '仕事'), 2);
 check('TODO 5：countByCategory(趣味)', countByCategory(memos, '趣味'), 0);

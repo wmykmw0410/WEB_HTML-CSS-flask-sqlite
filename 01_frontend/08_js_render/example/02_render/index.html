@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>2. データから画面を作る</title>
+    <style>
+        body { font-family: sans-serif; max-width: 720px; margin: 32px auto; padding: 0 16px; color: #262b33; background: #f4f6f9; }
+        input[type="search"] { width: 100%; box-sizing: border-box; padding: 8px; margin-bottom: 8px; }
+        .summary { color: #6b7280; font-size: 0.9rem; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; padding: 0; }
+        .card { list-style: none; background: #fff; border: 1px solid #e1e5eb; border-radius: 8px; padding: 12px; }
+        .card h2 { font-size: 1rem; margin: 6px 0 0; }
+        .tag { display: inline-block; font-size: 0.75rem; background: #e8edfb; color: #3f6fd1; padding: 2px 10px; border-radius: 999px; }
+    </style>
+</head>
+<body>
+    <h1>メモ一覧</h1>
+    <input type="search" id="search" placeholder="タイトルで検索">
+    <p class="summary"><span id="shown-count"></span></p>
+    <ul class="card-grid" id="memo-list"></ul>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -4,7 +4,7 @@
 
 [01_html_basics](../01_html_basics/)で学んだタグを使って、**ページ全体の構造**を意味の伝わる形で組み立てる方法（セマンティックHTML）と、ユーザーの入力を受け取る**フォーム**を学びます。
 
-章の最後の制作課題では、自分を紹介するオリジナルHPのHTMLを書きます。見た目は素っ気なくて構いません。このHTMLに[04_css_layout](../04_css_layout/)でスタイルを付け、[06_js_dom_events](../06_js_dom_events/)で動きを付けて完成させていきます。
+章の最後の制作課題では、自分を紹介するオリジナルHPのHTMLを書きます。見た目は素っ気なくて構いません。このHTMLに[04_css_layout](../04_css_layout/)でスタイルを付け、[06_js_events](../06_js_events/)・[08_js_render](../08_js_render/)で動きを付けて完成させていきます。
 
 ## 目次
 
@@ -121,7 +121,7 @@
 | `aria-current="page"` | ナビのリンクのうち、今いるページのものを伝える | `<a href="index.html" aria-current="page">ホーム</a>` |
 | `aria-describedby="id"` | 入力欄に、補足説明の要素（`id`で指定）をつなぐ。入力欄を選んだときに、説明も読み上げられる | `<input id="password" aria-describedby="password-hint">` ＋ `<p id="password-hint">4文字以上…</p>` |
 
-このほか、ボタンの押されている状態を伝える`aria-pressed`、メニューが開いているかを伝える`aria-expanded`などがあり、[06_js_dom_events](../06_js_dom_events/)・[07_js_ui](../07_js_ui/)のJavaScriptで切り替えます。
+このほか、ボタンの押されている状態を伝える`aria-pressed`、メニューが開いているかを伝える`aria-expanded`などがあり、[06_js_events](../06_js_events/)・[09_js_ui](../09_js_ui/)のJavaScriptで切り替えます。
 
 ### 動作確認：構造を確かめる
 
@@ -370,7 +370,7 @@
 
 | ファイル | 内容 |
 |---|---|
-| `index.html`・`about.html`・`works.html`・`contact.html` | `<head>`の一部と、`header`・`main`・`footer`の枠だけが書いてある。TODOコメントに、書く要素とクラス名が指定してある（クラス名は02_css以降で見た目を付けるときの目印になる） |
+| `index.html`・`about.html`・`works.html`・`contact.html` | `<head>`の一部と、`header`・`main`・`footer`の枠だけが書いてある。TODOコメントに、書く要素とクラス名が指定してある（クラス名は03_css_basics以降で見た目を付けるときの目印になる） |
 | `img/avatar.png` | ホームで使うアイコン画像 |
 
 ### 必須要件

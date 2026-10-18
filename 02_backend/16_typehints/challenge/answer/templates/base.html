@@ -7,7 +7,7 @@
     <title>{% block title %}メモ帳{% endblock %}</title>
     <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/static/style.css">
-    {# 保存した配色を、CSSが当たる前に反映する（01_frontend/08_js_data 4節の「応用」） #}
+    {# 保存した配色を、CSSが当たる前に反映する（01_frontend/10_js_data 4節の「応用」） #}
     <script>
         try {
             const savedTheme = localStorage.getItem('theme');
@@ -64,10 +64,10 @@
         <small>&copy; メモ帳</small>
     </footer>
 
-    {# 自動で消える通知（01_frontend/07_js_ui 2節）。script.js の showToast() で使う #}
+    {# 自動で消える通知（01_frontend/09_js_ui 2節）。script.js の showToast() で使う #}
     <div id="toast" class="toast" popover="manual" role="status"></div>
 
-    {# 確認ダイアログ（01_frontend/07_js_ui 3節）。script.js が data-confirm を持つフォームで使う #}
+    {# 確認ダイアログ（01_frontend/09_js_ui 3節）。script.js が data-confirm を持つフォームで使う #}
     <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-message">
         <div class="dialog-body">
             <p id="confirm-message"></p>
@@ -78,7 +78,7 @@
         </div>
     </dialog>
 
-    {# トップへ戻るボタン（01_frontend/07_js_ui 5節） #}
+    {# トップへ戻るボタン（01_frontend/09_js_ui 5節） #}
     <button type="button" class="to-top" id="to-top" aria-label="ページの先頭へ戻る" hidden>↑</button>
 
     {# 全ページ共通の JavaScript（完成済み。02_backend/100_memo_api の static/script.js と同じ） #}

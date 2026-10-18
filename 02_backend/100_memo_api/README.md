@@ -138,9 +138,9 @@ docker compose up --build
 |---|---|---|---|
 | H1 | メモのカードと詳細を`article`に、期限を`<time datetime>`に、詳細の項目を`dl`に | `memos/index.html`・`detail.html` | [01_frontend/02_html_semantic_form](../../01_frontend/02_html_semantic_form/) 1節・[01_html_basics](../../01_frontend/01_html_basics/) 2節 |
 | H2 | ナビの今いるページのリンクに`aria-current="page"`（`request.endpoint`で判定） | `base.html` | 01_frontend/02_html_semantic_form 制作課題・06_jinja2 3-6 |
-| H3 | 絞り込みボタン・ピン留めボタンの状態を`aria-pressed`で伝える | `memos/index.html` | [01_frontend/06_js_dom_events](../../01_frontend/06_js_dom_events/) 練習問題4 |
+| H3 | 絞り込みボタン・ピン留めボタンの状態を`aria-pressed`で伝える | `memos/index.html` | [01_frontend/08_js_render](../../01_frontend/08_js_render/) 練習問題3 |
 | H4 | リンクの文字を「こちら」にしない。`autocomplete`・`required`などの属性 | `auth/login.html`・`register.html`・`memos/_form.html` | 01_frontend/02_html_semantic_form 1・2節 |
-| H5 | ページごとの`<meta name="description">`・ファビコン・OGP（`self.title()`でタイトルを2回使う） | `base.html`・各テンプレートの`block description`・`static/favicon.svg` | 01_frontend/01_html_basics 1節・[09_homepage](../../01_frontend/09_homepage/) 1節・06_jinja2 3-5 |
+| H5 | ページごとの`<meta name="description">`・ファビコン・OGP（`self.title()`でタイトルを2回使う） | `base.html`・各テンプレートの`block description`・`static/favicon.svg` | 01_frontend/01_html_basics 1節・[11_homepage](../../01_frontend/11_homepage/) 1節・06_jinja2 3-5 |
 | H6 | 追加・編集のフォームを`_form.html`にまとめて`include`する | `memos/_form.html`・`create.html`・`update.html` | 06_jinja2 3-4 |
 
 ### CSS
@@ -148,24 +148,24 @@ docker compose up --build
 | # | 項目 | 学ぶ章 |
 |---|---|---|
 | C1 | `box-sizing: border-box`を全体のリセットにする | [01_frontend/03_css_basics](../../01_frontend/03_css_basics/) 4節 |
-| C2 | キーボード操作のときだけ枠を出す`:focus-visible` | 01_frontend/03_css_basics 2節・09_homepage 最終チェックリスト |
+| C2 | キーボード操作のときだけ枠を出す`:focus-visible` | 01_frontend/03_css_basics 2節・11_homepage 最終チェックリスト |
 | C3 | モバイルファースト（`min-width`で広い画面用を足す）。ナビの並びは`grid-template-areas`で切り替え、カードの列数は`auto-fill`＋`minmax()`で自動 | [01_frontend/04_css_layout](../../01_frontend/04_css_layout/) 2・4節・練習問題3 |
-| C4 | ダークモード。OSの設定に従い、ボタン（◐）でも切り替えられる（`data-theme`） | 01_frontend/04_css_layout 5節・[08_js_data](../../01_frontend/08_js_data/) 4節「応用」 |
+| C4 | ダークモード。OSの設定に従い、ボタン（◐）でも切り替えられる（`data-theme`） | 01_frontend/04_css_layout 5節・[10_js_data](../../01_frontend/10_js_data/) 4節「応用」 |
 | C5 | カードの`:hover`で浮き上がる`transition`。「動きを減らす」設定の人には止める | 01_frontend/04_css_layout 5節 |
-| C6 | ヘッダーを`position: sticky`で上に固定し、スクロールしたら影を付ける | 01_frontend/04_css_layout 3節・[07_js_ui](../../01_frontend/07_js_ui/) 5節 |
+| C6 | ヘッダーを`position: sticky`で上に固定し、スクロールしたら影を付ける | 01_frontend/04_css_layout 3節・[09_js_ui](../../01_frontend/09_js_ui/) 5節 |
 | C7 | フォームの`:focus`の輪と、`:user-invalid`の赤枠 | 01_frontend/04_css_layout 練習問題4 |
 
 ### JavaScript
 
 | # | 項目 | 学ぶ章 |
 |---|---|---|
-| J2 | `flash()`のメッセージを、右下に出て3秒で消える通知（`popover="manual"`・`role="status"`）で表示する。JavaScriptが動かないときは、ふつうの一覧として表示される | 01_frontend/07_js_ui 2節 |
-| J3 | 削除の確認を`<dialog>`のモーダルにする（送信を止めてダイアログを開き、OKで`フォーム.submit()`） | 01_frontend/07_js_ui 3節「確認してから送信する」 |
-| J4 | 一覧を、カテゴリとキーワードの両方で絞り込む。件数と0件のメッセージも出す | 01_frontend/06_js_dom_events 3節・練習問題4 |
-| J5 | 選んだカテゴリと配色を`localStorage`に覚える（使えない環境に備えて`try`/`catch`で囲む） | 01_frontend/08_js_data 4節・練習問題3 |
-| J6 | メモ追加フォームの入力を`localStorage`に下書き保存し、開き直したときに復元する | 01_frontend/08_js_data 4節（サンプル03） |
-| J7 | 送信前に、タイトルと本文の入力をJavaScriptでもチェックする | 01_frontend/06_js_dom_events 練習問題3 |
-| J8 | 「トップへ戻る」ボタンと、カードが画面に入ったらふわっと表示する動き（`IntersectionObserver`） | 01_frontend/07_js_ui 5節 |
+| J2 | `flash()`のメッセージを、右下に出て3秒で消える通知（`popover="manual"`・`role="status"`）で表示する。JavaScriptが動かないときは、ふつうの一覧として表示される | 01_frontend/09_js_ui 2節 |
+| J3 | 削除の確認を`<dialog>`のモーダルにする（送信を止めてダイアログを開き、OKで`フォーム.submit()`） | 01_frontend/09_js_ui 3節「確認してから送信する」 |
+| J4 | 一覧を、カテゴリとキーワードの両方で絞り込む。件数と0件のメッセージも出す | 01_frontend/08_js_render 3節・練習問題3 |
+| J5 | 選んだカテゴリと配色を`localStorage`に覚える（使えない環境に備えて`try`/`catch`で囲む） | 01_frontend/10_js_data 4節・練習問題3 |
+| J6 | メモ追加フォームの入力を`localStorage`に下書き保存し、開き直したときに復元する | 01_frontend/10_js_data 4節（サンプル03） |
+| J7 | 送信前に、タイトルと本文の入力をJavaScriptでもチェックする | 01_frontend/06_js_events 練習問題2 |
+| J8 | 「トップへ戻る」ボタンと、カードが画面に入ったらふわっと表示する動き（`IntersectionObserver`） | 01_frontend/09_js_ui 5節 |
 
 **JavaScriptのチェックだけに頼らない**：J7の入力チェックは、ブラウザの開発者ツールで無効にできます。データを守るのはサーバー側（WTForms）のチェックで、JavaScriptのチェックは「送信する前に気づける」ための補助です（[09_forms](../09_forms/)）。
 

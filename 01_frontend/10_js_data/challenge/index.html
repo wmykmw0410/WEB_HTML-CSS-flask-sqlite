@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ホーム | 山田 太郎</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="site-name">Taro Yamada</a>
+            <!-- 08_js_render で追加：狭い画面でメニューを開閉するボタン -->
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="メニュー">☰</button>
+            <nav aria-label="メインメニュー">
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="index.html" aria-current="page">ホーム</a></li>
+                    <li><a href="about.html">プロフィール</a></li>
+                    <li><a href="works.html">制作実績</a></li>
+                    <li><a href="contact.html">お問い合わせ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <img src="img/avatar.png" alt="山田太郎のアイコン" class="avatar" width="160" height="160">
+            <div>
+                <h1>山田 太郎</h1>
+                <p class="lead">Webアプリを作れるようになるために、HTML・CSS・JavaScript・Pythonを勉強中です。</p>
+                <p>学んだことを作品にして、このサイトで公開しています。</p>
+                <a href="works.html" class="button">制作実績を見る</a>
+            </div>
+        </section>
+
+        <section>
+            <h2>できること</h2>
+            <ul class="skill-cards">
+                <li class="skill-card">
+                    <h3>HTML / CSS</h3>
+                    <p>意味の正しいHTMLと、スマホにも対応したレイアウトが書けます。</p>
+                </li>
+                <li class="skill-card">
+                    <h3>JavaScript</h3>
+                    <p>クリックや入力に反応する動きを付けたり、データから画面を作ったりできます。</p>
+                </li>
+                <li class="skill-card">
+                    <h3>Python / Flask</h3>
+                    <p>現在学習中。データベースを使ったWebアプリに挑戦しています。</p>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>お知らせ</h2>
+            <ul class="news">
+                <li><time datetime="2026-09-20">2026年9月20日</time> 制作実績に「メモ帳アプリ」を追加しました。</li>
+                <li><time datetime="2026-08-31">2026年8月31日</time> このサイトを公開しました。</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>&copy; 2026 Taro Yamada</small>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

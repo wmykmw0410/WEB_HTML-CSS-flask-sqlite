@@ -36,11 +36,13 @@ Webアプリを基礎から作れるようになるための、番号付きチ�
 - [ ] 01_frontend/02_html_semantic_form — セマンティックHTMLとアクセシビリティ・フォーム
 - [ ] 01_frontend/03_css_basics — CSSの書き方と単位・セレクタ・カスケードと詳細度・ボックスモデル・文字と装飾
 - [ ] 01_frontend/04_css_layout — Flexbox・Grid・position・レスポンシブ対応・CSS変数とトランジション
-- [ ] 01_frontend/05_js_basics — JavaScriptの読み込みとデバッグ・基本文法・真偽の判定・関数とコールバック・配列メソッド
-- [ ] 01_frontend/06_js_dom_events — DOM操作・イベント・絞り込み
-- [ ] 01_frontend/07_js_ui — タブ・ポップアップ・モーダルウィンドウ・スライドショー・スクロール
-- [ ] 01_frontend/08_js_data — JSON・`fetch()`・`async`/`await`・エラー処理・`localStorage`・データから画面を作る・HTTPメソッドの体験
-- [ ] 01_frontend/09_homepage — オリジナルHPの仕上げ（フロントエンド編のゴール）
+- [ ] 01_frontend/05_js_basics — JavaScriptの読み込みとデバッグ・最小限の基本文法・真偽の判定・関数とコールバック
+- [ ] 01_frontend/06_js_events — イベント（クリック・入力・submit）・入力チェック（ブラウザで動かす）
+- [ ] 01_frontend/07_js_dom — DOM操作（要素の取得・書き換え・作成・XSS）
+- [ ] 01_frontend/08_js_render — 配列メソッド・データから画面を作る・絞り込み
+- [ ] 01_frontend/09_js_ui — タブ・ポップアップ・モーダルウィンドウ・スライドショー・スクロール
+- [ ] 01_frontend/10_js_data — JSON・`fetch()`・`async`/`await`・エラー処理・`localStorage`・データから画面を作る・HTTPメソッドの体験
+- [ ] 01_frontend/11_homepage — オリジナルHPの仕上げ（フロントエンド編のゴール）
 - [ ] 01_frontend/00_my_homepage — 自分のオリジナルHP（各章の制作課題で育てる）
 
 ### バックエンド編：完成形（最初に触ってみる）
@@ -118,11 +120,13 @@ Webページが表示されるしくみ（リクエストとレスポンス・UR
 | 02 | [html_semantic_form](01_frontend/02_html_semantic_form/) | セマンティックHTMLとアクセシビリティ・フォーム | ステップ1：4ページのHTML |
 | 03 | [css_basics](01_frontend/03_css_basics/) | CSSの書き方と単位・セレクタ・カスケードと詳細度・ボックスモデル・文字と装飾 | — |
 | 04 | [css_layout](01_frontend/04_css_layout/) | Flexbox・Grid・position・レスポンシブ対応・CSS変数とトランジション | ステップ2：`style.css` |
-| 05 | [js_basics](01_frontend/05_js_basics/) | JavaScriptの読み込みとデバッグ・基本文法・真偽の判定・関数とコールバック・配列メソッド | — |
-| 06 | [js_dom_events](01_frontend/06_js_dom_events/) | DOM操作・イベント（ホバー・フォーカス・submit）・クライアント側での絞り込み | ステップ3：`script.js` |
-| 07 | [js_ui](01_frontend/07_js_ui/) | タブ切り替え・ポップアップ（`popover`）・モーダルウィンドウ（`<dialog>`）・スライドショー・スクロール動作 | （自由課題で使う） |
-| 08 | [js_data](01_frontend/08_js_data/) | JSON・`fetch()`・`async`/`await`・エラー処理・`localStorage`・データから画面を作る・HTTPメソッドの体験（JSONPlaceholder。発展・任意） | ステップ4：データの分離 |
-| 09 | [homepage](01_frontend/09_homepage/) | ファビコン・OGP・画像の最適化・品質チェック・GitHub Pagesでの公開（補足）・全機能を盛り込んだ完成版の作例（`sample/`） | ステップ5：**完成** |
+| 05 | [js_basics](01_frontend/05_js_basics/) | JavaScriptの読み込みとデバッグ・最小限の基本文法・真偽の判定・関数とコールバック | — |
+| 06 | [js_events](01_frontend/06_js_events/) | イベント（クリック・入力・ホバー・フォーカス・submit）・入力チェック（ブラウザで動かす） | — |
+| 07 | [js_dom](01_frontend/07_js_dom/) | DOM操作（`querySelector`・属性・要素の作成・XSS） | — |
+| 08 | [js_render](01_frontend/08_js_render/) | 配列メソッド（`map`・`filter`・`find`・`includes`）・データから画面を作る（`render()`）・クライアント側での絞り込み | ステップ3：`script.js` |
+| 09 | [js_ui](01_frontend/09_js_ui/) | タブ切り替え・ポップアップ（`popover`）・モーダルウィンドウ（`<dialog>`）・スライドショー・スクロール動作 | （自由課題で使う） |
+| 10 | [js_data](01_frontend/10_js_data/) | JSON・`fetch()`・`async`/`await`・エラー処理・`localStorage`・データから画面を作る・HTTPメソッドの体験（JSONPlaceholder。発展・任意） | ステップ4：データの分離 |
+| 11 | [homepage](01_frontend/11_homepage/) | ファビコン・OGP・画像の最適化・品質チェック・GitHub Pagesでの公開（補足）・全機能を盛り込んだ完成版の作例（`sample/`） | ステップ5：**完成** |
 
 ### バックエンド編（[02_backend/](02_backend/)）
 

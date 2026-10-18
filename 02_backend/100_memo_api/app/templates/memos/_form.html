@@ -1,12 +1,12 @@
 {#
     メモの追加・編集で共通のフォーム（create.html / update.html から include する）
 
-    J7：送信前に JavaScript でも入力をチェックする（01_frontend/06_js_dom_events 練習問題3）。
+    J7：送信前に JavaScript でも入力をチェックする（01_frontend/06_js_events 練習問題2）。
         サーバー側（WTForms）のチェックは必ず残す。JavaScript のチェックは無効にできるため、
         「すぐに気づける」ための補助にすぎない。
         novalidate：ブラウザ標準の吹き出しを止め、script.js でメッセージを出す
         required・maxlength・pattern：:user-invalid（style.css）で、操作した後に不正な値なら赤枠にする
-    J6：draft_key があるときは、入力中の内容を localStorage に下書き保存する（01_frontend/08_js_data 4節）
+    J6：draft_key があるときは、入力中の内容を localStorage に下書き保存する（01_frontend/10_js_data 4節）
 #}
 <form method="post" class="memo-form" novalidate data-validate{% if draft_key %} data-draft-key="{{ draft_key }}"{% endif %}>
     {{ form.csrf_token }}

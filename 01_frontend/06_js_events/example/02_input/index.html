@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>2. 入力に反応する：文字数カウンター</title>
+    <style>
+        body { font-family: sans-serif; max-width: 640px; margin: 40px auto; padding: 0 16px; color: #262b33; }
+        textarea { width: 100%; box-sizing: border-box; padding: 6px; height: 100px; }
+        #count { color: #6b7280; font-size: 0.9em; }
+        #count.over { color: #d1495b; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>文字数カウンター</h1>
+    <textarea id="body" maxlength="500" placeholder="ここに入力..."></textarea>
+    <p><span id="count">0</span> / 500文字</p>
+
+    <script src="script.js"></script>
+</body>
+</html>

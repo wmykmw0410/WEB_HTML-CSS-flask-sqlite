@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>プロフィール | 山田 太郎</title>
+    <!-- TODO（1節）：img/favicon.svg を作り、<link rel="icon" href="img/favicon.svg" type="image/svg+xml"> で読み込む -->
+    <!-- TODO（1節）：OGP の meta（og:type・og:title・og:description・og:image）を書く -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="site-name">Taro Yamada</a>
+            <!-- 08_js_render で追加：狭い画面でメニューを開閉するボタン -->
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="メニュー">☰</button>
+            <nav aria-label="メインメニュー">
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="index.html">ホーム</a></li>
+                    <li><a href="about.html" aria-current="page">プロフィール</a></li>
+                    <li><a href="works.html">制作実績</a></li>
+                    <li><a href="contact.html">お問い合わせ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>プロフィール</h1>
+
+        <section>
+            <h2>基本情報</h2>
+            <dl class="profile">
+                <dt>名前</dt>
+                <dd>山田 太郎（やまだ たろう）</dd>
+                <dt>住まい</dt>
+                <dd>東京都</dd>
+                <dt>趣味</dt>
+                <dd>読書・散歩・カフェめぐり</dd>
+            </dl>
+        </section>
+
+        <section>
+            <h2>スキル</h2>
+            <table class="skills">
+                <caption>使える技術と学習期間</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">技術</th>
+                        <th scope="col">レベル</th>
+                        <th scope="col">学習期間</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">HTML / CSS</th>
+                        <td>ひとりでページを作れる</td>
+                        <td>6か月</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">JavaScript</th>
+                        <td>DOM操作・イベント処理ができる</td>
+                        <td>4か月</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Python</th>
+                        <td>基本文法・Flaskの基礎</td>
+                        <td>2か月</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>経歴</h2>
+            <ol class="timeline">
+                <li><time datetime="2026-03">2026年3月</time> プログラミングの学習を始める</li>
+                <li><time datetime="2026-06">2026年6月</time> 初めての作品（タイピング練習ゲーム）を完成</li>
+                <li><time datetime="2026-08">2026年8月</time> このポートフォリオサイトを公開</li>
+            </ol>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>&copy; 2026 Taro Yamada</small>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

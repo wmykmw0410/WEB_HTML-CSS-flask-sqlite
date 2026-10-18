@@ -76,7 +76,7 @@ const getIdFromUrl = () => {
 };
 
 // 「あると便利」な設定（選んだカテゴリなど）の保存と読み出し。
-// localStorage が使えない環境でもページが止まらないよう、try/catch で囲む（01_frontend/08_js_data 4節）
+// localStorage が使えない環境でもページが止まらないよう、try/catch で囲む（01_frontend/10_js_data 4節）
 const saveSetting = (key, value) => {
     try {
         localStorage.setItem(key, value);

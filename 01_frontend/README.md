@@ -4,7 +4,7 @@
 
 ## ゴール
 
-**自分を紹介するオリジナルHPの完成**がフロントエンド編のゴールです。4ページ以上のサイトを、各章の「制作課題」で少しずつ作り、09_homepage で仕上げます（補足として公開方法も紹介）。作る場所は[00_my_homepage/](00_my_homepage/)です。
+**自分を紹介するオリジナルHPの完成**がフロントエンド編のゴールです。4ページ以上のサイトを、各章の「制作課題」で少しずつ作り、11_homepage で仕上げます（補足として公開方法も紹介）。作る場所は[00_my_homepage/](00_my_homepage/)です。
 
 ここで学ぶHTML・CSS・JavaScriptは、バックエンド編の最初の章 [02_backend/02_memo_app_frontend](../02_backend/02_memo_app_frontend/) で、ブラウザだけで動くメモ帳アプリを作るときにそのまま使います。
 
@@ -18,11 +18,13 @@ Webページが表示されるしくみ（リクエストとレスポンス・UR
 | [02_html_semantic_form](02_html_semantic_form/) | セマンティックHTMLとアクセシビリティ・フォーム | ステップ1：4ページのHTML |
 | [03_css_basics](03_css_basics/) | CSSの書き方と単位・セレクタ・カスケードと詳細度・ボックスモデル・文字と装飾 | — |
 | [04_css_layout](04_css_layout/) | Flexbox・Grid・position・レスポンシブ対応・CSS変数とトランジション | ステップ2：`style.css` |
-| [05_js_basics](05_js_basics/) | JavaScriptの読み込みとデバッグ・基本文法・真偽の判定・関数とコールバック・配列メソッド | — |
-| [06_js_dom_events](06_js_dom_events/) | DOM操作・イベント（ホバー・フォーカス・submit）・クライアント側での絞り込み | ステップ3：`script.js` |
-| [07_js_ui](07_js_ui/) | タブ切り替え・ポップアップ（`popover`）・モーダルウィンドウ（`<dialog>`）・スライドショー・スクロール動作 | （自由課題で使う） |
-| [08_js_data](08_js_data/) | JSON・`fetch()`・`async`/`await`・エラー処理・`localStorage`・データから画面を作る・HTTPメソッドの体験（JSONPlaceholder。発展・任意） | ステップ4：データの分離 |
-| [09_homepage](09_homepage/) | ファビコン・OGP・画像の最適化・品質チェック・GitHub Pagesでの公開（補足）・全機能を盛り込んだ完成版の作例（`sample/`） | ステップ5：**完成** |
+| [05_js_basics](05_js_basics/) | JavaScriptの読み込みとデバッグ・最小限の基本文法・真偽の判定・関数とコールバック | — |
+| [06_js_events](06_js_events/) | イベント（クリック・入力・ホバー・フォーカス・submit）・入力チェック（ブラウザで動かす） | — |
+| [07_js_dom](07_js_dom/) | DOM操作（`querySelector`・属性・要素の作成・XSS） | — |
+| [08_js_render](08_js_render/) | 配列メソッド（`map`・`filter`・`find`・`includes`）・データから画面を作る（`render()`）・クライアント側での絞り込み | ステップ3：`script.js` |
+| [09_js_ui](09_js_ui/) | タブ切り替え・ポップアップ（`popover`）・モーダルウィンドウ（`<dialog>`）・スライドショー・スクロール動作 | （自由課題で使う） |
+| [10_js_data](10_js_data/) | JSON・`fetch()`・`async`/`await`・エラー処理・`localStorage`・データから画面を作る・HTTPメソッドの体験（JSONPlaceholder。発展・任意） | ステップ4：データの分離 |
+| [11_homepage](11_homepage/) | ファビコン・OGP・画像の最適化・品質チェック・GitHub Pagesでの公開（補足）・全機能を盛り込んだ完成版の作例（`sample/`） | ステップ5：**完成** |
 
 ## 各章の構成
 
@@ -46,10 +48,10 @@ Webページが表示されるしくみ（リクエストとレスポンス・UR
 
 ブラウザ・VS Code・拡張機能（Live Server）・Pythonの用意は、[00_docs/setup/frontend.md](../00_docs/setup/frontend.md)にまとめています。章をまたいで出てくる用語は、[00_docs/glossary](../00_docs/glossary/)（用語集）で引けます。
 
-01〜07章のページは、HTMLファイルをブラウザで直接開くだけで動きます。08_js_data・09_homepageの`fetch()`を使うページは、簡易サーバーを起動して開きます（08_js_data の0節を参照）。
+01〜07章のページは、HTMLファイルをブラウザで直接開くだけで動きます。10_js_data・11_homepageの`fetch()`を使うページは、簡易サーバーを起動して開きます（10_js_data の0節を参照）。
 
 ```bash
-cd 01_frontend/08_js_data
+cd 01_frontend/10_js_data
 python -m http.server 8000
 # → http://localhost:8000/
 ```

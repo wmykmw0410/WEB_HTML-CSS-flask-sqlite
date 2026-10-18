@@ -10,7 +10,7 @@ common.js：全ページ共通の処理（完成済み）
 
 
 // ============================================================
-// 自動で消える通知（01_frontend/07_js_ui 2節）
+// 自動で消える通知（01_frontend/09_js_ui 2節）
 // ============================================================
 const toast = document.getElementById('toast');
 let toastTimer = null;
@@ -31,7 +31,7 @@ const showToast = (message, isError = false) => {
 
 
 // ============================================================
-// 確認ダイアログ（01_frontend/07_js_ui 3節）
+// 確認ダイアログ（01_frontend/09_js_ui 3節）
 // confirm() の代わりに使う。「OK」が押されたときに呼んでほしい処理を、コールバック関数で渡す
 // （01_frontend/05_js_basics 2節）
 //   openConfirm('削除しますか？', () => { ...OK のときの処理... });
@@ -63,7 +63,7 @@ confirmDialog.addEventListener('click', (event) => {
 
 
 // ============================================================
-// ハンバーガーメニュー（01_frontend/06_js_dom_events の制作課題）
+// ハンバーガーメニュー（01_frontend/08_js_render の制作課題）
 // ============================================================
 const navToggle = document.getElementById('nav-toggle');
 const navLinks = document.getElementById('nav-links');
@@ -76,7 +76,7 @@ navToggle.addEventListener('click', () => {
 
 
 // ============================================================
-// 配色の切り替え（01_frontend/08_js_data 4節の「応用」）
+// 配色の切り替え（01_frontend/10_js_data 4節の「応用」）
 // 読み込み直後の反映は、各ページの <head> の中で行っている
 // ============================================================
 const themeButton = document.getElementById('theme-toggle');
@@ -107,7 +107,7 @@ updateThemeLabel();
 
 
 // ============================================================
-// スクロール（01_frontend/07_js_ui 5節）
+// スクロール（01_frontend/09_js_ui 5節）
 //   - 少しスクロールしたらヘッダーに影
 //   - 300px 以上スクロールしたら「トップへ戻る」ボタン
 // ============================================================
@@ -128,7 +128,7 @@ toTop.addEventListener('click', () => {
 
 
 // ============================================================
-// 画面に入ったらふわっと表示する（01_frontend/07_js_ui 5節）
+// 画面に入ったらふわっと表示する（01_frontend/09_js_ui 5節）
 // list.js の render() でカードを作るたびに呼ぶ
 // ============================================================
 const fadeInObserver = new IntersectionObserver((entries) => {

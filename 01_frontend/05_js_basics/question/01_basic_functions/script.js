@@ -54,7 +54,6 @@ check('TODO 2：formatMemo', formatMemo(memos[1]), '[仕事] 企画会議メモ'
 check('TODO 3：sumTo(3)', sumTo(3), 6);
 check('TODO 3：sumTo(10)', sumTo(10), 55);
 check('TODO 4：isFilled(\'メモ\')', isFilled('メモ'), true);
-check('TODO 4：isFilled(\'   \')', isFilled('   '), false);
 check('TODO 4：isFilled(\'\')', isFilled(''), false);
 check('TODO 5：countByCategory(仕事)', countByCategory(memos, '仕事'), 2);
 check('TODO 5：countByCategory(趣味)', countByCategory(memos, '趣味'), 0);

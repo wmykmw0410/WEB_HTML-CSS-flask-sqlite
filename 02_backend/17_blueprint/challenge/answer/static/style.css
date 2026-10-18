@@ -75,7 +75,7 @@
    ページ全体
    ============================================================ */
 html {
-    scroll-behavior: smooth;   /* J8：トップへ戻るボタンでなめらかに戻る（01_frontend/07_js_ui 5節） */
+    scroll-behavior: smooth;   /* J8：トップへ戻るボタンでなめらかに戻る（01_frontend/09_js_ui 5節） */
 }
 
 body {
@@ -107,7 +107,7 @@ img {
     height: auto;
 }
 
-/* C2：キーボードで操作しているときだけ、はっきりした枠を出す（01_frontend/03_css_basics 2節・09_homepage） */
+/* C2：キーボードで操作しているときだけ、はっきりした枠を出す（01_frontend/03_css_basics 2節・11_homepage） */
 :focus-visible {
     outline: 3px solid var(--color-focus);
     outline-offset: 2px;
@@ -436,7 +436,7 @@ code {
     margin: 0;
 }
 
-/* J8：画面に入ったらふわっと表示する（01_frontend/07_js_ui 5節。.fade-in と .visible は script.js が付ける） */
+/* J8：画面に入ったらふわっと表示する（01_frontend/09_js_ui 5節。.fade-in と .visible は script.js が付ける） */
 .fade-in {
     opacity: 0;
     transform: translateY(16px);
@@ -603,7 +603,7 @@ input[type="submit"]:hover,
 
 
 /* ============================================================
-   J2：自動で消える通知（01_frontend/07_js_ui 2節）
+   J2：自動で消える通知（01_frontend/09_js_ui 2節）
    ============================================================ */
 .toast {
     inset: auto 16px 16px auto;   /* 右下に置く */
@@ -623,7 +623,7 @@ input[type="submit"]:hover,
 
 
 /* ============================================================
-   J3：削除の確認ダイアログ（01_frontend/07_js_ui 3節）
+   J3：削除の確認ダイアログ（01_frontend/09_js_ui 3節）
    ============================================================ */
 .confirm-dialog {
     width: min(90vw, 360px);
@@ -655,7 +655,7 @@ body:has(dialog[open]) {
 
 
 /* ============================================================
-   J8：トップへ戻るボタン（01_frontend/07_js_ui 5節・04_css_layout 3節の fixed）
+   J8：トップへ戻るボタン（01_frontend/09_js_ui 5節・04_css_layout 3節の fixed）
    ============================================================ */
 .to-top {
     position: fixed;

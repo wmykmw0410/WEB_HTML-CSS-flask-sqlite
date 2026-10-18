@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>0. まず動かしてみる</title>
+    <style>
+        body { font-family: sans-serif; max-width: 640px; margin: 40px auto; padding: 0 16px; color: #262b33; }
+        button { padding: 8px 16px; border: 1px solid #3f6fd1; border-radius: 6px; background: #fff; color: #3f6fd1; cursor: pointer; }
+        #message { margin-top: 16px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>まず動かしてみる</h1>
+    <button type="button" id="hello-button">押してみてください</button>
+    <p id="message"></p>
+
+    <!-- </body> の直前に書く -->
+    <script>
+        // ボタンが押されたら、下の文字を書き換える（しくみは06章で学ぶ）
+        document.getElementById('hello-button').addEventListener('click', () => {
+            document.getElementById('message').textContent = 'JavaScriptが動きました！';
+        });
+    </script>
+</body>
+</html>

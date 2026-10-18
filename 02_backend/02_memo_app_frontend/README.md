@@ -13,9 +13,9 @@
 | チャプター | 使う知識 |
 |---|---|
 | 01_frontend/02_html_semantic_form・01_frontend/04_css_layout | HTMLとCSSの読み方（この章のHTMLとCSSは用意済み） |
-| 01_frontend/05_js_basics・01_frontend/06_js_dom_events | 基本文法・コールバック関数・DOM操作・イベント・`preventDefault()` |
-| 01_frontend/07_js_ui | 通知（`popover`）・確認ダイアログ（`<dialog>`）・スクロール（この章では完成済みの`common.js`で使う） |
-| 01_frontend/08_js_data | JSON・`fetch()`・`localStorage`・「データを変える → 保存 → 描画」 |
+| 01_frontend/05_js_basics・01_frontend/06_js_events・01_frontend/07_js_dom・01_frontend/08_js_render | 基本文法・コールバック関数・DOM操作・イベント・`preventDefault()` |
+| 01_frontend/09_js_ui | 通知（`popover`）・確認ダイアログ（`<dialog>`）・スクロール（この章では完成済みの`common.js`で使う） |
+| 01_frontend/10_js_data | JSON・`fetch()`・`localStorage`・「データを変える → 保存 → 描画」 |
 
 ## 目次
 
@@ -125,7 +125,7 @@ openConfirm('削除しますか？', () => {
 });
 ```
 
-`openConfirm()`は、`confirm()`（01_frontend/06_js_dom_events 2節）の代わりに、`<dialog>`（01_frontend/07_js_ui 3節）で確認します。`confirm()`のように「答えが出るまで待つ」ことはできないので、OKのときにしてほしい処理を**コールバック関数**（01_frontend/05_js_basics 2節）で渡します。
+`openConfirm()`は、`confirm()`（01_frontend/06_js_events 3節）の代わりに、`<dialog>`（01_frontend/09_js_ui 3節）で確認します。`confirm()`のように「答えが出るまで待つ」ことはできないので、OKのときにしてほしい処理を**コールバック関数**（01_frontend/05_js_basics 2節）で渡します。
 
 ### 処理の流れ
 
@@ -162,12 +162,12 @@ python -m http.server 8000
 
 | ステップ | 書くファイル | 内容 | 使う章 |
 |---|---|---|---|
-| 1 | `storage.js` | `localStorage`への保存・読み込みと、初期データの読み込み | 01_frontend/08_js_data 1〜4節 |
-| 2 | `list.js` | データからカードを作って一覧を表示する | 01_frontend/08_js_data 5節 |
-| 3 | `list.js` | 並び替え・カテゴリの絞り込み・キーワード検索・選んだカテゴリを覚える | 01_frontend/05_js_basics 2節・01_frontend/06_js_dom_events 3節・練習問題4 |
-| 4 | `form.js` | フォームの内容から新しいメモを作って保存する | 01_frontend/06_js_dom_events 2節 |
+| 1 | `storage.js` | `localStorage`への保存・読み込みと、初期データの読み込み | 01_frontend/10_js_data 1〜4節 |
+| 2 | `list.js` | データからカードを作って一覧を表示する | 01_frontend/10_js_data 5節 |
+| 3 | `list.js` | 並び替え・カテゴリの絞り込み・キーワード検索・選んだカテゴリを覚える | 01_frontend/08_js_render 1節・3節・練習問題3 |
+| 4 | `form.js` | フォームの内容から新しいメモを作って保存する | 01_frontend/06_js_events 3節 |
 | 5 | `detail.js`・`form.js` | URLのIDからメモを探して表示する・フォームに入れて更新する | この章で解説 |
-| 6 | `list.js`・`detail.js` | ★でピン留め（通知を出す）、確認ダイアログを出してから削除 | 01_frontend/08_js_data 5節・01_frontend/07_js_ui 2・3節 |
+| 6 | `list.js`・`detail.js` | ★でピン留め（通知を出す）、確認ダイアログを出してから削除 | 01_frontend/10_js_data 5節・01_frontend/09_js_ui 2・3節 |
 
 各ステップを書き終えるたびにブラウザで確認しながら進めます。完成済みの部分（`common.js`全体、`form.js`の文字数カウンター・入力チェック・下書き保存・キャンセルの確認、`list.js`のカードの作成など）は、フロントエンド編の06〜08章で学んだ書き方を組み合わせたものなので、読んで仕組みを確認してください。
 
@@ -185,7 +185,7 @@ python -m http.server 8000
 
 `initMemos()`は、「初めて開いたときだけ初期データを使い、2回目以降は保存したデータを使う」ための関数です。書き終えたら、`initMemos()`の最後にある仮の`return [];`の行は消します。
 
-`storage.js`の後半（`resetMemos()`・`nextId()`・`getIdFromUrl()`・`saveSetting()`・`loadSetting()`）は完成済みです。`saveSetting()`・`loadSetting()`は、選んだカテゴリや下書きのような「保存できたら便利」な値のための関数で、`localStorage`が使えない環境でもページが止まらないよう`try`/`catch`で囲んでいます（01_frontend/08_js_data 4節）。
+`storage.js`の後半（`resetMemos()`・`nextId()`・`getIdFromUrl()`・`saveSetting()`・`loadSetting()`）は完成済みです。`saveSetting()`・`loadSetting()`は、選んだカテゴリや下書きのような「保存できたら便利」な値のための関数で、`localStorage`が使えない環境でもページが止まらないよう`try`/`catch`で囲んでいます（01_frontend/10_js_data 4節）。
 
 ### 動作確認
 
@@ -198,7 +198,7 @@ python -m http.server 8000
 
 ## ステップ2：一覧を表示する（list.js）
 
-`render()`を書きます。カード1枚を作る`createCard(memo)`は完成済みです（01_frontend/08_js_data の練習問題4・サンプル04と同じく、`createElement`と`textContent`で要素を組み立てています）。作るカードの構造は、100_memo_apiの一覧ページと同じです。
+`render()`を書きます。カード1枚を作る`createCard(memo)`は完成済みです（01_frontend/10_js_data の練習問題4・サンプル04と同じく、`createElement`と`textContent`で要素を組み立てています）。作るカードの構造は、100_memo_apiの一覧ページと同じです。
 
 ```javascript
 const render = () => {
@@ -249,7 +249,7 @@ const sortMemos = (list) => {
 
 ### 絞り込みと検索：「状態」を持つ
 
-選択中のカテゴリ（`selectedCategory`）と検索キーワード（`keyword`）を変数として持ち、`getVisibleMemos()`でその両方を満たすメモだけを残します（タイトルか本文にキーワードを含むもの）。ボタンや検索欄の操作では、**変数を書き換えて`render()`を呼ぶだけ**にします。01_frontend/06_js_dom_events 3節の絞り込みのように、カードの`hidden`を直接付け外しはしません。
+選択中のカテゴリ（`selectedCategory`）と検索キーワード（`keyword`）を変数として持ち、`getVisibleMemos()`でその両方を満たすメモだけを残します（タイトルか本文にキーワードを含むもの）。ボタンや検索欄の操作では、**変数を書き換えて`render()`を呼ぶだけ**にします。01_frontend/08_js_render 3節の絞り込みのように、カードの`hidden`を直接付け外しはしません。
 
 ```javascript
 keywordInput.addEventListener('input', () => {
@@ -262,7 +262,7 @@ keywordInput.addEventListener('input', () => {
 
 | 書くこと | ヒント |
 |---|---|
-| `selectCategory(category)` | `selectedCategory`を変え、押されたボタンだけ`aria-pressed="true"`にする（01_frontend/06_js_dom_events 練習問題4） |
+| `selectCategory(category)` | `selectedCategory`を変え、押されたボタンだけ`aria-pressed="true"`にする（01_frontend/08_js_render 練習問題3） |
 | 絞り込みボタン | 親の`#filters`に1回だけ`click`を登録し、`event.target.closest('button')`で押されたボタンを探す。`selectCategory()`を呼び、`saveSetting(FILTER_KEY, カテゴリ)`で覚えておく |
 | 開いたときの復元 | `start()`の最後で、`loadSetting(FILTER_KEY)`で読んだカテゴリのボタンがあれば（`` filters.querySelector(`button[data-category="${saved}"]`) ``）、そのカテゴリを選ぶ。無ければ`'all'` |
 
@@ -366,7 +366,7 @@ memo = memos.find((m) => m.id === getIdFromUrl());
 
 ## ステップ6：ピン留めと削除（list.js・detail.js）
 
-カードは`render()`のたびに作り直されるので、★ボタンや削除ボタンに直接イベントを登録しても、次の描画で消えてしまいます。01_frontend/08_js_data 5節と同じく、作り直されない親の`#memo-list`に1回だけイベントを登録し、`event.target`で何が押されたかを判定します。
+カードは`render()`のたびに作り直されるので、★ボタンや削除ボタンに直接イベントを登録しても、次の描画で消えてしまいます。01_frontend/10_js_data 5節と同じく、作り直されない親の`#memo-list`に1回だけイベントを登録し、`event.target`で何が押されたかを判定します。
 
 ```javascript
 memoList.addEventListener('click', (event) => {

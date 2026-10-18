@@ -27,4 +27,4 @@
 | [web_basic/](web_basic/) | URL・リクエストとレスポンス・ステータスコードなど、Webのしくみの言葉が出てきたとき。フロントエンド編を始める前に一度ざっと読んでおくと、全体像がつかみやすい |
 | [glossary/](glossary/) | 章の中で、意味を忘れた用語が出てきたとき |
 | [python_grammar/](python_grammar/) | バックエンド編で、わからないPythonの文法が出てきたとき |
-| [github/](github/) | 作ったものをGitHubに置きたくなったとき（フロントエンド編の[09_homepage](../01_frontend/09_homepage/)でHPを公開するときなど） |
+| [github/](github/) | 作ったものをGitHubに置きたくなったとき（フロントエンド編の[11_homepage](../01_frontend/11_homepage/)でHPを公開するときなど） |

@@ -234,7 +234,7 @@ base.html（共通レイアウト）
 
 ### 3-5. self.ブロック名() — 同じブロックを2回使う
 
-`{% block title %}`の中身を、`<title>`と、SNS用の`<meta property="og:title">`（01_frontend/09_homepage 1節）の両方で使いたいときがあります。同じブロックを2回書くことはできないので、2回目は`{{ self.ブロック名() }}`で呼び出します。
+`{% block title %}`の中身を、`<title>`と、SNS用の`<meta property="og:title">`（01_frontend/11_homepage 1節）の両方で使いたいときがあります。同じブロックを2回書くことはできないので、2回目は`{{ self.ブロック名() }}`で呼び出します。
 
 ```html
 <!-- base.html -->

@@ -20,7 +20,7 @@ let editingMemo = null;   // 編集中のメモ（追加ページでは null の
 
 
 // ============================================================
-// 文字数カウンター（完成済み：01_frontend/06_js_dom_events 練習問題1）
+// 文字数カウンター（完成済み：01_frontend/06_js_events 練習問題1）
 // ============================================================
 const updateCount = () => {
     const length = bodyInput.value.length;
@@ -31,7 +31,7 @@ bodyInput.addEventListener('input', updateCount);
 
 
 // ============================================================
-// 入力チェック（完成済み：01_frontend/06_js_dom_events 練習問題3）
+// 入力チェック（完成済み：01_frontend/06_js_events 練習問題2）
 // ============================================================
 const showError = (input, message) => {
     document.getElementById(`${input.id}-error`).textContent = message;
@@ -63,7 +63,7 @@ const validate = () => {
 
 
 // ============================================================
-// 下書きの自動保存（完成済み：01_frontend/08_js_data 4節のサンプル）。追加ページだけで動く
+// 下書きの自動保存（完成済み：01_frontend/10_js_data 4節のサンプル）。追加ページだけで動く
 // ============================================================
 const DRAFT_KEY = form.dataset.draftKey;   // new.html の <form data-draft-key="memo-draft">。edit.html では undefined
 const draftInputs = [titleInput, categoryInput, bodyInput, dueInput];

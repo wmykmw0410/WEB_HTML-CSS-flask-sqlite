@@ -38,7 +38,7 @@ Python拡張機能に同梱される、型チェック・補完機能です。`0
 
 ### Live Server（Ritwick Dey）
 
-`.html`ファイルを保存するたびに自動でブラウザをリロードしてくれる拡張機能です。`01_frontend/01_html_basics`〜`01_frontend/05_js_basics`のようにFlaskを使わず`.html`を直接開いて確認する場面で便利です。
+`.html`ファイルを保存するたびに自動でブラウザをリロードしてくれる拡張機能です。`01_frontend/01_html_basics`〜`01_frontend/09_js_ui`のようにFlaskを使わず`.html`を直接開いて確認する場面で便利です。
 
 - **使い方**: `.html`ファイルをエディタで開いた状態で右クリック →`Open with Live Server`。ブラウザが自動で開き、以後ファイルを保存するたびに自動更新される
 

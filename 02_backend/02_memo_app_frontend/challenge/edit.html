@@ -7,7 +7,7 @@
     <title>メモを編集 - メモ帳</title>
     <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/style.css">
-    <!-- 保存した配色を、CSSが当たる前に反映する（01_frontend/08_js_data 4節の「応用」） -->
+    <!-- 保存した配色を、CSSが当たる前に反映する（01_frontend/10_js_data 4節の「応用」） -->
     <script>
         try {
             const savedTheme = localStorage.getItem('theme');
@@ -86,10 +86,10 @@
         <small>&copy; メモ帳</small>
     </footer>
 
-    <!-- 自動で消える通知（01_frontend/07_js_ui 2節）。common.js の showToast() で使う -->
+    <!-- 自動で消える通知（01_frontend/09_js_ui 2節）。common.js の showToast() で使う -->
     <div id="toast" class="toast" popover="manual" role="status"></div>
 
-    <!-- 確認ダイアログ（01_frontend/07_js_ui 3節）。common.js の openConfirm() で使う -->
+    <!-- 確認ダイアログ（01_frontend/09_js_ui 3節）。common.js の openConfirm() で使う -->
     <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-message">
         <div class="dialog-body">
             <p id="confirm-message"></p>
@@ -100,7 +100,7 @@
         </div>
     </dialog>
 
-    <!-- トップへ戻るボタン（01_frontend/07_js_ui 5節） -->
+    <!-- トップへ戻るボタン（01_frontend/09_js_ui 5節） -->
     <button type="button" class="to-top" id="to-top" aria-label="ページの先頭へ戻る" hidden>↑</button>
 
     <!-- 役割ごとに分けたJavaScriptを、上から順に読み込む（storage.js・common.js の関数を後のファイルで使うため、順番が大事） -->
