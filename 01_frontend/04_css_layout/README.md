@@ -1,20 +1,21 @@
-# 04 CSSのレイアウトとレスポンシブ
+# 04 ボックスモデルとレイアウト
 
 > フロントエンド編 ／ 前の章：[03_css_basics](../03_css_basics/) ／ 次の章：[05_js_basics](../05_js_basics/)
 
-この章のゴールは、**レイアウトを自力で組めるようになる**ことです。要素を1列に並べるFlexbox・格子状に並べるGrid・重ねたり固定したりするposition・画面幅に合わせて切り替えるレスポンシブ対応、そして配色をまとめて管理するCSS変数を学びます。
+この章のゴールは、**レイアウトを自力で組めるようになる**ことです。まず、すべてのレイアウトの土台になるボックスモデルとdisplayを学び、要素を1列に並べるFlexbox・格子状に並べるGrid・画面幅に合わせて切り替えるレスポンシブ対応、配色をまとめて管理するCSS変数、フォームの装飾の順に進みます。
 
 章の最後の制作課題では、[02_html_semantic_form](../02_html_semantic_form/)で書いたオリジナルHPのHTMLに`style.css`を書いて、見た目を付けます。
 
-> 開発者ツールの**デバイスツールバー**（画面幅の切り替え）と、Elementsパネルの**Flex / Grid バッジ**をよく使います（[01_html_basicsの0節](../01_html_basics/#0-はじめに学習環境と開発者ツール)）。
+> 開発者ツールの**Computed**パネル（ボックスモデルの図）と**デバイスツールバー**（画面幅の切り替え）、Elementsパネルの**Flex / Grid バッジ**をよく使います（[01_html_basicsの0節](../01_html_basics/#0-はじめに学習環境と開発者ツール)）。
 
 ## 目次
 
-1. [Flexbox](#1-flexbox)
-2. [Grid](#2-grid)
-3. [position（重ねる・固定する）](#3-position重ねる固定する)
+1. [ボックスモデルとdisplay](#1-ボックスモデルとdisplay)
+2. [Flexbox](#2-flexbox)
+3. [Grid](#3-grid)
 4. [レスポンシブ対応](#4-レスポンシブ対応)
-5. [CSS変数とトランジション](#5-css変数とトランジション)
+5. [CSS変数](#5-css変数)
+6. [フォームの装飾](#6-フォームの装飾)
 - [制作課題：オリジナルHP（ステップ2）](#制作課題オリジナルhpステップ2)
 - [参考リンク](#参考リンク)
 
@@ -26,31 +27,31 @@
 01_frontend/04_css_layout/
 ├── README.md
 ├── example/                      サンプル（1つのサンプル＝1つのフォルダ）
-│   ├── 01_flexbox/               Flexbox（主軸/交差軸・配置・折り返し・伸び縮み・実用パターン）
+│   ├── 01_box_model/             ボックスモデル・box-sizing・マージン相殺・display・overflow
+│   │   └── index.html
+│   ├── 02_flexbox/               Flexbox（主軸/交差軸・配置・折り返し・伸び縮み・実用パターン）
 │   │   ├── index.html
 │   │   └── img/sample.png
-│   ├── 02_grid/                  Grid（fr・minmax・auto-fill/auto-fit・span・template-areas）
-│   │   └── index.html
-│   ├── 03_position/              position（relative/absolute/fixed/sticky・z-index）
+│   ├── 03_grid/                  Grid（fr・minmax・auto-fill/auto-fit・span・template-areas）
 │   │   └── index.html
 │   ├── 04_responsive/            レスポンシブ（viewport・モバイルファースト・clamp）
 │   │   ├── index.html
 │   │   └── img/sample.png
-│   └── 05_variables_transition/  CSS変数・ダークモード・トランジション
+│   └── 05_variables/             CSS変数・ダークモード
 │       └── index.html
 ├── question/                     練習問題（4問。問題文はREADMEの各節の最後）
-│   ├── 01_flexbox/               練習問題1：Flexboxでヘッダーとプロフィールカードを作る
+│   ├── 01_box_model/             練習問題1：箱の大きさを計算し、レイアウトを直す
+│   │   └── index.html
+│   ├── 02_flexbox/               練習問題2：Flexboxでヘッダーとプロフィールカードを作る
 │   │   ├── index.html
 │   │   └── img/sample.png
-│   ├── 02_position/              練習問題2：バッジ・閉じるボタン・固定ヘッダー・固定ボタンを作る
-│   │   └── index.html
 │   ├── 03_grid_dashboard/        練習問題3：Gridでレスポンシブなダッシュボードを作る
 │   │   └── index.html
 │   ├── 04_form_style/            練習問題4：フォームを装飾する
 │   │   └── index.html
 │   └── answer/                   解答（問題と同じ名前のフォルダ。中のファイル構成も問題と同じ）
-│       ├── 01_flexbox/
-│       ├── 02_position/
+│       ├── 01_box_model/
+│       ├── 02_flexbox/
 │       ├── 03_grid_dashboard/
 │       └── 04_form_style/
 └── challenge/                         制作課題（オリジナルHP）ステップ2：HTMLは完成済み、css/style.css にTODOを書く
@@ -59,9 +60,124 @@
 
 ---
 
-## 1. Flexbox
+## 1. ボックスモデルとdisplay
 
-> [example/01_flexbox/index.html](example/01_flexbox/index.html)
+> [example/01_box_model/index.html](example/01_box_model/index.html)
+
+CSSでは、すべての要素が**箱（ボックス）**として扱われます。
+
+```
+┌─────────────── margin（外側の余白・背景色は付かない） ───────────────┐
+│  ┌───────────── border（枠線） ─────────────────┐                     │
+│  │  ┌───────── padding（内側の余白・背景色が付く） ─────────┐  │       │
+│  │  │              content（中身：width / height）        │  │       │
+│  │  └──────────────────────────────────────────────────┘  │       │
+│  └────────────────────────────────────────────────────────┘       │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+### box-sizing: border-box
+
+デフォルト（`content-box`）では`width`は**中身だけ**の幅で、実際の見た目は`padding`と`border`の分だけ広がります。
+
+```css
+.box {
+    width: 200px;
+    padding: 20px;
+    border: 4px solid #3f6fd1;
+    /* 見た目の幅 = 200 + 20×2 + 4×2 = 248px */
+}
+```
+
+`box-sizing: border-box`にすると`width`に`padding`と`border`が含まれ、サイズ計算が直感的になります。実務では**CSSファイルの最初に次のリセットを書く**のが定番です。
+
+```css
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+```
+
+`*`は「すべての要素」を選びます。`::before`・`::after`は、要素の中身の前後に内容を足す機能（疑似要素）ですが、ここでは「すべての要素と、その前後に足された内容」にもまとめて`box-sizing`を当てている、と読んでください。
+
+### 省略記法
+
+```css
+padding: 16px;                 /* 4辺すべて */
+padding: 8px 24px;             /* 上下 | 左右 */
+padding: 4px 24px 16px;        /* 上 | 左右 | 下 */
+padding: 4px 8px 16px 32px;    /* 上 | 右 | 下 | 左（時計回り） */
+margin: 0 auto;                /* 上下0・左右自動 → 幅のあるブロック要素の中央寄せ */
+```
+
+### 覚えておきたい挙動
+
+| 挙動 | 説明 |
+|---|---|
+| `margin: 0 auto` | `width`（または`max-width`）を持つブロック要素を左右中央に寄せる |
+| `max-width` | 「これ以上広がらない」上限。`width`より柔軟で、狭い画面では自然に縮む |
+| マージンの相殺 | 上下に隣接する`margin`は**足し算されず、大きい方だけ**になる（左右では起きない） |
+| `overflow` | 中身がはみ出したときの扱い。`visible`（はみ出す）・`hidden`（切る）・`auto`（必要ならスクロール） |
+
+### display
+
+| 値 | 振る舞い |
+|---|---|
+| `block` | 横幅いっぱい・前後で改行。`width`/`height`/上下`margin`が効く |
+| `inline` | 文章の中に並ぶ。`width`/`height`が**効かない** |
+| `inline-block` | 横に並びつつ`width`/`height`も効く（ボタン・バッジ向き） |
+| `none` | 表示しない（場所も取らない） |
+| `flex` / `grid` | 子要素のレイアウト方式を切り替える（この章の2・3節） |
+
+### 動作確認：箱の大きさを測る
+
+| 確認する操作 | 確認したいこと |
+|---|---|
+| `01_box_model/index.html`を開き、2つの箱を見比べる | 同じ`width: 200px`なのに、上（`content-box`）の方が広い |
+| 開発者ツールで上の箱を選び、Computedのボックス図を見る | 中身200・padding20・border4が図示され、要素にマウスを乗せると248px幅でハイライトされる |
+| 「マージンの相殺」の2つの箱の間隔を開発者ツールで確認 | 間隔は50pxではなく30px |
+| `.center`の`margin: 0 auto`を開発者ツールで無効化する | 中央にあった箱が左に寄る |
+
+
+### 練習問題1：箱の大きさを計算し、レイアウトを直す
+
+> 問題：[question/01_box_model/index.html](question/01_box_model/index.html) ｜ 解答：[question/answer/01_box_model/index.html](question/answer/01_box_model/index.html)
+
+<details>
+<summary>問題の内容を開く</summary>
+
+**前半：予想する（A1〜A4）**
+
+`01_box_model/index.html`の`<style>`の「前半」のルールを読んで、HTMLのA1〜A4の直前のコメント「予想：」の後ろに答えを書き込みます。書き終えたらブラウザで開き、開発者ツールのComputedのボックス図や、要素にマウスを乗せたときのサイズ表示で答え合わせをします。
+
+| # | 予想すること |
+|---|---|
+| A1 | 見た目の幅（`border`の外側から外側まで）は何pxか |
+| A2 | 見た目の幅は何pxか。そのとき中身（content）の幅は何pxか |
+| A3 | 2つの箱の間隔は何pxか |
+| A4 | 上・右・下・左の`padding`はそれぞれ何pxか |
+
+後半のB1を書くとA1も`border-box`に変わってしまうので、前半の答え合わせはB1を書く**前に**行います。
+
+**後半：書く（B1〜B6）**
+
+`<style>`の「後半」の`TODO B1`〜`TODO B6`を埋めます。HTMLは変更しません。
+
+| # | やること | 確認したいこと |
+|---|---|---|
+| B1 | すべての要素（`::before`・`::after`も含む）の`box-sizing`を`border-box`にする | `.card`の幅が600pxからはみ出さない |
+| B2 | `.page`を最大幅600px・左右中央寄せ・左右の内側余白16pxにする | 広い画面で、ページが中央に置かれる |
+| B3 | `.badge`を、横に並んだまま幅と高さが効くようにし、28px × 28pxにする | 「3」「12」のバッジが丸になる（`span`なので、そのままでは幅が効かない） |
+| B4 | `.hidden-note`を表示しない（場所も取らない） | 「（このメモは非表示です）」が消え、その場所も詰まる |
+| B5 | `.log`を高さ100pxにし、はみ出した中身は必要なときだけスクロールできるようにする | ログの欄の中でスクロールできる |
+| B6 | `.card`の内側の余白を「上16px・左右24px・下32px」にする（1行の省略記法で） | Computedのボックス図で、`padding`が指定どおりになっている |
+
+</details>
+
+---
+
+## 2. Flexbox
+
+> [example/02_flexbox/index.html](example/02_flexbox/index.html)
 
 Flexboxは、子要素を**1方向（横 または 縦）**に並べるレイアウト方式です。`display: flex`を付けた要素が**flexコンテナ**、その**直下の子**が**flexアイテム**になります。
 
@@ -119,20 +235,20 @@ nav .push-right {
 
 | 確認する操作 | 確認したいこと |
 |---|---|
-| `01_flexbox/index.html`を開く | 各`justify-content`・`align-items`の値で、アイテムの位置がどう変わるかが並んで表示される |
+| `02_flexbox/index.html`を開く | 各`justify-content`・`align-items`の値で、アイテムの位置がどう変わるかが並んで表示される |
 | 開発者ツールで`.container.row`の横に出る`flex`バッジをクリック | アイテムと隙間（`gap`）が図示される |
 | 「4. flex-wrap」の`.wrap`の`flex-wrap`を無効化する | アイテムが折り返さずに縮んで1行に詰め込まれる |
 | 「A. ナビゲーション」の`.push-right`の`margin-left: auto`を無効化する | 「ログイン」が右端から離れ、「新規作成」のすぐ右に来る |
 
 
-### 練習問題1：Flexboxでヘッダーとプロフィールカードを作る
+### 練習問題2：Flexboxでヘッダーとプロフィールカードを作る
 
-> 問題：[question/01_flexbox/index.html](question/01_flexbox/index.html) ｜ 解答：[question/answer/01_flexbox/index.html](question/answer/01_flexbox/index.html)
+> 問題：[question/02_flexbox/index.html](question/02_flexbox/index.html) ｜ 解答：[question/answer/02_flexbox/index.html](question/answer/02_flexbox/index.html)
 
 <details>
 <summary>問題の内容を開く</summary>
 
-`01_flexbox/index.html`のHTMLは完成しています。`<style>`の`TODO 1`〜`TODO 8`を埋めて、次の完成イメージにします。
+`02_flexbox/index.html`のHTMLは完成しています。`<style>`の`TODO 1`〜`TODO 8`を埋めて、次の完成イメージにします。
 
 ```
 (1) ヘッダー
@@ -172,9 +288,9 @@ nav .push-right {
 
 ---
 
-## 2. Grid
+## 3. Grid
 
-> [example/02_grid/index.html](example/02_grid/index.html)
+> [example/03_grid/index.html](example/03_grid/index.html)
 
 Gridは、子要素を**行と列の2方向**で格子状に並べるレイアウト方式です。
 
@@ -226,103 +342,10 @@ Gridは、子要素を**行と列の2方向**で格子状に並べるレイア�
 
 | 確認する操作 | 確認したいこと |
 |---|---|
-| `02_grid/index.html`を開き、ウィンドウ幅を変える | `auto-fill`・`auto-fit`の行で列数が自動で増減する |
+| `03_grid/index.html`を開き、ウィンドウ幅を変える | `auto-fill`・`auto-fit`の行で列数が自動で増減する |
 | 広い画面で`auto-fill`と`auto-fit`を見比べる | `auto-fill`はアイテム2つが左に寄って空きが残り、`auto-fit`は2つが横幅いっぱいに広がる |
 | 開発者ツールで`.page`の`grid`バッジをクリック | 領域名（header/side/main/footer）が図示される |
 | ウィンドウ幅を600px以下にする | `.page`が縦1列（header→main→aside→footer）に組み替わる |
-
----
-
-## 3. position（重ねる・固定する）
-
-> [example/03_position/index.html](example/03_position/index.html)
-
-`position`は、要素を通常の並び（文書の流れ）から**ずらす・重ねる・固定する**ためのプロパティです。`top`/`right`/`bottom`/`left`で位置を指定します。
-
-```css
-.card {
-    position: relative;     /* 子の absolute の基準になる */
-}
-
-.badge {
-    position: absolute;     /* .card の右上に重ねる */
-    top: -10px;
-    right: -10px;
-}
-
-.site-header {
-    position: sticky;       /* スクロールしても上端に貼り付く */
-    top: 0;
-    z-index: 10;
-}
-```
-
-### ポイント
-
-| 値 | 基準 | 元の場所 | よくある用途 |
-|---|---|---|---|
-| `static`（既定） | — | — | 通常の並び。`top`などは効かない |
-| `relative` | 元の位置 | 空いたまま残る | 少しずらす / **子の`absolute`の基準**にする |
-| `absolute` | `position`が`static`以外の**一番近い祖先** | 詰められる（流れから外れる） | バッジ・閉じるボタンを重ねる |
-| `fixed` | 画面（ビューポート） | 詰められる | 右下の固定ボタン・固定ヘッダー |
-| `sticky` | スクロールする親 | 残る | スクロールすると貼り付くヘッダー・表の見出し |
-
-`z-index`は重なり順です。大きいほど手前に表示されます（`position`が`static`以外の要素で効く）。
-
-> 「親に`position: relative`、子に`position: absolute`」はセットで覚えましょう。親に`relative`が無いと、子はページ全体を基準にして思わぬ場所に飛んでいきます。
-
-### 動作確認
-
-| 確認する操作 | 確認したいこと |
-|---|---|
-| `03_position/index.html`を開いて下にスクロールする | 青いヘッダーが上端に貼り付き、右下の緑のボタンは同じ位置に残り続ける |
-| 「absolute」の親`.parent`の`position: relative`を開発者ツールで無効化する | 橙色の箱が、親の右下ではなくページ（画面）の右下を基準に移動する |
-| 「バッジ」のカードを見る | 「NEW」がカードの右上の角からはみ出すように重なっている |
-
-
-### 練習問題2：バッジ・閉じるボタン・固定ヘッダー・固定ボタンを作る
-
-> 問題：[question/02_position/index.html](question/02_position/index.html) ｜ 解答：[question/answer/02_position/index.html](question/answer/02_position/index.html)
-
-<details>
-<summary>問題の内容を開く</summary>
-
-`02_position/index.html`のHTMLは完成しています。`<style>`の`TODO 1`〜`TODO 6`を埋めて、次の完成イメージにします。
-
-```
-┌──────────────────────────────────────────┐
-│ メモ帳                                    │ ← スクロールしても上端に貼り付く
-└──────────────────────────────────────────┘
-  ┌──────────────────────────────────┐
-  │ お知らせ：新機能を追加しました    [×] │ ← × はお知らせの右上の角に重ねる
-  └──────────────────────────────────┘
-  ┌────────────┐ ┌────────────┐
-  │ 買い物リスト │(NEW)          │    ← NEW はカードの右上の角から少しはみ出す
-  │            │ │            │
-  └────────────┘ └────────────┘
-                                       ┌───┐
-                                       │ ↑ │ ← 画面の右下に固定。スクロールしても動かない
-                                       └───┘
-```
-
-| # | 書く場所 | やること |
-|---|---|---|
-| 1 | `.site-header` | スクロールしても画面の上端（0px）に貼り付くようにし、手前に表示する（`z-index: 10`） |
-| 2 | `.notice` | 子の`.close`の基準にする（これ自体は動かさない） |
-| 3 | `.close` | `.notice`の右上に重ねる（上から8px・右から8px） |
-| 4 | `.card` | 子の`.badge`の基準にする |
-| 5 | `.badge` | カードの右上の角から、上に10px・右に10pxはみ出すように重ねる（ヒント：マイナスの値） |
-| 6 | `.to-top` | 画面（ビューポート）の右下に固定する（下から24px・右から24px） |
-
-ヘッダーに`z-index`が無いと、`position: relative`のカードがスクロールしたときにヘッダーの上に重なってしまいます。
-
-| 確認する操作 | 確認したいこと |
-|---|---|
-| 下にスクロールする | ヘッダーが上端に貼り付き、カードがその下にもぐる。右下の「↑」は同じ位置に残る |
-| 開発者ツールで`.card`の`position: relative`を無効にする | 「NEW」がカードではなく、ページ全体を基準にした場所に飛んでいく |
-| 「↑」を押す | ページの先頭に戻る |
-
-</details>
 
 ---
 
@@ -429,9 +452,9 @@ Gridは、子要素を**行と列の2方向**で格子状に並べるレイア�
 
 ---
 
-## 5. CSS変数とトランジション
+## 5. CSS変数
 
-> [example/05_variables_transition/index.html](example/05_variables_transition/index.html)
+> [example/05_variables/index.html](example/05_variables/index.html)
 
 ### CSS変数（カスタムプロパティ）
 
@@ -464,33 +487,37 @@ Gridは、子要素を**行と列の2方向**で格子状に並べるレイア�
 }
 ```
 
-### トランジション
-
-```css
-.card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgb(0 0 0 / 0.12);
-}
-```
-
-| プロパティ | 説明 |
-|---|---|
-| `transition: 対象 時間 イージング` | 値が変わるときにアニメーションさせる。`:hover`と組み合わせることが多い |
-| `transform: translateY(-4px)` / `scale(0.96)` | 位置をずらす / 拡大縮小する。周りのレイアウトに影響しないので動かしても軽い |
-| `@media (prefers-reduced-motion: reduce)` | OSで「視差効果を減らす」を設定した人には動きを止める（アクセシビリティ） |
-
 ### 動作確認
 
 | 確認する操作 | 確認したいこと |
 |---|---|
-| `05_variables_transition/index.html`を開き、カードにマウスを乗せる | カードがなめらかに浮き上がる |
+| `05_variables/index.html`を開く | カードとボタンが、定義した変数の色・角丸・余白で表示される |
 | 開発者ツールで`:root`の`--color-primary`を`green`に書き換える | 全部のボタンの色が一度に変わる（ただし`.accent`の中は上書きしているので変わらない） |
 | OSの外観をダークモードにする（またはDevToolsのRendering → Emulate CSS media feature `prefers-color-scheme: dark`） | 背景・文字・カードの色が暗い配色に切り替わる |
 
+---
+
+## 6. フォームの装飾
+
+入力欄をクリックしたとき・不正な値を入れたときの見た目を付けます。そのために、属性や状態で要素を選ぶセレクタを使います。
+
+### フォームの装飾で使うセレクタ
+
+次の練習問題4と、制作課題で使うセレクタです。基本のセレクタ（[03_css_basicsの3・4節](../03_css_basics/#3-基本のセレクタ)）に、属性や状態で選ぶ書き方を足します。
+
+| 記法 | 対象 |
+|---|---|
+| `input[type="text"]` | 属性セレクタ。`type`が`text`の`input`だけ（`[属性名="値"]`の形で、属性の値で選ぶ） |
+| `:focus` | フォーカスされている要素（入力欄をクリックしたときなど） |
+| `:focus-visible` | **キーボード操作で**フォーカスされている要素（Tabキーで移動したとき）。マウスでクリックしたときは当たらない |
+| `:user-invalid` | ユーザーが入力を操作した後に、値が不正な入力欄。ページを開いた直後は当たらない（`:invalid`は開いた直後から当たる） |
+
+```css
+input[type="email"]    { border: 1px solid #c8ced8; }  /* 属性セレクタ */
+input:focus            { border-color: #3f6fd1; }      /* フォーカス中 */
+a:focus-visible        { outline: 3px solid #d1723f; } /* キーボードでフォーカス中 */
+input:user-invalid     { border-color: #d1495b; }      /* 操作したあとに不正 */
+```
 
 ### 練習問題4：フォームを装飾する
 
@@ -499,7 +526,7 @@ Gridは、子要素を**行と列の2方向**で格子状に並べるレイア�
 <details>
 <summary>問題の内容を開く</summary>
 
-[02_html_semantic_formの練習問題2](../02_html_semantic_form/#練習問題2ユーザー登録フォームのhtmlを書く)で作ったユーザー登録フォームのHTMLが、そのまま入っています。`<style>`の`TODO 1`〜`TODO 5`を埋めて、`02_backend/15_login`の「ユーザー登録」画面として使える見た目にします。白いカードの中に、横幅いっぱいの入力欄がラベルの下に並び、登録ボタンは横幅いっぱいの青いボタンにします。
+[02_html_semantic_formの練習問題2](../02_html_semantic_form/#練習問題2ユーザー登録フォームのhtmlを書く)と同じ項目のユーザー登録フォームのHTMLが入っています（スタイルを当てやすいように、03_css_basicsで学んだ`class`・`id`が付いています）。`<style>`の`TODO 1`〜`TODO 5`を埋めて、`02_backend/15_login`の「ユーザー登録」画面として使える見た目にします。白いカードの中に、横幅いっぱいの入力欄がラベルの下に並び、登録ボタンは横幅いっぱいの青いボタンにします。
 
 | # | やること |
 |---|---|
@@ -544,13 +571,13 @@ Gridは、子要素を**行と列の2方向**で格子状に並べるレイア�
 |---|---|
 | 全ページで同じ`css/style.css`を`<link>`で読み込む（`<style>`タグや`style`属性は使わない） | 03_css_basics 1 |
 | `:root`にCSS変数で配色を定義し、色は変数を通して使う（メインカラー・背景・文字・枠線の4色以上） | 5 |
-| `*, *::before, *::after { box-sizing: border-box; }`のリセットを書く | 03_css_basics 4 |
-| ヘッダーのサイト名とナビゲーションを**Flexbox**で横に並べる | 1 |
-| カードなどの一覧を**Grid**で並べる（制作実績・スキルなど） | 2 |
+| `*, *::before, *::after { box-sizing: border-box; }`のリセットを書く | 1 |
+| ヘッダーのサイト名とナビゲーションを**Flexbox**で横に並べる | 2 |
+| カードなどの一覧を**Grid**で並べる（制作実績・スキルなど） | 3 |
 | **モバイルファースト**で書き、`@media (min-width: ...)`で広い画面のレイアウトを足す。幅375px・768px・1100pxのどれでも横スクロールが出ない | 4 |
-| リンクとボタンに`:hover`と`:focus-visible`のスタイルを付ける（`:focus-visible`は[03_css_basicsの2節の発展](../03_css_basics/#疑似クラス状態位置で選ぶ)の疑似クラス） | 03_css_basics 2 |
-| フォームの入力欄を横幅いっぱいにし、`:focus`で枠の色を変える | 03_css_basics 2・4 |
-| 開発者ツールで、意図しないルールが**取り消し線**で負けていないか確認する | 03_css_basics 3 |
+| リンクとボタンに`:hover`と`:focus-visible`のスタイルを付ける（[フォームの装飾で使うセレクタ](#フォームの装飾で使うセレクタ)） | 03_css_basics 3、この章の6 |
+| フォームの入力欄を横幅いっぱいにし、`:focus`で枠の色を変える | 6 |
+| 開発者ツールで、意図しないルールが**取り消し線**で負けていないか確認する | 03_css_basics 補足 |
 
 ### 進め方のヒント
 
@@ -574,7 +601,7 @@ Gridは、子要素を**行と列の2方向**で格子状に並べるレイア�
 | リンク | 内容 |
 |---|---|
 | [MDN：CSS リファレンス](https://developer.mozilla.org/ja/docs/Web/CSS/Reference) | すべてのCSSプロパティの説明 |
-| [MDN：CSS レイアウト入門](https://developer.mozilla.org/ja/docs/Learn/CSS/CSS_layout) | Flexbox・Grid・position・レスポンシブをさらに詳しく |
+| [MDN：CSS レイアウト入門](https://developer.mozilla.org/ja/docs/Learn/CSS/CSS_layout) | Flexbox・Grid・レスポンシブをさらに詳しく |
 | [Flexbox Froggy](https://flexboxfroggy.com/#ja) / [Grid Garden](https://cssgridgarden.com/#ja) | カエルや畑を動かしながら Flexbox / Grid を練習できるゲーム |
 | [Can I use](https://caniuse.com/) | そのCSS機能がどのブラウザで使えるか |
 

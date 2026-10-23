@@ -37,9 +37,9 @@ const observer = new IntersectionObserver((entries) => {
         }
         tocLinks.forEach((link) => {
             if (link.getAttribute('href') === `#${entry.target.id}`) {
-                link.setAttribute('aria-current', 'true');
+                link.classList.add('current');
             } else {
-                link.removeAttribute('aria-current');
+                link.classList.remove('current');
             }
         });
     });

@@ -18,7 +18,7 @@
         見た目だけ太字・斜体にしたい場合は CSS を使います。
     </p>
 
-    <h2 id="links">リンク</h2>
+    <h2>リンク</h2>
     <ul>
         <!-- 絶対パス（URL）：外部サイトへのリンク -->
         <li><a href="https://developer.mozilla.org/ja/">MDN Web Docs（外部サイト）</a></li>
@@ -28,12 +28,6 @@
 
         <!-- 相対パス：同じフォルダにある別のファイルへのリンク -->
         <li><a href="../01_structure/index.html">01_structure/index.html（相対パス：1つ上のフォルダに戻ってから入る）</a></li>
-
-        <!-- ページ内リンク：#id でそのidを持つ要素へジャンプ -->
-        <li><a href="#images">このページの「画像」へジャンプ（ページ内リンク）</a></li>
-
-        <!-- メールリンク -->
-        <li><a href="mailto:info@example.com">メールを送る（mailto:）</a></li>
     </ul>
 
     <h2>リスト</h2>
@@ -65,30 +59,16 @@
         <dd>ページの見た目（色・大きさ・配置）を指定する言語</dd>
     </dl>
 
-    <h2 id="images">画像</h2>
+    <h2>画像</h2>
     <!--
         alt：画像が表示できないとき・読み上げソフト用の代替テキスト（必須）
         width/height：あらかじめ領域を確保して、読み込み時のレイアウトのガタつきを防ぐ
     -->
     <img src="img/sample.png" alt="サンプル画像" width="150" height="150">
 
-    <h2>ブロック要素とインライン要素</h2>
-    <!-- div はブロック要素：横幅いっぱいを占め、前後で改行される -->
-    <div style="background: #eef3ff;">div（ブロック要素）は横幅いっぱいに広がる</div>
+    <h2>div（汎用の箱）</h2>
+    <!-- div は意味を持たない汎用の箱：横幅いっぱいを占め、前後で改行される -->
+    <div style="background: #eef3ff;">div は横幅いっぱいに広がる</div>
     <div style="background: #fff3ee;">次の div は必ず新しい行から始まる</div>
-
-    <!-- span はインライン要素：文章の流れの中に収まり、改行されない -->
-    <p>文章の一部だけを<span style="background: #fff3cd;">span（インライン要素）</span>で囲めます。</p>
-
-    <h2>その他のよく使うタグ</h2>
-    <p>
-        ソースコードは<code>print("hello")</code>のように<code>code</code>で、
-        キー操作は<kbd>Ctrl</kbd> + <kbd>C</kbd>のように<kbd>kbd</kbd>で表します。
-    </p>
-    <blockquote>
-        <p>blockquote は他の文章からの引用を表します。</p>
-    </blockquote>
-    <hr>
-    <p><small>small は注意書きや免責事項などの「小さな文字」を表します。</small></p>
 </body>
 </html>

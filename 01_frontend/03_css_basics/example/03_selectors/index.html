@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>基本のセレクタ</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 640px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        /* 要素セレクタ：すべての <p> */
+        p {
+            line-height: 1.8;
+        }
+
+        /* グループ化：カンマ区切りで複数のセレクタに同じスタイル */
+        h1,
+        h2 {
+            color: #3f6fd1;
+        }
+
+        /* 子孫セレクタ（スペース）：<section> の中にある <li> すべて（孫以下も含む） */
+        section li {
+            color: #6b7280;
+        }
+
+        /* 子孫セレクタ：<nav> の中にある <a> だけ（本文中の <a> には当たらない） */
+        nav a {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 999px;
+            background: #e8edfb;
+            text-decoration: none;
+        }
+
+        /* :hover：マウスが乗っているとき */
+        nav a:hover {
+            background: #3f6fd1;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <h1>基本のセレクタ</h1>
+    <h2>要素・グループ化</h2>
+    <p>p は要素セレクタで、行の高さが広がっています。h1 と h2 はグループ化で同じ青色です。</p>
+
+    <h2>子孫セレクタ</h2>
+    <section>
+        <ul>
+            <li>section の中の li（孫の li も）→ 灰色</li>
+            <li>入れ子のリスト
+                <ul>
+                    <li>これも灰色</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    <ul>
+        <li>section の外の li → 黒のまま</li>
+    </ul>
+
+    <h2>:hover</h2>
+    <nav>
+        <a href="#">ホーム</a>
+        <a href="#">一覧</a>
+        <a href="#">設定</a>
+    </nav>
+    <p>CSSの書き方は、<a href="https://developer.mozilla.org/ja/">MDN Web Docs</a>で調べられます（nav の外の a には当たりません）。</p>
+</body>
+</html>

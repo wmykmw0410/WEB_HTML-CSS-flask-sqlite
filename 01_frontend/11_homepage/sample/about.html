@@ -17,13 +17,13 @@
         <div class="container header-inner">
             <a href="index.html" class="site-name">Taro Yamada</a>
             <!-- 表示設定のポップアップを開くボタン（popover） -->
-            <button type="button" class="icon-button settings-button" popovertarget="settings" aria-label="表示設定" data-tip="表示設定">⚙</button>
+            <button type="button" class="icon-button settings-button" popovertarget="settings" data-tip="表示設定">⚙</button>
             <!-- 狭い画面でメニューを開閉するボタン -->
-            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="メニュー">☰</button>
-            <nav aria-label="メインメニュー">
+            <button type="button" class="nav-toggle" id="nav-toggle">☰</button>
+            <nav>
                 <ul class="nav-links" id="nav-links">
                     <li><a href="index.html">ホーム</a></li>
-                    <li><a href="about.html" aria-current="page">プロフィール</a></li>
+                    <li><a href="about.html" class="current">プロフィール</a></li>
                     <li><a href="works.html">制作実績</a></li>
                     <li><a href="contact.html">お問い合わせ</a></li>
                 </ul>
@@ -45,13 +45,13 @@
 
         <!-- タブ切り替え：選ばれていないパネルは hidden で隠す -->
         <div class="tabs" id="profile-tabs">
-            <div class="tab-list" role="tablist" aria-label="プロフィール">
-                <button type="button" role="tab" id="tab-basic" aria-controls="panel-basic" aria-selected="true">基本情報</button>
-                <button type="button" role="tab" id="tab-skills" aria-controls="panel-skills" aria-selected="false" tabindex="-1">スキル</button>
-                <button type="button" role="tab" id="tab-history" aria-controls="panel-history" aria-selected="false" tabindex="-1">経歴</button>
+            <div class="tab-list" role="tablist">
+                <button type="button" role="tab" id="tab-basic" data-panel="panel-basic" class="active">基本情報</button>
+                <button type="button" role="tab" id="tab-skills" data-panel="panel-skills" tabindex="-1">スキル</button>
+                <button type="button" role="tab" id="tab-history" data-panel="panel-history" tabindex="-1">経歴</button>
             </div>
 
-            <section class="tab-panel" role="tabpanel" id="panel-basic" aria-labelledby="tab-basic">
+            <section class="tab-panel" role="tabpanel" id="panel-basic">
                 <h2>基本情報</h2>
                 <dl class="profile">
                     <dt>名前</dt>
@@ -63,7 +63,7 @@
                 </dl>
             </section>
 
-            <section class="tab-panel" role="tabpanel" id="panel-skills" aria-labelledby="tab-skills" hidden>
+            <section class="tab-panel" role="tabpanel" id="panel-skills" hidden>
                 <h2>スキル</h2>
                 <p class="hint">技術名にマウスを乗せる（またはTabキーで選ぶ）と、説明が表示されます。</p>
                 <table class="skills">
@@ -95,7 +95,7 @@
                 </table>
             </section>
 
-            <section class="tab-panel" role="tabpanel" id="panel-history" aria-labelledby="tab-history" hidden>
+            <section class="tab-panel" role="tabpanel" id="panel-history" hidden>
                 <h2>経歴</h2>
                 <ol class="timeline">
                     <li><time datetime="2026-03">2026年3月</time> プログラミングの学習を始める</li>
@@ -108,7 +108,7 @@
     </main>
 
     <!-- トップへ戻るボタン：300px スクロールしたら表示する -->
-    <button type="button" class="to-top" id="to-top" aria-label="ページの先頭へ戻る" hidden>↑</button>
+    <button type="button" class="to-top" id="to-top" hidden>↑</button>
 
     <footer class="site-footer">
         <div class="container">

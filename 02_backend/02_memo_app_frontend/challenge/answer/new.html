@@ -21,17 +21,17 @@
 </head>
 <body>
     <header class="site-header">
-        <nav class="site-nav" aria-label="メインメニュー">
+        <nav class="site-nav">
             <a class="site-name" href="index.html">メモ帳</a>
             <div class="nav-tools">
-                <button type="button" class="theme-toggle" id="theme-toggle" aria-label="配色を切り替える">◐</button>
-                <button type="button" class="hamburger" id="nav-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="nav-links">
+                <button type="button" class="theme-toggle" id="theme-toggle">◐</button>
+                <button type="button" class="hamburger" id="nav-toggle">
                     <span></span><span></span><span></span>
                 </button>
             </div>
             <ul class="nav-links" id="nav-links">
                 <li><a href="index.html">メモ一覧</a></li>
-                <li><a href="new.html" aria-current="page">メモを追加</a></li>
+                <li><a href="new.html" class="current">メモを追加</a></li>
             </ul>
         </nav>
     </header>
@@ -91,7 +91,7 @@
     <div id="toast" class="toast" popover="manual" role="status"></div>
 
     <!-- 確認ダイアログ（01_frontend/09_js_ui 3節）。common.js の openConfirm() で使う -->
-    <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-message">
+    <dialog id="confirm-dialog" class="confirm-dialog">
         <div class="dialog-body">
             <p id="confirm-message"></p>
             <div class="dialog-actions">
@@ -102,7 +102,7 @@
     </dialog>
 
     <!-- トップへ戻るボタン（01_frontend/09_js_ui 5節） -->
-    <button type="button" class="to-top" id="to-top" aria-label="ページの先頭へ戻る" hidden>↑</button>
+    <button type="button" class="to-top" id="to-top" hidden>↑</button>
 
     <!-- 役割ごとに分けたJavaScriptを、上から順に読み込む（storage.js・common.js の関数を後のファイルで使うため、順番が大事） -->
     <script src="js/storage.js"></script>

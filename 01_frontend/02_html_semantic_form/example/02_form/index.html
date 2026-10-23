@@ -13,24 +13,25 @@
             padding: 0 16px;
         }
 
-        .field {
+        form div {
             margin-bottom: 16px;
         }
 
-        label {
+        form div > label {
             display: block;
             font-weight: bold;
-            margin-bottom: 4px;
         }
 
-        /* ラジオボタン・チェックボックスのラベルは横並びのままにする */
-        fieldset label {
-            display: inline;
+        /* label で包んだ入力欄は、文字の下に表示する */
+        form div > label > input:not([type="checkbox"]),
+        form div > label > select,
+        form div > label > textarea {
+            display: block;
+            margin-top: 4px;
             font-weight: normal;
-            margin-right: 12px;
         }
 
-        .hint {
+        form div > p {
             font-size: 0.85em;
             color: #6b7280;
         }
@@ -46,34 +47,37 @@
     -->
     <form action="#" method="post">
 
-        <div class="field">
-            <!-- label の for と input の id を一致させると、ラベルをクリックで入力欄にフォーカスが移る -->
-            <label for="name">お名前（必須）</label>
-            <!-- name属性：サーバーに送られるときの「項目名」。name が無い入力欄は送信されない -->
-            <input id="name" type="text" name="name" required maxlength="50" autocomplete="name">
+        <div>
+            <!-- label で入力欄を包むと、ラベルの文字をクリックしたときに入力欄にフォーカスが移る -->
+            <label>お名前（必須）
+                <!-- name属性：サーバーに送られるときの「項目名」。name が無い入力欄は送信されない -->
+                <input type="text" name="name" required maxlength="50" autocomplete="name">
+            </label>
         </div>
 
-        <div class="field">
-            <label for="email">メールアドレス（必須）</label>
-            <!-- type="email"：形式チェック付き。スマホでは@入りのキーボードが出る -->
-            <input id="email" type="email" name="email" required placeholder="taro@example.com" autocomplete="email">
+        <div>
+            <label>メールアドレス（必須）
+                <!-- type="email"：形式チェック付き。スマホでは@入りのキーボードが出る -->
+                <input type="email" name="email" required placeholder="taro@example.com" autocomplete="email">
+            </label>
         </div>
 
-        <div class="field">
-            <label for="tel">電話番号（任意）</label>
-            <!-- pattern：正規表現で形式を指定。title はエラー時のヒントとして表示される -->
-            <!-- （発展・任意）aria-describedby="tel-hint"：下のヒント（id="tel-hint"）を、入力欄の説明として読み上げさせる -->
-            <input id="tel" type="tel" name="tel" pattern="[0-9]{10,11}" title="ハイフンなしの10〜11桁の数字" aria-describedby="tel-hint">
-            <p id="tel-hint" class="hint">ハイフンなしで入力してください（例：09012345678）</p>
+        <div>
+            <label>電話番号（任意）
+                <!-- pattern：正規表現で形式を指定。title はエラー時のヒントとして表示される -->
+                <input type="tel" name="tel" pattern="[0-9]{10,11}" title="ハイフンなしの10〜11桁の数字">
+            </label>
+            <p>ハイフンなしで入力してください（例：09012345678）</p>
         </div>
 
-        <div class="field">
-            <label for="category">お問い合わせ種別</label>
-            <select id="category" name="category">
-                <option value="general">一般</option>
-                <option value="support" selected>サポート</option>
-                <option value="other">その他</option>
-            </select>
+        <div>
+            <label>お問い合わせ種別
+                <select name="category">
+                    <option value="general">一般</option>
+                    <option value="support" selected>サポート</option>
+                    <option value="other">その他</option>
+                </select>
+            </label>
         </div>
 
         <!-- fieldset / legend：関連する入力欄をグループにまとめ、グループ名を付ける -->
@@ -92,23 +96,26 @@
             <label><input type="checkbox" name="interest" value="share"> 共有</label>
         </fieldset>
 
-        <div class="field">
-            <label for="age">年齢（任意）</label>
-            <!-- type="number"：min / max / step で範囲を指定できる -->
-            <input id="age" type="number" name="age" min="0" max="120" step="1">
+        <div>
+            <label>年齢（任意）
+                <!-- type="number"：min / max / step で範囲を指定できる -->
+                <input type="number" name="age" min="0" max="120" step="1">
+            </label>
         </div>
 
-        <div class="field">
-            <label for="date">ご希望の回答日（任意）</label>
-            <input id="date" type="date" name="date">
+        <div>
+            <label>ご希望の回答日（任意）
+                <input type="date" name="date">
+            </label>
         </div>
 
-        <div class="field">
-            <label for="message">メッセージ（必須・10文字以上）</label>
-            <textarea id="message" name="message" rows="5" required minlength="10" maxlength="500"></textarea>
+        <div>
+            <label>メッセージ（必須・10文字以上）
+                <textarea name="message" rows="5" required minlength="10" maxlength="500"></textarea>
+            </label>
         </div>
 
-        <div class="field">
+        <div>
             <label><input type="checkbox" name="agree" required> 利用規約に同意する</label>
         </div>
 

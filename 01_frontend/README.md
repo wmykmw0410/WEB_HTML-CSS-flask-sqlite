@@ -16,8 +16,8 @@ Webページが表示されるしくみ（リクエストとレスポンス・UR
 |---|---|---|
 | [01_html_basics](01_html_basics/) | 開発環境と開発者ツール・HTML文書の骨組み・テキストと基本タグ・表 | — |
 | [02_html_semantic_form](02_html_semantic_form/) | セマンティックHTMLとアクセシビリティ・フォーム | ステップ1：4ページのHTML |
-| [03_css_basics](03_css_basics/) | CSSの書き方と単位・セレクタ・カスケードと詳細度・ボックスモデル・文字と装飾 | — |
-| [04_css_layout](04_css_layout/) | Flexbox・Grid・position・レスポンシブ対応・CSS変数とトランジション | ステップ2：`style.css` |
+| [03_css_basics](03_css_basics/) | CSSの書き方・文字と色と単位・基本のセレクタ・classとid・背景と装飾・（補足）カスケードと詳細度 | — |
+| [04_css_layout](04_css_layout/) | ボックスモデルとdisplay・Flexbox・Grid・レスポンシブ対応・CSS変数・フォームの装飾 | ステップ2：`style.css` |
 | [05_js_basics](05_js_basics/) | JavaScriptの読み込みとデバッグ・最小限の基本文法・真偽の判定・関数とコールバック | — |
 | [06_js_events](06_js_events/) | イベント（クリック・入力・ホバー・フォーカス・submit）・入力チェック（ブラウザで動かす） | — |
 | [07_js_dom](07_js_dom/) | DOM操作（`querySelector`・属性・要素の作成・XSS） | — |

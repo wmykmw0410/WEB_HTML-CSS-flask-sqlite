@@ -7,9 +7,10 @@
     <style>
         /* 最小限の見た目（CSSは03_css_basicsで学ぶ） */
         body { font-family: sans-serif; max-width: 420px; margin: 24px auto; padding: 0 16px; }
-        .field { margin-bottom: 16px; }
-        .field > label { display: block; font-weight: bold; margin-bottom: 4px; }
-        .hint { margin: 4px 0 0; font-size: 0.8rem; color: #6b7280; }
+        form div { margin-bottom: 16px; }
+        form div > label { display: block; font-weight: bold; }
+        form div > label > input:not([type="checkbox"]) { display: block; margin-top: 4px; font-weight: normal; }
+        form div > p { margin: 4px 0 0; font-size: 0.8rem; color: #6b7280; }
     </style>
 </head>
 <body>

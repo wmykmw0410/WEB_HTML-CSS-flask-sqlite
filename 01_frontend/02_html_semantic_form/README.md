@@ -74,17 +74,17 @@
 
 ### ポイント
 
-| タグ | 意味 | よくある使い場所 |
-|---|---|---|
-| `<header>` | 導入部分 | サイト名・ナビゲーション |
-| `<nav>`（navigation） | 主要なナビゲーション | メニューのリンク群（中身は`ul`/`li`で書く） |
-| `<main>` | ページの主な内容。**1ページに1つ** | ページ固有の内容全体 |
-| `<article>` | それ単体で完結する内容 | ブログ記事・ニュース・**1件のメモカード** |
-| `<section>` | 見出しを持つ内容のまとまり | 記事の章・節 |
-| `<aside>` | 本文の補足 | サイドバー・関連リンク |
-| `<footer>` | 締めくくり | 著作権表示・問い合わせ先 |
-| `<time datetime="...">` | 日時 | 投稿日・期限 |
-| `<figure>` / `<figcaption>`（figure caption） | 図とその説明 | 画像＋キャプション |
+| タグ | 意味 | よくある使い場所 | 書き方（使い方） |
+|---|---|---|---|
+| `<header>` | 導入部分 | サイト名・ナビゲーション | `<header>`<br>`  <p><strong>サイト名</strong></p>`<br>`  <nav>…</nav>`<br>`</header>` |
+| `<nav>`（navigation） | 主要なナビゲーション | メニューのリンク群（中身は`ul`/`li`で書く） | `<nav>`<br>`  <ul>`<br>`    <li><a href="#">ホーム</a></li>`<br>`  </ul>`<br>`</nav>` |
+| `<main>` | ページの主な内容。**1ページに1つ** | ページ固有の内容全体 | `<main>`<br>`  …ページの内容…`<br>`</main>` |
+| `<article>` | それ単体で完結する内容 | ブログ記事・ニュース・**1件のメモカード** | `<article>`<br>`  <h1>記事タイトル</h1>`<br>`  …`<br>`</article>` |
+| `<section>` | 見出しを持つ内容のまとまり | 記事の章・節 | `<section>`<br>`  <h2>節の見出し</h2>`<br>`  <p>本文</p>`<br>`</section>` |
+| `<aside>` | 本文の補足 | サイドバー・関連リンク | `<aside>`<br>`  <h2>関連記事</h2>`<br>`  …`<br>`</aside>` |
+| `<footer>` | 締めくくり | 著作権表示・問い合わせ先 | `<footer>`<br>`  <small>&copy; 2026 サイト名</small>`<br>`</footer>` |
+| `<time datetime="...">` | 日時 | 投稿日・期限 | `<time datetime="2026-10-01">2026年10月1日</time>`<br>`datetime`に機械が読める形式の日付、中に読みやすい表記 |
+| `<figure>`<br>`<figcaption>`（figure caption） | 図とその説明 | 画像＋キャプション | `<figure>`<br>`  <img src="img/sample.png" alt="…">`<br>`  <figcaption>図の説明</figcaption>`<br>`</figure>` |
 
 **迷ったら**：「スタイルを当てるためだけの箱」なら`div`、「意味のあるまとまり」ならセマンティックタグ。
 
@@ -111,18 +111,6 @@
 | フォームには`<label>`を付ける（2節） | 入力欄が何かを読み上げられる。ラベルクリックで入力欄を選べる |
 | リンク文字を「こちら」にしない | リンクだけを読み上げたときに行き先がわからない |
 
-### 発展（任意）：aria-*属性
-
-この小節は**発展（任意）**です。アクセシビリティは、上の表のように**正しいタグを選ぶこと**でほとんど対応できます。`aria-`で始まる属性（ARIA属性）は、タグだけでは伝えきれない情報を読み上げソフトに補足するためのもので、付けなくてもページは正しく表示・操作できます。後の章の完成済みコードや作例で見かけたときに、ここで意味を確かめてください。
-
-| 属性 | 意味 | 例 |
-|---|---|---|
-| `aria-label="..."` | 画面に文字が無い要素に、読み上げ用の名前を付ける | `<nav aria-label="メインメニュー">` |
-| `aria-current="page"` | ナビのリンクのうち、今いるページのものを伝える | `<a href="index.html" aria-current="page">ホーム</a>` |
-| `aria-describedby="id"` | 入力欄に、補足説明の要素（`id`で指定）をつなぐ。入力欄を選んだときに、説明も読み上げられる | `<input id="password" aria-describedby="password-hint">` ＋ `<p id="password-hint">4文字以上…</p>` |
-
-このほか、ボタンの押されている状態を伝える`aria-pressed`、メニューが開いているかを伝える`aria-expanded`などがあり、[06_js_events](../06_js_events/)・[09_js_ui](../09_js_ui/)のJavaScriptで切り替えます。
-
 ### 動作確認：構造を確かめる
 
 | 確認する操作 | 確認したいこと |
@@ -139,26 +127,26 @@
 <details>
 <summary>問題の内容を開く</summary>
 
-`01_semantic_blog/index.html`は、見た目は問題ありませんが、すべて`div`で書かれているため、検索エンジンや読み上げソフトには「どこがナビで、どこが本文か」が伝わりません。次のとおりにタグを書き換えます（`class`属性はそのままでOK）。
+`01_semantic_blog/index.html`は、見た目は問題ありませんが、すべて`div`で書かれているため、検索エンジンや読み上げソフトには「どこがナビで、どこが本文か」が伝わりません。次のとおりにタグを書き換えます。
 
 | # | 書き換える部分 | 書き換え後 |
 |---|---|---|
-| 1 | `class="header"`の`div` | `header` |
-| 2 | `class="nav"`の`div` | `nav`。中のリンクは`ul`/`li`のリストにする |
-| 3 | `class="main"`の`div` | `main` |
-| 4 | `class="post"`の`div` | `article` |
-| 5 | 記事タイトル（`class="post-title"`） | 適切なレベルの見出し（ページで1つの`h1`） |
-| 6 | 小見出し（`class="post-heading"`） | `h2`。小見出しとその本文を`section`で囲む |
+| 1 | ページ上部（サイト名とメニュー）の`div` | `header` |
+| 2 | メニュー（リンクが並ぶ部分）の`div` | `nav`。中のリンクは`ul`/`li`のリストにする |
+| 3 | ページの主な内容全体を囲む`div` | `main` |
+| 4 | 記事1件を囲む`div` | `article` |
+| 5 | 記事タイトル（大きな文字の`div`） | 適切なレベルの見出し（ページで1つの`h1`） |
+| 6 | 小見出し（やや大きな文字の`div`） | `h2`。小見出しとその本文を`section`で囲む |
 | 7 | 日付 | `time`要素（`datetime`属性に`2026-10-01`） |
-| 8 | `class="side"`の`div` | `aside` |
-| 9 | `class="footer"`の`div` | `footer` |
+| 8 | 関連記事の`div` | `aside` |
+| 9 | ページ最下部（著作権表示）の`div` | `footer` |
 | 10 | 「とても大事」の部分 | `strong` |
 | 11 | 画像 | 内容を説明する`alt`を付ける |
 
 | 確認する操作 | 確認したいこと |
 |---|---|
 | 開発者ツールのElementsを見る | タグが書き換わっている |
-| 書き換える前と見比べる | 見た目がほぼ変わらない（CSSはクラスに対して当てているため） |
+| 書き換える前と見比べる | 見た目がほぼ変わらない（CSSは元のまま、タグだけを書き換えているため） |
 
 </details>
 
@@ -172,14 +160,16 @@
 
 ```html
 <form action="#" method="post">
-    <div class="field">
-        <label for="name">お名前（必須）</label>
-        <input id="name" type="text" name="name" required maxlength="50">
+    <div>
+        <label>お名前（必須）
+            <input type="text" name="name" required maxlength="50">
+        </label>
     </div>
 
-    <div class="field">
-        <label for="email">メールアドレス（必須）</label>
-        <input id="email" type="email" name="email" required>
+    <div>
+        <label>メールアドレス（必須）
+            <input type="email" name="email" required>
+        </label>
     </div>
 
     <fieldset>
@@ -188,9 +178,10 @@
         <label><input type="radio" name="contact" value="tel"> 電話</label>
     </fieldset>
 
-    <div class="field">
-        <label for="message">メッセージ（必須・10文字以上）</label>
-        <textarea id="message" name="message" rows="5" required minlength="10"></textarea>
+    <div>
+        <label>メッセージ（必須・10文字以上）
+            <textarea name="message" rows="5" required minlength="10"></textarea>
+        </label>
     </div>
 
     <button type="submit">送信</button>
@@ -207,25 +198,26 @@
 | `name` | サーバーに送られるときの**項目名**。`name`が無い入力欄は**送信されない** |
 | `value` | 送信される値。ラジオボタン・チェックボックス・`option`では必須 |
 
-### for・id・name・value の違い
+### label：入力欄の説明を付ける
+
+入力欄には、何を入力するのかを示す`<label>`を付けます。**`<label>`で入力欄を包む**と、ラベルの文字をクリックしたときに入力欄が選ばれ、読み上げソフトも入力欄の名前を読み上げます。
+
+```html
+<label>メールアドレス
+    <input type="email" name="email">
+</label>
+```
+
+### name・value：送信される項目名と値
 
 似た名前の属性が並ぶので、**何のための属性か**を整理します。
 
 | 属性 | 誰が使う？ | 役割 |
 |---|---|---|
-| `for`（`label`に付ける） | ブラウザ・読み上げソフト | どの入力欄の説明かを指す。値は入力欄の`id`と同じにする |
-| `id` | ブラウザ・CSS・JavaScript | ページの中で**1つだけ**の目印。`label`の`for`の行き先になる |
 | `name` | **サーバー** | 送信されるときの項目名。Flaskでは`request.form["name"]`のように、この名前で値を取り出す |
 | `value` | **サーバー** | 送信される値。テキスト欄は入力した文字が値になるので書かない |
 
-```html
-<label for="email">メールアドレス</label>
-<input id="email" type="email" name="email">
-```
-
-- `for="email"`と`id="email"`が**同じ文字列**であることで、ラベルと入力欄がつながります。つながると、ラベルをクリックしたときに入力欄が選ばれ、読み上げソフトも入力欄の名前を読み上げます。`for`と`id`が1文字でも違うと、つながりません。
-- `id`と`name`は別物です。`id`はページ内の目印（`for`やCSS用）、`name`はサーバーに送る項目名です。同じ文字列にすることが多いですが、役割は違います。
-- 送信されるのは「`name`＝値」の組です。上の入力欄に`taro@example.com`と入力して送信すると、`email=taro@example.com`がサーバーに届きます。`name`を書き忘れると、この欄は**まるごと送られません**。
+送信されるのは「`name`＝値」の組です。上のメールアドレスの入力欄に`taro@example.com`と入力して送信すると、`email=taro@example.com`がサーバーに届きます。`name`を書き忘れると、この欄は**まるごと送られません**。
 
 ラジオボタンとチェックボックスでは、`name`と`value`の両方が大切です。
 
@@ -236,35 +228,35 @@
 
 - ラジオボタンは**`name`が同じもの同士が1つのグループ**になり、グループの中から1つしか選べません。`name`を変えると別グループになり、両方選べてしまいます。
 - 画面に見える文字（「メール」「電話」）と、送られる値（`email`・`tel`）は別です。選んだものの`value`が送られるので、上で「メール」を選んで送信すると`contact=email`が届きます。
-- ラジオボタンやチェックボックスは、入力欄の`id`を使わず`<label>`で包めば、`for`と`id`は書かなくても文字をクリックして選べます。
+- ラジオボタンやチェックボックスも`<label>`で包むと、文字をクリックして選べます。
 - チェックボックスは、チェックを入れたときだけ`name=value`が送られます。チェックを外したままだと、その`name`自体が送られません。
 
 ### 入力部品
 
-| 部品 | 用途 |
-|---|---|
-| `<label for="id">` | 入力欄の説明。`for`と入力欄の`id`を一致させる。または`<label><input ...> 文字</label>`のように包む |
-| `<input type="text">` | 1行テキスト |
-| `<input type="email">` / `type="tel"` / `type="url"` | 形式に合わせたチェックとスマホのキーボードの切り替え |
-| `<input type="password">` | 入力が伏せ字になる |
-| `<input type="number">` / `type="date"` | 数値 / 日付（ブラウザが専用の入力UIを出す） |
-| `<input type="radio">` | `name`を揃えたグループの中から1つを選ぶ。`checked`を付けると最初から選ばれた状態になる |
-| `<input type="checkbox">` | 複数選べる / オン・オフ。`checked`で最初からチェック済みにできる。`value`は送られる値で、`yes`など意味が通れば何でもよい |
-| `<select>` / `<option>` | ドロップダウン。`selected`で初期選択（ラジオボタン・チェックボックスの`checked`に当たる） |
-| `<textarea rows="5">`（text area） | 複数行テキスト |
-| `<fieldset>` / `<legend>` | 関連する入力欄のグループとそのタイトル（ラジオボタンのまとまりに必須） |
-| `<button type="submit">` | 送信。`type="reset"`は初期化、`type="button"`は何もしない（JavaScript用） |
+| 部品 | 用途 | 書き方（使い方） |
+|---|---|---|
+| `<label>` | 入力欄の説明。入力欄を包む。クリックで入力欄が選ばれる | `<label>メールアドレス`<br>`  <input type="email" name="email">`<br>`</label>` |
+| `<input type="text">` | 1行テキスト | `<input type="text" name="name">` |
+| `<input type="email">`<br>`<input type="tel">`<br>`<input type="url">` | 形式に合わせたチェックとスマホのキーボードの切り替え | `<input type="email" name="email">`<br>`<input type="tel" name="tel">`<br>`<input type="url" name="site">` |
+| `<input type="password">` | 入力が伏せ字になる | `<input type="password" name="password">` |
+| `<input type="number">`<br>`<input type="date">` | 数値 / 日付（ブラウザが専用の入力UIを出す） | `<input type="number" name="age">`<br>`<input type="date" name="date">` |
+| `<input type="radio">` | `name`を揃えたグループの中から1つを選ぶ。`checked`を付けると最初から選ばれた状態になる | `<label><input type="radio" name="contact" value="email" checked> メール</label>`<br>`<label><input type="radio" name="contact" value="tel"> 電話</label>` |
+| `<input type="checkbox">` | 複数選べる / オン・オフ。`checked`で最初からチェック済みにできる。`value`は送られる値で、`yes`など意味が通れば何でもよい | `<label><input type="checkbox" name="agree" value="yes"> 同意する</label>` |
+| `<select>`<br>`<option>` | ドロップダウン。`selected`で初期選択（ラジオボタン・チェックボックスの`checked`に当たる） | `<select name="category">`<br>`  <option value="general">一般</option>`<br>`  <option value="support" selected>サポート</option>`<br>`</select>` |
+| `<textarea>`（text area） | 複数行テキスト。`rows`で表示する行数を指定する | `<textarea name="message" rows="5"></textarea>`<br>`<input>`と違って終了タグが必要 |
+| `<fieldset>`<br>`<legend>` | 関連する入力欄のグループとそのタイトル（ラジオボタンのまとまりに必須） | `<fieldset>`<br>`  <legend>ご希望の連絡方法</legend>`<br>`  …ラジオボタンなど…`<br>`</fieldset>` |
+| `<button>` | 送信。`type="reset"`は初期化、`type="button"`は何もしない（JavaScript用） | `<button type="submit">送信</button>`<br>`<button type="reset">リセット</button>` |
 
 ### ブラウザによる入力チェック（検証属性）
 
-| 属性 | 意味 |
-|---|---|
-| `required` | 必須 |
-| `minlength` / `maxlength` | 文字数の下限 / 上限 |
-| `min` / `max` / `step` | 数値・日付の範囲と刻み |
-| `pattern="[0-9]{10,11}"` | 正規表現で形式を指定 |
-| `placeholder` | 入力例。**ラベルの代わりにはしない**（入力を始めると消えるため） |
-| `autocomplete="..."` | ブラウザの自動入力のヒント。値で「何の欄か」を伝える（下表） |
+| 属性 | 意味 | 書き方（使い方） |
+|---|---|---|
+| `required` | 必須 | `<input type="text" name="name" required>` |
+| `minlength`<br>`maxlength` | 文字数の下限 / 上限 | `<input type="text" name="name" minlength="2" maxlength="50">` |
+| `min`<br>`max`<br>`step` | 数値・日付の範囲と刻み | `<input type="number" name="age" min="0" max="120" step="1">` |
+| `pattern="[0-9]{10,11}"` | 正規表現で形式を指定 | `<input type="tel" name="tel" pattern="[0-9]{10,11}" title="ハイフンなしの10〜11桁">`<br>`title`はエラー時のヒントとして表示される |
+| `placeholder` | 入力例。**ラベルの代わりにはしない**（入力を始めると消えるため） | `<input type="email" name="email" placeholder="taro@example.com">` |
+| `autocomplete="..."` | ブラウザの自動入力のヒント。値で「何の欄か」を伝える（下表） | `<input type="email" name="email" autocomplete="email">` |
 
 `required`・`checked`・`selected`のように**値を持たない属性**は、`required="required"`とは書かず、`required`だけを書きます（書いてあればオン、無ければオフ）。
 
@@ -283,7 +275,7 @@
 
 | 確認する操作 | 確認したいこと |
 |---|---|
-| `02_form/index.html`を開き、「お名前」のラベルをクリックする | 「お名前」の入力欄にカーソルが移る（`for`と`id`の対応） |
+| `02_form/index.html`を開き、「お名前」のラベルをクリックする | 「お名前」の入力欄にカーソルが移る（`label`で入力欄を包んでいる） |
 | 何も入力せずに「送信」を押す | ページ遷移せず、「このフィールドを入力してください」などの吹き出しが出る（`required`） |
 | メールアドレスに`abc`と入れて送信 | 「@を含めてください」などの吹き出しが出る（`type="email"`） |
 | 電話番号に`090-1234`と入れて送信 | `title`に書いたヒントが吹き出しに表示される（`pattern`） |
@@ -313,9 +305,9 @@
 
 | # | ルール |
 |---|---|
-| 1 | 各項目は`<div class="field">`で囲む（`fieldset`は除く） |
-| 2 | `label`の`for`と入力欄の`id`を必ず対応させる |
-| 3 | ヒントの`<p>`には`class="hint"`を付ける。（発展・任意）さらに`id`を付け、入力欄の`aria-describedby`でつなぐ（[1節の発展](#発展任意aria-属性)） |
+| 1 | 各項目は`<div>`で囲む（`fieldset`は除く） |
+| 2 | 項目名は`<label>`で入力欄を包んで付ける |
+| 3 | パスワードの下に、ヒントの`<p>`を置く（`div`の中、`label`の外） |
 | 4 | ラジオボタン・チェックボックスには`value`を付ける。ラジオボタンは「仕事」を最初から選択しておく |
 | 5 | `autocomplete`も付ける（`username` / `email` / `new-password`） |
 
@@ -324,19 +316,17 @@
 
 | タグ・属性 | 使う場所 |
 |---|---|
-| `<div class="field">` | 各項目を囲む |
-| `<label for="...">` | 項目名（`for`は入力欄の`id`と同じにする） |
+| `<div>` | 各項目を囲む |
+| `<label>項目名 <input ...></label>` | 項目名（入力欄を`label`で包む） |
 | `<input type="text">` / `type="email"` / `type="password"` | ユーザー名 / メールアドレス / パスワード |
 | `required` / `maxlength` / `minlength` | 必須 / 最大文字数 / 最小文字数 |
 | `autocomplete="username"` など | ブラウザの自動入力 |
-| `<p class="hint">` | パスワードの下のヒント |
-| （発展・任意）`id` ＋ `aria-describedby` | ヒントと入力欄とのつなぎ |
 | `<fieldset>` / `<legend>` | ラジオボタンのまとまり / その見出し「主な用途」 |
 | `<input type="radio" value="..." checked>` | 主な用途（`name`をそろえる。「仕事」に`checked`） |
 | `<input type="checkbox" value="...">` | お知らせメール |
 | `<button type="submit">` | 登録ボタン |
 
-ラジオボタン・チェックボックスは、`<label><input ...> 仕事</label>`のように`label`で囲むと、`for`と`id`を書かなくても文字をクリックして選べます。
+ラジオボタン・チェックボックスも、`<label><input ...> 仕事</label>`のように`label`で囲むと、文字をクリックして選べます。
 
 </details>
 
@@ -370,7 +360,7 @@
 
 | ファイル | 内容 |
 |---|---|
-| `index.html`・`about.html`・`works.html`・`contact.html` | `<head>`の一部と、`header`・`main`・`footer`の枠だけが書いてある。TODOコメントに、書く要素とクラス名が指定してある（クラス名は03_css_basics以降で見た目を付けるときの目印になる） |
+| `index.html`・`about.html`・`works.html`・`contact.html` | `<head>`の一部と、`header`・`main`・`footer`の枠だけが書いてある。TODOコメントに、書く要素が指定してある |
 | `img/avatar.png` | ホームで使うアイコン画像 |
 
 ### 必須要件
@@ -387,8 +377,6 @@
 | お問い合わせページに、`label`付きのフォーム（3項目以上・`required`などの検証属性付き） | 2 |
 | [W3C Validator](https://validator.w3.org/#validate_by_input)で全ページのエラーが0件 | 01_html_basics 0 |
 
-**発展（任意）**：`nav`に`aria-label="メインメニュー"`、今いるページのリンクに`aria-current="page"`を付ける（[1節の発展](#発展任意aria-属性)）。
-
 ### 進め方のヒント
 
 1. まず紙やメモに、各ページに載せる内容を箇条書きにする（ホームに何を置くか、プロフィールで何を伝えるか）
@@ -402,10 +390,10 @@
 |---|---|
 | `challenge/index.html`をブラウザで開き、ナビのリンクで4ページを行き来する | どのページにも同じヘッダーとフッターがあり、リンクで移動できる |
 | CSSが無い状態で、各ページを上から読む | 見出し・リスト・表・フォームの順に、内容が読み取れる |
-| 開発者ツールのElementsで各ページを見る | `header`・`nav`・`main`・`section`・`footer`が使われ、TODOで指定したクラス名が付いている |
+| 開発者ツールのElementsで各ページを見る | `header`・`nav`・`main`・`section`・`footer`が使われている |
 | [W3C Validator](https://validator.w3.org/#validate_by_input)に4ページを貼り付ける | エラーが0件 |
 | `challenge/answer/`と見比べる | 構造が同じになっている（文章は違っていてよい） |
 
 ## 次のステップ
 
-続きは [03_css_basics](../03_css_basics/) です。CSSの書き方と、セレクタ・カスケード・ボックスモデルなどの基本のルールを学びます。
+続きは [03_css_basics](../03_css_basics/) です。CSSの書き方と、文字と色・セレクタ・背景と装飾などの基本のルールを学びます。

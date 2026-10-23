@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>解答1：ボックスモデル</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 24px 0;
+            color: #262b33;
+        }
+
+        /* ==================== 前半：予想する ==================== */
+        /*
+            注意：後半の B1 で全要素を border-box にすると、A1 も border-box になってしまう。
+            前半の答え合わせのために、ここでは A1 だけ content-box に戻している（問題のファイルでは不要）。
+        */
+        .a1 {
+            width: 300px;
+            padding: 20px;
+            border: 5px solid #3f6fd1;
+            box-sizing: content-box;
+        }
+
+        .a2 {
+            width: 300px;
+            padding: 20px;
+            border: 5px solid #3f6fd1;
+            box-sizing: border-box;
+        }
+
+        .a3-top {
+            margin-bottom: 40px;
+            background: #e8edfb;
+        }
+
+        .a3-bottom {
+            margin-top: 24px;
+            background: #e8edfb;
+        }
+
+        .a4 {
+            padding: 10px 20px 30px;
+            background: #e8edfb;
+        }
+
+        /* ==================== 後半：書く ==================== */
+
+        /* B1：width に padding と border を含めて計算する。CSSの最初に書く定番のリセット */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        .page {
+            /* B2：max-width なら、狭い画面では自然に縮む。margin: 0 auto で左右中央に */
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .badge {
+            /* B3：span はインライン要素なので width / height が効かない。inline-block にする */
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #3f6fd1;
+            color: #ffffff;
+            text-align: center;
+            line-height: 28px;
+            font-size: 0.8rem;
+        }
+
+        .hidden-note {
+            /* B4：display: none は場所も取らない（visibility: hidden だと場所は残る） */
+            display: none;
+        }
+
+        .log {
+            border: 1px solid #c8ced8;
+            /* B5：auto は「はみ出したときだけ」スクロールバーを出す（scroll だと常に出る） */
+            height: 100px;
+            overflow: auto;
+        }
+
+        .card {
+            width: 100%;
+            border: 2px solid #3f6fd1;
+            border-radius: 8px;
+            /* B6：値が3つのときは「上 | 左右 | 下」 */
+            padding: 16px 24px 32px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h1>ボックスモデル</h1>
+
+        <h2>前半：予想する</h2>
+
+        <!-- A1 正解：350px（300 + 20×2 + 5×2）。content-box では width は中身だけの幅 -->
+        <div class="a1">A1</div>
+
+        <!-- A2 正解：見た目の幅は 300px。中身の幅は 250px（300 - 20×2 - 5×2） -->
+        <div class="a2">A2</div>
+
+        <!-- A3 正解：40px。上下に隣接する margin は足し算されず、大きい方だけになる（マージンの相殺） -->
+        <div class="a3-top">A3（上の箱）</div>
+        <div class="a3-bottom">A3（下の箱）</div>
+
+        <!-- A4 正解：上 10px・右 20px・下 30px・左 20px（値が3つなら「上 | 左右 | 下」） -->
+        <div class="a4">A4</div>
+
+        <h2>後半：書く</h2>
+
+        <div class="card">
+            <h3>メモ <span class="badge">3</span></h3>
+            <p>未読のコメント <span class="badge">12</span></p>
+            <p class="hidden-note">（このメモは非表示です）</p>
+
+            <div class="log">
+                <p>10/1 作成しました</p>
+                <p>10/2 タイトルを変更しました</p>
+                <p>10/2 タグ「仕事」を追加しました</p>
+                <p>10/3 本文を編集しました</p>
+                <p>10/3 ピン留めしました</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

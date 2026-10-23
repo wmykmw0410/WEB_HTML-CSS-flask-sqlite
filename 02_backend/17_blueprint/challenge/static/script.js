@@ -55,9 +55,7 @@ const setupNav = () => {
     const navLinks = document.getElementById('nav-links');
 
     navToggle.addEventListener('click', () => {
-        const isOpen = navLinks.classList.toggle('open');
-        navToggle.setAttribute('aria-expanded', isOpen);
-        navToggle.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+        navLinks.classList.toggle('open');
     });
 };
 
@@ -80,7 +78,6 @@ const setupTheme = () => {
 
     const updateLabel = () => {
         const next = currentTheme() === 'dark' ? 'ライト' : 'ダーク';
-        button.setAttribute('aria-label', `${next}モードに切り替える`);
         button.title = `${next}モードに切り替える`;
     };
 
@@ -217,7 +214,7 @@ const setupFilters = () => {
     const selectCategory = (category) => {
         selectedCategory = category;
         buttons.forEach((b) => {
-            b.setAttribute('aria-pressed', b.dataset.category === category);
+            b.classList.toggle('active', b.dataset.category === category);
         });
         applyFilter();
     };

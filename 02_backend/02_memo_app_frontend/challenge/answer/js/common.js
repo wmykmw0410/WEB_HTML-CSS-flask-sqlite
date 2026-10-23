@@ -69,9 +69,7 @@ const navToggle = document.getElementById('nav-toggle');
 const navLinks = document.getElementById('nav-links');
 
 navToggle.addEventListener('click', () => {
-    const isOpen = navLinks.classList.toggle('open');
-    navToggle.setAttribute('aria-expanded', isOpen);
-    navToggle.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+    navLinks.classList.toggle('open');
 });
 
 
@@ -92,7 +90,6 @@ const currentTheme = () => {
 
 const updateThemeLabel = () => {
     const next = currentTheme() === 'dark' ? 'ライト' : 'ダーク';
-    themeButton.setAttribute('aria-label', `${next}モードに切り替える`);
     themeButton.title = `${next}モードに切り替える`;
 };
 

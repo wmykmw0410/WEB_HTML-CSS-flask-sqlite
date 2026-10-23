@@ -111,7 +111,7 @@ h2 {
 }
 
 .nav-links a:hover,
-.nav-links a[aria-current="page"] {
+.nav-links a.current {
     color: var(--color-primary);
     text-decoration: underline;
     text-underline-offset: 6px;
@@ -713,7 +713,7 @@ h2 {
     cursor: pointer;
 }
 
-.dots button[aria-current="true"] {
+.dots button.current {
     background: var(--color-primary);
 }
 
@@ -739,7 +739,7 @@ h2 {
     color: var(--color-text);
 }
 
-.tab-list button[aria-selected="true"] {
+.tab-list button.active {
     color: var(--color-primary);
     font-weight: bold;
     border-bottom-color: var(--color-primary);

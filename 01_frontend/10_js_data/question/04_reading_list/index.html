@@ -11,7 +11,7 @@
         button { font: inherit; cursor: pointer; }
         .filters { display: flex; gap: 8px; }
         .filters button { padding: 4px 14px; border: 1px solid #c8ced8; border-radius: 999px; background: #fff; }
-        .filters button[aria-pressed="true"] { background: #3f6fd1; color: #fff; border-color: #3f6fd1; }
+        .filters button.active { background: #3f6fd1; color: #fff; border-color: #3f6fd1; }
         .summary { color: #6b7280; font-size: 0.9rem; }
         ul { padding: 0; list-style: none; }
         li { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e1e5eb; padding: 8px 0; }
@@ -24,15 +24,15 @@
     <h1>読書記録</h1>
 
     <form id="add-form">
-        <input type="text" id="new-title" placeholder="タイトル" aria-label="タイトル">
-        <input type="text" id="new-author" placeholder="著者" aria-label="著者">
+        <input type="text" id="new-title" placeholder="タイトル">
+        <input type="text" id="new-author" placeholder="著者">
         <button type="submit">追加</button>
     </form>
 
     <div class="filters">
-        <button type="button" data-filter="all" aria-pressed="true">すべて</button>
-        <button type="button" data-filter="unread" aria-pressed="false">未読</button>
-        <button type="button" data-filter="read" aria-pressed="false">読了</button>
+        <button type="button" data-filter="all" class="active">すべて</button>
+        <button type="button" data-filter="unread">未読</button>
+        <button type="button" data-filter="read">読了</button>
     </div>
 
     <p class="summary" id="summary"></p>

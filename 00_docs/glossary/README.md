@@ -48,10 +48,10 @@
 | **要素・タグ・属性** | `<a href="...">リンク</a>`全体が要素、`<a>`・`</a>`がタグ、`href="..."`が属性 | [01_html_basics](../../01_frontend/01_html_basics/) 1節 |
 | **セマンティックHTML** | `<header>`・`<nav>`・`<main>`など、内容の意味を表すタグで書くこと | [02_html_semantic_form](../../01_frontend/02_html_semantic_form/) 1節 |
 | **アクセシビリティ** | 目や耳が不自由な人、キーボードだけで操作する人なども含めて、誰でも使えるようにすること | [02_html_semantic_form](../../01_frontend/02_html_semantic_form/) 1節 |
-| **セレクタ** | CSSで「どの要素に」スタイルを当てるかを指定する書き方。`.memo`・`#flash`・`a:hover`など。JavaScriptの`querySelector()`でも使う | [03_css_basics](../../01_frontend/03_css_basics/) 2節 |
-| **カスケード・詳細度** | 同じ要素に複数のスタイルが当たったとき、どれを使うかの決まり | [03_css_basics](../../01_frontend/03_css_basics/) 3節 |
-| **ボックスモデル** | 要素を「内容・padding・border・margin」の四角い箱として扱う考え方 | [03_css_basics](../../01_frontend/03_css_basics/) 4節 |
-| **Flexbox・Grid** | 要素を横や縦、格子状に並べるCSSのしくみ | [04_css_layout](../../01_frontend/04_css_layout/) 1・2節 |
+| **セレクタ** | CSSで「どの要素に」スタイルを当てるかを指定する書き方。`.memo`・`#flash`・`a:hover`など。JavaScriptの`querySelector()`でも使う | [03_css_basics](../../01_frontend/03_css_basics/) 3節 |
+| **カスケード・詳細度** | 同じ要素に複数のスタイルが当たったとき、どれを使うかの決まり | [03_css_basics](../../01_frontend/03_css_basics/) 補足 |
+| **ボックスモデル** | 要素を「内容・padding・border・margin」の四角い箱として扱う考え方 | [04_css_layout](../../01_frontend/04_css_layout/) 1節 |
+| **Flexbox・Grid** | 要素を横や縦、格子状に並べるCSSのしくみ | [04_css_layout](../../01_frontend/04_css_layout/) 2・3節 |
 | **レスポンシブ** | 画面の幅に合わせて、レイアウトを切り替えること。**メディアクエリ**（`@media`）で書く | [04_css_layout](../../01_frontend/04_css_layout/) 4節 |
 | **モバイルファースト** | スマホ向けのスタイルを先に書き、広い画面向けのスタイルをメディアクエリで足していく書き方 | [04_css_layout](../../01_frontend/04_css_layout/) 4節 |
 | **CSS変数** | `--main-color: #333;`のように値に名前を付け、`var(--main-color)`で使い回すしくみ。ダークモードの切り替えにも使う | [04_css_layout](../../01_frontend/04_css_layout/) 5節 |

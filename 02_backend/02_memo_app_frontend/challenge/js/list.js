@@ -34,8 +34,6 @@ const createCard = (memo) => {
     pin.type = 'button';
     pin.className = 'pin-button';
     pin.textContent = memo.is_pinned ? '★' : '☆';
-    pin.setAttribute('aria-pressed', memo.is_pinned);
-    pin.setAttribute('aria-label', `「${memo.title}」をピン留め`);
 
     const link = document.createElement('a');
     link.className = 'card-link';

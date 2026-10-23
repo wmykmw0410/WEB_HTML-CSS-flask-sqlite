@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>色・単位・文字</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            /*
+                フォントは候補を左から順に並べる（フォントスタック）。
+                最初に見つかったものが使われ、最後は総称ファミリー（sans-serif / serif）で終える
+            */
+            font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+            font-size: 1rem;
+            line-height: 1.7;          /* 行の高さ。単位なしの数値で書くのが定石（文字サイズの1.7倍） */
+            color: #262b33;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 24px;
+        }
+
+        .sample {
+            background: #ffffff;
+            border: 1px solid #e1e5eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            max-width: 640px;
+        }
+
+        /* ===== 文字 ===== */
+        .serif     { font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; }
+        .bold      { font-weight: 700; }
+        .large     { font-size: 1.5rem; }
+        .center    { text-align: center; }
+        .underline { text-decoration: underline wavy #d1723f; }
+        .spacing   { letter-spacing: 0.2em; }
+        .tight     { line-height: 1.1; }
+
+        /* 1行に収まらない文字を「…」で省略する（3点セットで覚える） */
+        .ellipsis {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 260px;
+            border: 1px dashed #9aa5b8;
+            padding: 4px;
+        }
+
+        /* ===== 色の指定方法 ===== */
+        .swatch-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .swatch {
+            width: 130px;
+            padding: 12px 8px;
+            color: #ffffff;
+            font-size: 0.8rem;
+            text-align: center;
+            border-radius: 6px;
+        }
+
+        /* ===== 長さの単位 ===== */
+        .unit-demo {
+            border: 1px dashed #9aa5b8;
+            padding: 8px;
+        }
+
+        .bar {
+            background: #e8edfb;
+            border-left: 4px solid #3f6fd1;
+            padding: 4px 8px;
+            margin: 6px 0;
+            white-space: nowrap;
+        }
+
+        .em-parent {
+            font-size: 20px;
+            border: 1px dashed #9aa5b8;
+            padding: 8px;
+        }
+
+        .em-child {
+            font-size: 1.5em;
+            margin: 4px 0;
+        }
+
+        .rem-child {
+            font-size: 1.5rem;
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>色・単位・文字</h1>
+
+    <div class="sample">
+        <h2>色の指定方法</h2>
+        <div class="swatch-row">
+            <div class="swatch" style="background: royalblue;">名前<br>royalblue</div>
+            <div class="swatch" style="background: #3f6fd1;">16進数<br>#3f6fd1</div>
+            <div class="swatch" style="background: rgb(63 111 209);">rgb()<br>rgb(63 111 209)</div>
+            <div class="swatch" style="background: rgb(63 111 209 / 0.5);">半透明<br>/ 0.5</div>
+            <div class="swatch" style="background: hsl(220 62% 53%);">hsl()<br>hsl(220 62% 53%)</div>
+        </div>
+    </div>
+
+    <div class="sample">
+        <h2>長さの単位</h2>
+        <div class="unit-demo">
+            <div class="bar" style="width: 200px;">200px（固定）</div>
+            <div class="bar" style="width: 50%;">50%（親の幅の半分）</div>
+            <div class="bar" style="width: 20rem;">20rem（ルート文字サイズ×20）</div>
+            <div class="bar" style="width: 30vw;">30vw（画面幅の30%）</div>
+        </div>
+
+        <h3>em と rem の違い</h3>
+        <div class="em-parent">
+            親：font-size 20px
+            <p class="em-child">子：1.5em → 親の20px × 1.5 = <strong>30px</strong></p>
+            <p class="rem-child">子：1.5rem → ルート（html）の16px × 1.5 = <strong>24px</strong></p>
+        </div>
+        <p>ブラウザの設定で文字サイズを大きくしたユーザーにも対応できるよう、<strong>文字サイズには rem</strong> を使うのが一般的です。</p>
+    </div>
+
+    <div class="sample">
+        <h2>フォント</h2>
+        <p>このページはゴシック体（sans-serif）のフォントスタックを指定しています。</p>
+        <p class="serif">こちらは明朝体（serif）です。</p>
+        <p class="bold">font-weight: 700（太字）</p>
+        <p class="large">font-size: 1.5rem</p>
+        <p class="center">text-align: center</p>
+        <p><span class="underline">text-decoration で波線の下線</span></p>
+        <p class="spacing">letter-spacing で字間を空ける</p>
+    </div>
+
+    <div class="sample">
+        <h2>行の高さ（line-height）</h2>
+        <p>line-height: 1.7。日本語の本文は1.5〜1.8くらいが読みやすいとされます。行と行の間に適度な余白があると、長い文章でも目が疲れにくくなります。</p>
+        <p class="tight">line-height: 1.1。行間が詰まっていると、長い文章では次の行を見失いやすく、読みにくくなります。見出しなど短い文には向いています。</p>
+    </div>
+
+    <div class="sample">
+        <h2>はみ出した文字の省略</h2>
+        <p class="ellipsis">とても長いメモのタイトルが1行に収まらないときに、末尾を「…」にする</p>
+    </div>
+</body>
+</html>

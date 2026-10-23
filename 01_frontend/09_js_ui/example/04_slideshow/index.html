@@ -73,7 +73,7 @@
             cursor: pointer;
         }
 
-        .dots button[aria-current="true"] {
+        .dots button.current {
             background: #3f6fd1;
         }
 
@@ -84,14 +84,14 @@
     <h1>スライドショー</h1>
     <p>3秒ごとに自動で切り替わります。マウスを乗せている間・ボタンにフォーカスがある間は止まります。</p>
 
-    <div class="slideshow" id="slideshow" aria-roledescription="スライドショー">
+    <div class="slideshow" id="slideshow">
         <div class="slides">
             <div class="slide active">1. メモ帳アプリ</div>
             <div class="slide">2. ポートフォリオサイト</div>
             <div class="slide">3. タイピングゲーム</div>
         </div>
-        <button type="button" class="slide-nav prev" aria-label="前のスライド">‹</button>
-        <button type="button" class="slide-nav next" aria-label="次のスライド">›</button>
+        <button type="button" class="slide-nav prev">‹</button>
+        <button type="button" class="slide-nav next">›</button>
     </div>
 
     <!-- ドットのボタンは JavaScript でスライドの数だけ作る -->

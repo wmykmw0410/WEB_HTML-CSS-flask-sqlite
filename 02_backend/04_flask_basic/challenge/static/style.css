@@ -9,7 +9,7 @@
 */
 
 /* ============================================================
-   C1：すべての要素を border-box で計算する（01_frontend/03_css_basics 4節）
+   C1：すべての要素を border-box で計算する（01_frontend/04_css_layout 1節）
    ============================================================ */
 *, *::before, *::after {
     box-sizing: border-box;
@@ -107,7 +107,7 @@ img {
     height: auto;
 }
 
-/* C2：キーボードで操作しているときだけ、はっきりした枠を出す（01_frontend/03_css_basics 2節・11_homepage） */
+/* C2：キーボードで操作しているときだけ、はっきりした枠を出す（01_frontend/04_css_layout 6節・11_homepage） */
 :focus-visible {
     outline: 3px solid var(--color-focus);
     outline-offset: 2px;
@@ -234,8 +234,8 @@ code {
     text-decoration: underline;
 }
 
-/* H2：今いるページのリンク（aria-current="page"） */
-.nav-links a[aria-current="page"] {
+/* H2：今いるページのリンク（current クラス） */
+.nav-links a.current {
     font-weight: bold;
     text-decoration: underline;
     text-underline-offset: 4px;
@@ -296,8 +296,8 @@ code {
     cursor: pointer;
 }
 
-/* H3：押されているボタンは aria-pressed="true"（クラスの代わりに属性で見た目を変える） */
-.filters button[aria-pressed="true"] {
+/* H3：押されているボタンは active クラスで見た目を変える */
+.filters button.active {
     border-color: var(--color-primary);
     background: var(--color-primary);
     color: var(--color-on-primary);

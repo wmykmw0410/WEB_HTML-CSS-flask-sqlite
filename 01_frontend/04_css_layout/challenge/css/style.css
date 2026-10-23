@@ -10,61 +10,61 @@
    --color-bg（背景）/ --color-surface（カードの背景）/ --color-primary（メインカラー）/ --color-primary-light（メインカラーの薄い色）
    --color-text（文字）/ --color-muted（薄い文字）/ --color-border（枠線）/ --radius（角丸）/ --shadow（影） */
 
-/* TODO（03_css_basics 4節）：*, *::before, *::after を box-sizing: border-box にする */
+/* TODO（1節）：*, *::before, *::after を box-sizing: border-box にする */
 
-/* TODO（03_css_basics 5節）：body の margin を 0 にし、フォント・行の高さ（1.7）・背景色・文字色を変数で指定する */
+/* TODO（03_css_basics 2節・この章の1節）：body の margin を 0 にし、フォント・行の高さ（1.7）・背景色・文字色を変数で指定する */
 
 /* TODO（4節）：img に max-width: 100%; height: auto; を指定する */
 
-/* TODO（03_css_basics 2節）：a の色をメインカラーに。a:focus-visible, button:focus-visible に outline を付ける */
+/* TODO（6節）：a の色をメインカラーに。a:focus-visible, button:focus-visible に outline を付ける */
 
-/* TODO（03_css_basics 4節）：.container を最大幅 960px・左右中央寄せ・左右 padding 16px にする
+/* TODO（1節）：.container を最大幅 960px・左右中央寄せ・左右 padding 16px にする
                main.container には上下の余白（padding-top: 32px; padding-bottom: 48px;）を付ける */
 
-/* TODO（03_css_basics 5節・この章の4節）：h1 の文字サイズを clamp() で画面幅に合わせて変える。h2 の左に border-left で色付きの線を付ける */
+/* TODO（03_css_basics 2・5節・この章の4節）：h1 の文字サイズを clamp() で画面幅に合わせて変える。h2 の左に border-left で色付きの線を付ける */
 
 /* ===== ヘッダー ===== */
 
-/* TODO（3節）：.site-header を position: sticky; top: 0; で画面上部に固定し、背景色と下線を付ける */
+/* TODO（03_css_basics 5節）：.site-header に背景色と下線を付ける */
 
-/* TODO（1節）：.header-inner を Flexbox で横並び（flex-wrap: wrap; align-items: center; gap）にする
+/* TODO（2節）：.header-inner を Flexbox で横並び（flex-wrap: wrap; align-items: center; gap）にする
                .site-name を太字・文字色に。.nav-links を横並びにし、リストの記号と余白（margin・padding）を消す */
 
-/* TODO（03_css_basics 2節）：.nav-links a の色・下線なし。:hover と [aria-current="page"] のときはメインカラー＋下線 */
+/* TODO（03_css_basics 3節）：.nav-links a の色・下線なし。:hover と .current のときはメインカラー＋下線 */
 
 /* ===== ボタン ===== */
 
-/* TODO（03_css_basics 5節）：.button をメインカラーの背景・白文字・ピル型（border-radius: 999px）にし、:hover で少し薄くする */
+/* TODO（03_css_basics 2・5節）：.button をメインカラーの背景・白文字・ピル型（border-radius: 999px）にし、:hover で少し薄くする */
 
 /* ===== ホーム ===== */
 
-/* TODO（2節）：.hero を Grid で中身を中央に並べ、白いカード（背景・角丸・影・padding）にする */
+/* TODO（3節）：.hero を Grid で中身を中央に並べ、白いカード（背景・角丸・影・padding）にする */
 
 /* TODO（03_css_basics 5節）：.avatar を丸く（border-radius: 50%）する */
 
-/* TODO（2節）：.skill-cards を grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) で並べ、リストの記号を消す */
+/* TODO（3節）：.skill-cards を grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) で並べ、リストの記号を消す */
 
-/* TODO（03_css_basics 4・5節）：.skill-card と .work-card を白いカード（背景・枠線・角丸・padding・影）にする */
+/* TODO（03_css_basics 5節・この章の1節）：.skill-card と .work-card を白いカード（背景・枠線・角丸・padding・影）にする */
 
 /* ===== プロフィール ===== */
 
-/* TODO（2節）：.profile（dl）を Grid で「dt | dd」の2列（grid-template-columns: max-content 1fr）にする */
+/* TODO（3節）：.profile（dl）を Grid で「dt | dd」の2列（grid-template-columns: max-content 1fr）にする */
 
-/* TODO（03_css_basics 4節）：.skills（table）を横幅いっぱい・border-collapse: collapse にし、th・td に枠線と余白、thead の th に背景色 */
+/* TODO（03_css_basics 5節・この章の1節）：.skills（table）を横幅いっぱい・border-collapse: collapse にし、th・td に枠線と余白、thead の th に背景色 */
 
 /* TODO：.timeline（ol）の左に線を引き、time を太字・メインカラーで1行に表示する */
 
 /* ===== 制作実績 ===== */
 
-/* TODO（2節）：.works-grid を repeat(auto-fill, minmax(260px, 1fr)) で並べる */
+/* TODO（3節）：.works-grid を repeat(auto-fill, minmax(260px, 1fr)) で並べる */
 
-/* TODO（1節）：.tag-list を Flexbox で横に並べ、li をピル型のバッジにする */
+/* TODO（2節）：.tag-list を Flexbox で横に並べ、li をピル型のバッジにする */
 
 /* ===== お問い合わせ ===== */
 
-/* TODO（03_css_basics 4節）：.contact-form を白いカード（最大幅 560px）にする。.field label をブロック要素・太字にする */
+/* TODO（1節）：.contact-form を白いカード（最大幅 560px）にする。.field label をブロック要素・太字にする */
 
-/* TODO（03_css_basics 2・4節）：.field の input・select・textarea を横幅いっぱい・padding・枠線・角丸にし、:focus で枠線をメインカラーに */
+/* TODO（03_css_basics 5節・この章の1・6節）：.field の input・select・textarea を横幅いっぱい・padding・枠線・角丸にし、:focus で枠線をメインカラーに */
 
 /* ===== フッター ===== */
 

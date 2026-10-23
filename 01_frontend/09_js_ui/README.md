@@ -67,8 +67,8 @@
 
 ```html
 <div class="tab-list" role="tablist">
-    <button type="button" role="tab" aria-controls="panel-skills" aria-selected="true">スキル</button>
-    <button type="button" role="tab" aria-controls="panel-history" aria-selected="false">経歴</button>
+    <button type="button" role="tab" data-panel="panel-skills" class="active">スキル</button>
+    <button type="button" role="tab" data-panel="panel-history">経歴</button>
 </div>
 <div role="tabpanel" id="panel-skills">…</div>
 <div role="tabpanel" id="panel-history" hidden>…</div>
@@ -78,8 +78,8 @@
 const selectTab = (selected) => {
     tabs.forEach((tab) => {
         const isSelected = tab === selected;
-        tab.setAttribute('aria-selected', isSelected);
-        const panel = document.getElementById(tab.getAttribute('aria-controls'));
+        tab.classList.toggle('active', isSelected);
+        const panel = document.getElementById(tab.dataset.panel);
         panel.hidden = !isSelected;
     });
 };
@@ -90,8 +90,8 @@ const selectTab = (selected) => {
 | 書き方 | 説明 |
 |---|---|
 | `hidden`属性 / `要素.hidden = true` | 要素を隠す（`display: none`と同じ）。HTMLの属性としても、JavaScriptのプロパティとしても使える |
-| `aria-selected="true"` | 選ばれているタブであることを、読み上げソフトに伝える。CSSでは`[aria-selected="true"]`で見た目を変える |
-| `aria-controls="パネルのid"` | そのタブが、どのパネルを切り替えるか。JavaScriptではこれをたどってパネルを探す |
+| `class="active"` | 選ばれているタブに付けるクラス。CSSでは`.tab-list button.active`で見た目を変える |
+| `data-panel="パネルのid"` | そのタブが、どのパネルを切り替えるか。JavaScriptでは`tab.dataset.panel`でパネルの`id`を読み、パネルを探す |
 | `role="tablist"` / `"tab"` / `"tabpanel"` | 「これはタブだ」という役割を伝える（HTMLにタブ専用のタグが無いため） |
 | ← → キーでの移動 | タブの一般的な操作方法。`keydown`で`event.key`が`'ArrowRight'`・`'ArrowLeft'`のときに隣のタブを選ぶ。最初・最後へは`'Home'`・`'End'`。そのほかのキー名は`'ArrowUp'`・`'ArrowDown'`・`'Escape'`・`' '`（スペース）など |
 | `tabIndex`（`tabindex`属性） | Tabキーで移動できるかを決める数値。`0`＝Tabキーで止まる、`-1`＝Tabキーでは飛ばす（JavaScriptの`focus()`では選べる）。タブでは、選ばれているタブだけ`0`、ほかを`-1`にして、Tabキーで次の部品へ進み、タブの間は矢印キーで動くようにする |
@@ -99,7 +99,7 @@ const selectTab = (selected) => {
 | `配列.indexOf(要素)` と `Array.from()` | 何番目か（0始まり）を調べる。`querySelectorAll`が返す`NodeList`には`indexOf`が無いので、`Array.from(...)`で配列に変えてから使う（08_js_render 1節） |
 | `要素.focus()` | フォーカスを移す。矢印キーで選んだタブに、見た目だけでなくキーボードの操作対象も移すために呼ぶ |
 
-08_js_render 3節の絞り込みと同じく、「選ばれたものに印を付け、それ以外から外す」という考え方です。クラスの代わりに`aria-selected`と`hidden`を使うと、見た目とアクセシビリティを同時に扱えます。
+08_js_render 3節の絞り込みと同じく、「選ばれたものに印を付け、それ以外から外す」という考え方です。タブでは、選ばれたタブに`active`クラスを付けて見た目を変え、パネルは`hidden`で表示・非表示を切り替えます。
 
 ### 動作確認
 
@@ -108,7 +108,7 @@ const selectTab = (selected) => {
 | 確認する操作 | 確認したいこと |
 |---|---|
 | 「経歴」タブを押す | 「経歴」に下線が付き、経歴の内容だけが表示される |
-| Elementsパネルで操作を見る | 押したタブの`aria-selected`が`"true"`に、他のパネルに`hidden`属性が付く |
+| Elementsパネルで操作を見る | 押したタブに`active`クラスが付き、他のパネルに`hidden`属性が付く |
 | 「スキル」タブをクリックしてから → キーを押す | 隣の「経歴」タブに切り替わる。「趣味」で → を押すと「スキル」に戻る |
 
 
@@ -123,7 +123,7 @@ const selectTab = (selected) => {
 
 | # | 仕様 |
 |---|---|
-| 1 | タブを押すと、そのタブの`aria-selected`を`"true"`・`tabIndex`を`0`にし、他のタブは`aria-selected="false"`・`tabIndex`を`-1`にする。対応するパネル（`aria-controls`の`id`）だけを表示し、他のパネルは`hidden`にする |
+| 1 | タブを押すと、そのタブに`active`クラスを付け・`tabIndex`を`0`にし、他のタブは`active`クラスを外し・`tabIndex`を`-1`にする。対応するパネル（`data-panel`の`id`）だけを表示し、他のパネルは`hidden`にする |
 | 2 | タブにフォーカスがあるとき、→で次・←で前のタブを選んでフォーカスを移す（最後の次は最初、最初の前は最後）。Homeで最初、Endで最後のタブ |
 | 3 | 上のタブを操作しても、下のタブには影響しない（逆も同じ） |
 
@@ -131,7 +131,7 @@ const selectTab = (selected) => {
 
 | # | やること | ヒント |
 |---|---|---|
-| 1 | `selectTab(selected)`：渡されたタブを選び、他のタブの選択を外す（仕様1） | パネルは`document.getElementById(tab.getAttribute('aria-controls'))` |
+| 1 | `selectTab(selected)`：渡されたタブを選び、他のタブの選択を外す（仕様1） | パネルは`document.getElementById(tab.dataset.panel)` |
 | 2 | クリックで切り替える | `tabList`に1回だけ`addEventListener`し、`event.target.closest('[role="tab"]')`で押されたタブを探す |
 | 3 | キーボードで切り替える（`tabList`の`'keydown'`イベント、仕様2） | 今のタブの番号は`tabs.indexOf(document.activeElement)`。端で反対側に回るのは`%`で割った余り。それ以外のキーでは何もしない。選んだら`selectTab()`して`focus()`する。Home / Endはページのスクロールにも使われるので、`event.preventDefault()`で止める |
 | 4 | ページ内のすべての`.tabs`に対して`setupTabs()`を呼ぶ | `document.querySelectorAll('.tabs')` |
@@ -140,7 +140,7 @@ const selectTab = (selected) => {
 |---|---|
 | 「プロフィール」で「経歴」を押す | 経歴だけが表示される。「メモ」のタブは変わらない |
 | 「メモ」の「仕事」をクリックしてからEndキーを押す | 「趣味」が選ばれる。続けて→キーを押すと「すべて」に戻る |
-| Elementsパネルを見ながら操作する | 操作したタブの`aria-selected`と、パネルの`hidden`が切り替わる |
+| Elementsパネルを見ながら操作する | 操作したタブの`active`クラスと、パネルの`hidden`が切り替わる |
 
 </details>
 
@@ -221,7 +221,7 @@ hideTimer = setTimeout(() => {
 | 2 | `02_menu_toast/index.html`の`#toast` | 外側をクリックしても閉じないポップアップにする |
 | 3 | `showToast(message)` | 通知の文字を`message`にして開き、2秒後に閉じる。2秒以内にもう一度呼ばれたら、そこからまた2秒数え直す（前のタイマーを`clearTimeout()`で取り消してから`setTimeout()`する）。すでに開いているポップアップに`showPopover()`するとエラーになるので、`toast.matches(':popover-open')`で調べて、開いていないときだけ開く |
 | 4 | メニューの中のボタン | 各メニューに`'click'`を1回だけ登録し、`event.target.dataset.action`（`copy` / `delete`）で押されたボタンを判定する。メニューを`hidePopover()`で閉じ、「『買い物リスト』をコピーしました」「『買い物リスト』を削除しました」のように`showToast()`する。タイトルは`menu.closest('.card').querySelector('h2').textContent`（この問題では、実際にコピー・削除はしなくてよい） |
-| 5 | メニューの開閉 | メニューが開いたら「⋯」ボタンの`aria-expanded`を`"true"`に、閉じたら`"false"`にする。`'toggle'`イベントの`event.newState`（`'open'` / `'closed'`）を使う。ボタンは`` document.querySelector(`[popovertarget="${menu.id}"]`) `` |
+| 5 | メニューの開閉 | メニューが開いたら「⋯」ボタンに`open`クラスを付け、閉じたら外す。`'toggle'`イベントの`event.newState`（`'open'` / `'closed'`）を使う。ボタンは`` document.querySelector(`[popovertarget="${menu.id}"]`) `` |
 
 | 確認する操作 | 確認したいこと |
 |---|---|
@@ -229,7 +229,7 @@ hideTimer = setTimeout(() => {
 | 1枚目のメニューを開いたまま、2枚目の「⋯」を押す | 1枚目が閉じて2枚目が開く |
 | 「コピー」を押す | メニューが閉じ、右下に通知が出て2秒後に消える |
 | 通知が出ている間に、別のカードで「削除」を押す | 通知の文字が変わり、そこから2秒後に消える |
-| Elementsパネルを見ながら開閉する | 「⋯」ボタンの`aria-expanded`が切り替わる |
+| Elementsパネルを見ながら開閉する | 「⋯」ボタンの`open`クラスが付いたり外れたりする |
 
 </details>
 
@@ -349,7 +349,7 @@ slideshow.addEventListener('mouseenter', () => clearInterval(timerId));   // ホ
 | `mouseenter`/`mouseleave`・`focusin`/`focusout` | マウスを乗せている間・ボタンにフォーカスがある間は自動再生を止める。読んでいる途中で切り替わらないようにするため |
 | CSSの重ね方 | すべてのスライドをGridの同じマス（`grid-area: 1 / 1`）に重ね、表示中のものだけ`opacity: 1`にする。`transition`でふわっと切り替わる |
 
-自動で動き続ける表示は、内容を読み切れない人や、動きで気分が悪くなる人もいます。止める手段を用意し、OSの「動きを減らす」設定（`prefers-reduced-motion`、04_css_layout 5節）のときは自動再生しないようにします。
+自動で動き続ける表示は、内容を読み切れない人や、動きで気分が悪くなる人もいます。止める手段を用意し、OSの「動きを減らす」設定のときは自動再生しないようにします。CSSでは`@media (prefers-reduced-motion: reduce) { ... }`の中に書くと、この設定の人にだけ当たります。
 
 ### 動作確認
 
@@ -471,7 +471,7 @@ document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
 | `scroll-behavior: smooth`（CSS） | ページ内リンクの移動をなめらかにする |
 | `scroll-margin-top`（CSS） | 固定ヘッダーに見出しが隠れないよう、ジャンプ先の止まる位置をずらす |
 
-なめらかなスクロールや、ふわっと表示する動きは、OSで「動きを減らす」を設定している人には不要なこともあります。サンプルでは`prefers-reduced-motion`のときに`scroll-behavior`を戻しています（04_css_layout 5節）。
+なめらかなスクロールや、ふわっと表示する動きは、OSで「動きを減らす」を設定している人には不要なこともあります。サンプルでは`@media (prefers-reduced-motion: reduce)`（OSの「動きを減らす」設定のとき）の中で、`scroll-behavior`を戻しています。
 
 3節のモーダルウィンドウでは、開いている間に後ろのページがスクロールしないよう、`body:has(dialog[open]) { overflow: hidden; }`を指定しています。スクロールを止めたいときは`overflow: hidden`を使う、と覚えておきましょう。
 
@@ -503,7 +503,7 @@ document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
 | 2 | `section` | 移動したとき、節の見出しが上の固定ヘッダー（高さ56px）に隠れないよう、止まる位置を「56px＋少しの余白」だけ下げる |
 | 3 | `onScroll()` | ヘッダーの右端に「読了 ◯%」と表示する。読了率＝スクロールした量（`window.scrollY`）÷スクロールできる最大の量（`document.documentElement.scrollHeight - window.innerHeight`）×100。小数は`Math.floor()`で切り捨て、一番下で100% |
 | 4 | `onScroll()`と、その下 | 400px以上スクロールしたら「↑ トップへ」ボタンを表示し（それより上なら`hidden`）、押すとなめらかに一番上へ戻る |
-| 5 | 一番下 | 今読んでいる節の目次のリンクに`aria-current="true"`を付け、他のリンクからは外す（CSSで`[aria-current="true"]`が青く太字になる）。下で説明する`IntersectionObserver`を使う |
+| 5 | 一番下 | 今読んでいる節の目次のリンクに`current`クラスを付け、他のリンクからは外す（CSSで`.toc a.current`が青く太字になる）。下で説明する`IntersectionObserver`を使う |
 
 TODO 5では、`IntersectionObserver`の`rootMargin`を使います。
 
@@ -513,7 +513,7 @@ new IntersectionObserver(コールバック, { rootMargin: '-50% 0px -50% 0px' }
 
 `rootMargin`は「画面の範囲を、上下左右にどれだけ広げる（マイナスなら縮める）か」です。上下を`-50%`にすると、判定する範囲が「画面の上下の真ん中の線」だけになるので、`isIntersecting`が`true`になるのは「真ん中の線を横切っている節」だけになります。
 
-コールバックの中で、`isIntersecting`が`true`の節（`entry.target`）の`id`と、`href`が一致する目次のリンクに印を付けます。リンクの`href`は`link.getAttribute('href')`で`'#usage'`のように取り出せます（`link.href`だと完全なURLになる）。印を外すのは`要素.removeAttribute('aria-current')`です。最後に、すべての`section`を`observe()`します。
+コールバックの中で、`isIntersecting`が`true`の節（`entry.target`）の`id`と、`href`が一致する目次のリンクに印を付けます。リンクの`href`は`link.getAttribute('href')`で`'#usage'`のように取り出せます（`link.href`だと完全なURLになる）。印を外すのは`要素.classList.remove('current')`です。最後に、すべての`section`を`observe()`します。
 
 | 確認する操作 | 確認したいこと |
 |---|---|

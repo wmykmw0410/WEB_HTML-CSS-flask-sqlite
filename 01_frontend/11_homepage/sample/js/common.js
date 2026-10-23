@@ -52,8 +52,7 @@ if (navToggle) {
     const navLinks = document.getElementById('nav-links');
 
     navToggle.addEventListener('click', () => {
-        const isOpen = navLinks.classList.toggle('open');
-        navToggle.setAttribute('aria-expanded', isOpen);
+        navLinks.classList.toggle('open');
     });
 }
 

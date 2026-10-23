@@ -17,12 +17,12 @@
         <div class="container header-inner">
             <a href="index.html" class="site-name">Taro Yamada</a>
             <!-- 表示設定のポップアップを開くボタン（popover） -->
-            <button type="button" class="icon-button settings-button" popovertarget="settings" aria-label="表示設定" data-tip="表示設定">⚙</button>
+            <button type="button" class="icon-button settings-button" popovertarget="settings" data-tip="表示設定">⚙</button>
             <!-- 狭い画面でメニューを開閉するボタン -->
-            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="メニュー">☰</button>
-            <nav aria-label="メインメニュー">
+            <button type="button" class="nav-toggle" id="nav-toggle">☰</button>
+            <nav>
                 <ul class="nav-links" id="nav-links">
-                    <li><a href="index.html" aria-current="page">ホーム</a></li>
+                    <li><a href="index.html" class="current">ホーム</a></li>
                     <li><a href="about.html">プロフィール</a></li>
                     <li><a href="works.html">制作実績</a></li>
                     <li><a href="contact.html">お問い合わせ</a></li>
@@ -54,10 +54,10 @@
         <section>
             <h2>作品のピックアップ</h2>
             <!-- スライドショー：中身は data/works.json から JavaScript で作る -->
-            <div class="slideshow fade-in" id="slideshow" aria-roledescription="スライドショー">
+            <div class="slideshow fade-in" id="slideshow">
                 <div class="slides" id="slides"></div>
-                <button type="button" class="slide-nav prev" aria-label="前の作品">‹</button>
-                <button type="button" class="slide-nav next" aria-label="次の作品">›</button>
+                <button type="button" class="slide-nav prev">‹</button>
+                <button type="button" class="slide-nav next">›</button>
             </div>
             <div class="dots" id="dots"></div>
             <p class="status" id="slides-status">読み込み中…</p>
@@ -92,7 +92,7 @@
     </main>
 
     <!-- トップへ戻るボタン：300px スクロールしたら表示する -->
-    <button type="button" class="to-top" id="to-top" aria-label="ページの先頭へ戻る" hidden>↑</button>
+    <button type="button" class="to-top" id="to-top" hidden>↑</button>
 
     <footer class="site-footer">
         <div class="container">

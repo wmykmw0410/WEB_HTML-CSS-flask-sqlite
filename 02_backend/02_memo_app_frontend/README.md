@@ -262,7 +262,7 @@ keywordInput.addEventListener('input', () => {
 
 | 書くこと | ヒント |
 |---|---|
-| `selectCategory(category)` | `selectedCategory`を変え、押されたボタンだけ`aria-pressed="true"`にする（01_frontend/08_js_render 練習問題3） |
+| `selectCategory(category)` | `selectedCategory`を変え、押されたボタンだけ`active`クラスを付ける（01_frontend/08_js_render 練習問題3） |
 | 絞り込みボタン | 親の`#filters`に1回だけ`click`を登録し、`event.target.closest('button')`で押されたボタンを探す。`selectCategory()`を呼び、`saveSetting(FILTER_KEY, カテゴリ)`で覚えておく |
 | 開いたときの復元 | `start()`の最後で、`loadSetting(FILTER_KEY)`で読んだカテゴリのボタンがあれば（`` filters.querySelector(`button[data-category="${saved}"]`) ``）、そのカテゴリを選ぶ。無ければ`'all'` |
 

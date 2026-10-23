@@ -34,21 +34,21 @@
     {# C6：ヘッダーはスクロールしても上に貼り付く（style.css の .site-header） #}
     <header class="site-header">
         {# サイト名・ボタン・リンクの並びは、style.css の grid-template-areas で画面幅ごとに切り替える #}
-        <nav class="site-nav" aria-label="メインメニュー">
+        <nav class="site-nav">
             <a class="site-name" href="{{ url_for('memos.index') }}">メモ帳</a>
             <div class="nav-tools">
                 {# J5：テーマの切り替え。押すたびに localStorage に保存する #}
-                <button type="button" class="theme-toggle" id="theme-toggle" aria-label="配色を切り替える">◐</button>
-                <button type="button" class="hamburger" id="nav-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="nav-links">
+                <button type="button" class="theme-toggle" id="theme-toggle">◐</button>
+                <button type="button" class="hamburger" id="nav-toggle">
                     <span></span><span></span><span></span>
                 </button>
             </div>
             {#
-                H2：今いるページのリンクに aria-current="page" を付ける（01_frontend/02_html_semantic_form の制作課題）。
+                H2：今いるページのリンクに class="current" を付ける（01_frontend/02_html_semantic_form の制作課題）。
                 request.endpoint は「Blueprint名.関数名」（例：memos.index）
             #}
             {% macro nav_link(endpoint, label) -%}
-            <li><a href="{{ url_for(endpoint) }}"{% if request.endpoint == endpoint %} aria-current="page"{% endif %}>{{ label }}</a></li>
+            <li><a href="{{ url_for(endpoint) }}"{% if request.endpoint == endpoint %} class="current"{% endif %}>{{ label }}</a></li>
             {%- endmacro %}
             <ul class="nav-links" id="nav-links">
                 {{ nav_link('memos.index', 'メモ一覧') }}
@@ -87,7 +87,7 @@
     <div id="toast" class="toast" popover="manual" role="status"></div>
 
     {# J3：削除の確認ダイアログ（01_frontend/09_js_ui 3節「確認してから送信する」）。confirm() の代わりに使う #}
-    <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-message">
+    <dialog id="confirm-dialog" class="confirm-dialog">
         {# 余白は内側の div に付ける。dialog 自身の余白をクリックしても「背景のクリック」と区別できるように（09_js_ui 3節） #}
         <div class="dialog-body">
             <p id="confirm-message"></p>
@@ -99,7 +99,7 @@
     </dialog>
 
     {# J8：トップへ戻るボタン（01_frontend/09_js_ui 5節）。300px 以上スクロールしたら表示する #}
-    <button type="button" class="to-top" id="to-top" aria-label="ページの先頭へ戻る" hidden>↑</button>
+    <button type="button" class="to-top" id="to-top" hidden>↑</button>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

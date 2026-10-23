@@ -21,16 +21,16 @@
 </head>
 <body>
     <header class="site-header">
-        <nav class="site-nav" aria-label="メインメニュー">
+        <nav class="site-nav">
             <a class="site-name" href="/">メモ帳</a>
             <div class="nav-tools">
-                <button type="button" class="theme-toggle" id="theme-toggle" aria-label="配色を切り替える">◐</button>
-                <button type="button" class="hamburger" id="nav-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="nav-links">
+                <button type="button" class="theme-toggle" id="theme-toggle">◐</button>
+                <button type="button" class="hamburger" id="nav-toggle">
                     <span></span><span></span><span></span>
                 </button>
             </div>
             <ul class="nav-links" id="nav-links">
-                <li><a href="/" aria-current="page">メモ一覧</a></li>
+                <li><a href="/" class="current">メモ一覧</a></li>
             </ul>
         </nav>
     </header>
@@ -40,15 +40,15 @@
 
         <!-- カテゴリ・キーワードの絞り込みは、script.js がブラウザ側で行う（02_backend/02_memo_app_frontend の list.js と同じ動き） -->
         <div class="list-tools">
-            <div class="filters" role="group" aria-label="カテゴリで絞り込む">
-                <button type="button" data-category="all" aria-pressed="true">すべて</button>
-                <button type="button" data-category="家事" aria-pressed="false">家事</button>
-                <button type="button" data-category="仕事" aria-pressed="false">仕事</button>
-                <button type="button" data-category="趣味" aria-pressed="false">趣味</button>
-                <button type="button" data-category="アイデア" aria-pressed="false">アイデア</button>
-                <button type="button" data-category="プライベート" aria-pressed="false">プライベート</button>
+            <div class="filters" role="group">
+                <button type="button" data-category="all" class="active">すべて</button>
+                <button type="button" data-category="家事">家事</button>
+                <button type="button" data-category="仕事">仕事</button>
+                <button type="button" data-category="趣味">趣味</button>
+                <button type="button" data-category="アイデア">アイデア</button>
+                <button type="button" data-category="プライベート">プライベート</button>
             </div>
-            <input type="search" id="keyword" class="search" placeholder="タイトル・本文で検索" aria-label="タイトル・本文で検索">
+            <input type="search" id="keyword" class="search" placeholder="タイトル・本文で検索">
             <p class="list-count" id="list-count" role="status"></p>
         </div>
 
@@ -102,7 +102,7 @@
     <div id="toast" class="toast" popover="manual" role="status"></div>
 
     <!-- 確認ダイアログ（01_frontend/09_js_ui 3節）。script.js が data-confirm を持つフォームで使う -->
-    <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-message">
+    <dialog id="confirm-dialog" class="confirm-dialog">
         <div class="dialog-body">
             <p id="confirm-message"></p>
             <div class="dialog-actions">
@@ -113,7 +113,7 @@
     </dialog>
 
     <!-- トップへ戻るボタン（01_frontend/09_js_ui 5節） -->
-    <button type="button" class="to-top" id="to-top" aria-label="ページの先頭へ戻る" hidden>↑</button>
+    <button type="button" class="to-top" id="to-top" hidden>↑</button>
 
     <!-- 全ページ共通の JavaScript（完成済み。02_backend/100_memo_api の static/script.js と同じ） -->
     <script src="/static/script.js"></script>

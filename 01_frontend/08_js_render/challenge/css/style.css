@@ -109,7 +109,7 @@ h2 {
 }
 
 .nav-links a:hover,
-.nav-links a[aria-current="page"] {
+.nav-links a.current {
     color: var(--color-primary);
     text-decoration: underline;
     text-underline-offset: 6px;

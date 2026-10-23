@@ -71,9 +71,6 @@ h2 {
 
 /* ===== ヘッダー ===== */
 .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
     background: var(--color-surface);
     border-bottom: 1px solid var(--color-border);
 }
@@ -109,7 +106,7 @@ h2 {
 }
 
 .nav-links a:hover,
-.nav-links a[aria-current="page"] {
+.nav-links a.current {
     color: var(--color-primary);
     text-decoration: underline;
     text-underline-offset: 6px;
@@ -126,7 +123,6 @@ h2 {
     font: inherit;
     text-decoration: none;
     cursor: pointer;
-    transition: opacity 0.2s;
 }
 
 .button:hover {

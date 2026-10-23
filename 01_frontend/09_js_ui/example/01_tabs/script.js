@@ -1,7 +1,7 @@
 // タブ切り替えの考え方
-//   - すべてのタブ（ボタン）の aria-selected を "false" にし、パネルを hidden で隠す
-//   - 選ばれたタブだけ aria-selected を "true" にし、対応するパネルの hidden を外す
-//   タブとパネルの対応は、ボタンの aria-controls（パネルの id）でたどる
+//   - すべてのタブ（ボタン）から active クラスを外し、パネルを hidden で隠す
+//   - 選ばれたタブだけ active クラスを付け、対応するパネルの hidden を外す
+//   タブとパネルの対応は、ボタンの data-panel（パネルの id）でたどる
 
 const tabList = document.querySelector('#profile-tabs [role="tablist"]');
 const tabs = tabList.querySelectorAll('[role="tab"]');
@@ -9,11 +9,11 @@ const tabs = tabList.querySelectorAll('[role="tab"]');
 const selectTab = (selected) => {
     tabs.forEach((tab) => {
         const isSelected = tab === selected;
-        tab.setAttribute('aria-selected', isSelected);
+        tab.classList.toggle('active', isSelected);
         // 選ばれていないタブは Tab キーで飛ばす（タブの間の移動は矢印キーで行うのが一般的）
         tab.tabIndex = isSelected ? 0 : -1;
 
-        const panel = document.getElementById(tab.getAttribute('aria-controls'));
+        const panel = document.getElementById(tab.dataset.panel);
         panel.hidden = !isSelected;   // hidden プロパティに true を入れると隠れる
     });
 };

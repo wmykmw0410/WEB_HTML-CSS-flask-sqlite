@@ -1,0 +1,50 @@
+/* 解答1：単位と色を書き換えたもの */
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    color: #262b33;
+}
+
+/* ===== ヒーロー（一番上の青い部分） ===== */
+.hero {
+    height: 40vh;           /* vh：画面の高さの1%。ウィンドウの高さを変えると追従する */
+    background: #3f6fd1;
+    color: #ffffff;
+    padding: 24px;
+}
+
+.hero h1 {
+    font-size: 2.5rem;      /* 40px ÷ 16px = 2.5 */
+    margin: 0;
+}
+
+.hero p {
+    font-size: 1.125rem;    /* 18px ÷ 16px = 1.125 */
+}
+
+/* ===== 本文 ===== */
+.content {
+    padding: 24px;
+}
+
+.content h2 {
+    font-size: 1.5rem;      /* 24px ÷ 16px = 1.5 */
+}
+
+/* ===== お知らせ ===== */
+.notice {
+    background: rgb(63 111 209 / 0.15);   /* / 0.15 で 15% の不透明度（半透明） */
+    color: #3f6fd1;                       /* 背景が薄くなったので、文字色を濃くして読めるようにする */
+    padding: 8px 12px;
+}
+
+/* ===== ボタン ===== */
+.button {
+    font-size: 1rem;
+    padding: 0.5em 1em;     /* em：その要素自身の文字サイズが基準。16px なら 8px 16px */
+}
+
+.button.large {
+    font-size: 1.5rem;      /* 24px になるので、.button の padding（em）も自動で 12px 24px になる */
+}

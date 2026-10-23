@@ -28,8 +28,8 @@
             color: #262b33;
         }
 
-        /* 選択中のタブ：aria-selected="true" を属性セレクタで選んで見た目を変える */
-        .tab-list button[aria-selected="true"] {
+        /* 選択中のタブ：active クラスで見た目を変える */
+        .tab-list button.active {
             color: #3f6fd1;
             font-weight: bold;
             border-bottom-color: #3f6fd1;
@@ -46,26 +46,26 @@
 
     <div class="tabs" id="profile-tabs">
         <!-- role="tablist" / "tab" / "tabpanel"：読み上げソフトに「これはタブだ」と伝える -->
-        <div class="tab-list" role="tablist" aria-label="プロフィール">
-            <button type="button" role="tab" id="tab-skills" aria-controls="panel-skills" aria-selected="true">スキル</button>
-            <button type="button" role="tab" id="tab-history" aria-controls="panel-history" aria-selected="false" tabindex="-1">経歴</button>
-            <button type="button" role="tab" id="tab-hobby" aria-controls="panel-hobby" aria-selected="false" tabindex="-1">趣味</button>
+        <div class="tab-list" role="tablist">
+            <button type="button" role="tab" id="tab-skills" data-panel="panel-skills" class="active">スキル</button>
+            <button type="button" role="tab" id="tab-history" data-panel="panel-history" tabindex="-1">経歴</button>
+            <button type="button" role="tab" id="tab-hobby" data-panel="panel-hobby" tabindex="-1">趣味</button>
         </div>
 
         <!-- 選ばれていないパネルには hidden 属性を付けて隠す -->
-        <div class="tab-panel" role="tabpanel" id="panel-skills" aria-labelledby="tab-skills">
+        <div class="tab-panel" role="tabpanel" id="panel-skills">
             <ul>
                 <li>HTML / CSS：ひとりでページを作れる</li>
                 <li>JavaScript：DOM操作・イベント処理ができる</li>
             </ul>
         </div>
-        <div class="tab-panel" role="tabpanel" id="panel-history" aria-labelledby="tab-history" hidden>
+        <div class="tab-panel" role="tabpanel" id="panel-history" hidden>
             <ol>
                 <li>2026年3月：学習を始める</li>
                 <li>2026年8月：ポートフォリオサイトを公開</li>
             </ol>
         </div>
-        <div class="tab-panel" role="tabpanel" id="panel-hobby" aria-labelledby="tab-hobby" hidden>
+        <div class="tab-panel" role="tabpanel" id="panel-hobby" hidden>
             <p>読書・散歩・カフェめぐり</p>
         </div>
     </div>

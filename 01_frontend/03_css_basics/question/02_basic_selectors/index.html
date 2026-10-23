@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>問題2：基本のセレクタを書く</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 640px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        /* (1) TODO：すべての p */
+        TODO {
+            line-height: 1.8;
+        }
+
+        /* (2) TODO：h1 と h2 の両方（1つのルールでまとめて） */
+        TODO {
+            color: #3f6fd1;
+        }
+
+        /* (3) TODO：article の中にある h3 だけ */
+        TODO {
+            color: #6b7280;
+        }
+
+        /* (4) TODO：small */
+        TODO {
+            font-size: 0.85rem;
+        }
+
+        /* (5) TODO：nav の中にある a だけ（最後の段落のMDNへのリンクは含まない） */
+        TODO {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 999px;
+            background: #e8edfb;
+            text-decoration: none;
+        }
+
+        /* (6) TODO：nav の中の a に、マウスが乗っているとき */
+        TODO {
+            background: #3f6fd1;
+            color: #ffffff;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>メモ一覧</h1>
+    <p>今週のメモをまとめています。</p>
+
+    <h2>仕事</h2>
+    <article>
+        <h3>資料を作る</h3>
+        <p>金曜日までに下書きを作り、先輩に見てもらう。</p>
+        <small>2026年10月1日</small>
+    </article>
+    <article>
+        <h3>会議の準備</h3>
+        <p>議題を3つにまとめておく。</p>
+        <small>2026年10月2日</small>
+    </article>
+
+    <h2>リンク</h2>
+    <nav>
+        <a href="#">メモ一覧</a>
+        <a href="#">メモを追加</a>
+        <a href="#">設定</a>
+    </nav>
+    <p>CSSの書き方は、<a href="https://developer.mozilla.org/ja/">MDN Web Docs</a>で調べられます。</p>
+</body>
+</html>

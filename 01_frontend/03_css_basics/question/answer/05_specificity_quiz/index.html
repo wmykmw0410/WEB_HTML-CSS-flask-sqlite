@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>解答5：詳細度を予想する</title>
+    <style>
+        body { font-family: sans-serif; margin: 24px; }
+
+        p                  { color: black; }   /* (0,0,1) */
+        .quiz p            { color: red; }     /* (0,1,1) */
+        .quiz .q           { color: orange; }  /* (0,2,0) */
+        body div p         { color: green; }   /* (0,0,3) ← 要素が3つでも、クラス1個の (0,1,1) に負ける */
+        #q4                { color: blue; }    /* (1,0,0) */
+        .page .quiz .hot   { color: purple; }  /* (0,3,0) */
+        .quiz .q           { color: brown; }   /* (0,2,0) ← orange と同じ詳細度で、後に書かれている */
+        .level             { color: teal; }    /* (0,1,0) ← 後に書かれていても、詳細度が低い */
+        .note              { color: gray; }    /* (0,1,0) */
+
+        table { border-collapse: collapse; margin-top: 24px; }
+        th, td { border: 1px solid #c8ced8; padding: 6px 10px; text-align: left; }
+    </style>
+</head>
+<body>
+    <h1>何色になる？（解答）</h1>
+
+    <div class="page">
+        <div class="quiz">
+            <!-- Q1 正解：red -->
+            <p>Q1：クラスなしの p</p>
+
+            <!-- Q2 正解：brown -->
+            <p class="q">Q2：class="q"</p>
+
+            <!-- Q3 正解：purple -->
+            <p class="q hot">Q3：class="q hot"</p>
+
+            <!-- Q4 正解：blue -->
+            <p class="q hot" id="q4">Q4：class="q hot" id="q4"</p>
+
+            <!-- Q5 正解：brown -->
+            <p class="q level">Q5：class="q level"</p>
+
+            <div class="note">
+                <!-- Q6 正解：red -->
+                <p>Q6：.note の中の p（親の gray は継承される？）</p>
+            </div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr><th>問題</th><th>正解</th><th>理由</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Q1</td><td>red</td>
+                <td><code>.quiz p</code> (0,1,1) が、<code>body div p</code> (0,0,3) と <code>p</code> (0,0,1) に勝つ（左の桁から比べるので、要素がいくつあってもクラス1個の差は覆らない）</td>
+            </tr>
+            <tr>
+                <td>Q2</td><td>brown</td>
+                <td>
+                    <code>.quiz .q</code> (0,2,0) が <code>.quiz p</code> (0,1,1) に勝つ。
+                    さらに <code>.quiz .q</code> は2回出てくるので、後に書かれた brown が勝つ
+                </td>
+            </tr>
+            <tr>
+                <td>Q3</td><td>purple</td>
+                <td><code>.page .quiz .hot</code> は (0,3,0) で、クラスの数が最も多い</td>
+            </tr>
+            <tr>
+                <td>Q4</td><td>blue</td>
+                <td>ID を含む <code>#q4</code> (1,0,0) は、クラスがいくつあっても勝てない</td>
+            </tr>
+            <tr>
+                <td>Q5</td><td>brown</td>
+                <td><code>.level</code> (0,1,0) は後に書かれていても、詳細度が高い <code>.quiz .q</code> (0,2,0) に負ける（記述順で比べるのは、詳細度が同じときだけ）</td>
+            </tr>
+            <tr>
+                <td>Q6</td><td>red</td>
+                <td>継承（親の gray）よりも、その要素に<strong>直接</strong>当たるルール <code>.quiz p</code> が常に優先される</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

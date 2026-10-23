@@ -11,7 +11,7 @@
 // ============================================================
 // TODO 1（06_js_events 1節・07_js_dom 1節）：ハンバーガーメニュー（全ページ）
 // #nav-toggle をクリックするたびに #nav-links の open クラスを付け外しし、
-// ボタンの aria-expanded 属性を "true" / "false" に切り替える
+// ボタンの open クラスを付け外しする
 // ヒント：classList.toggle('open') は、付けたら true・外したら false を返す
 // ============================================================
 const navToggle = document.getElementById('nav-toggle');

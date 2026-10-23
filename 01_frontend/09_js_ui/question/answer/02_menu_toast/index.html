@@ -10,7 +10,7 @@
         .card { display: flex; align-items: center; justify-content: space-between; border: 1px solid #e1e5eb; border-radius: 8px; padding: 8px 16px; }
         .card h2 { font-size: 1rem; margin: 0; }
         .more { width: 36px; height: 36px; border: none; border-radius: 50%; background: #f4f6f9; font: inherit; cursor: pointer; }
-        .more[aria-expanded="true"] { background: #e8edfb; }
+        .more.open { background: #e8edfb; }
 
         .menu-popup {
             border: 1px solid #e1e5eb;
@@ -41,7 +41,7 @@
         <article class="card">
             <h2>買い物リスト</h2>
             <!-- TODO 1：popovertarget="ポップアップのid" で、押したときにそのポップアップを開閉する -->
-            <button type="button" class="more" popovertarget="menu-1" aria-label="買い物リストのメニュー" aria-expanded="false">⋯</button>
+            <button type="button" class="more" popovertarget="menu-1">⋯</button>
             <!-- TODO 1：popover 属性で、外側クリック・Esc で閉じるポップアップになる。開けるのは同時に1つだけ -->
             <div id="menu-1" class="menu-popup" popover>
                 <button type="button" data-action="copy">コピー</button>
@@ -52,7 +52,7 @@
         <article class="card">
             <h2>企画会議メモ</h2>
             <!-- TODO 1：popovertarget="ポップアップのid" で、押したときにそのポップアップを開閉する -->
-            <button type="button" class="more" popovertarget="menu-2" aria-label="企画会議メモのメニュー" aria-expanded="false">⋯</button>
+            <button type="button" class="more" popovertarget="menu-2">⋯</button>
             <!-- TODO 1：popover 属性で、外側クリック・Esc で閉じるポップアップになる。開けるのは同時に1つだけ -->
             <div id="menu-2" class="menu-popup" popover>
                 <button type="button" data-action="copy">コピー</button>

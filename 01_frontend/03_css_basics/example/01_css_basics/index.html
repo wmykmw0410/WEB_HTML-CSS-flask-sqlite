@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CSSの書き方と単位</title>
+    <title>CSSの書き方</title>
 
     <!-- 書き方①：外部ファイルを読み込む（実務の基本。複数ページで同じCSSを使い回せる） -->
     <link rel="stylesheet" href="css/style.css">
@@ -16,43 +16,17 @@
                 プロパティ: 値;
             }
         */
-        .from-style-tag {
+        h3 {
             color: #d1723f;
         }
     </style>
 </head>
 <body>
-    <h1>CSSの書き方と単位</h1>
+    <h1>CSSの書き方</h1>
 
-    <h2>CSSを書く3つの場所</h2>
-    <p class="from-link">① 外部ファイル（css/01_style.css）で青色にしている段落</p>
-    <p class="from-style-tag">② styleタグで橙色にしている段落</p>
+    <h2>① 外部ファイル（css/style.css）で青色にしている見出し</h2>
+    <h3>② styleタグで橙色にしている見出し</h3>
     <!-- 書き方③：style属性（インラインスタイル）。使い回せず優先度も強すぎるので、基本は使わない -->
     <p style="color: #2f9e44;">③ style属性で緑色にしている段落</p>
-
-    <h2>色の指定方法</h2>
-    <div class="swatch-row">
-        <div class="swatch" style="background: royalblue;">名前<br>royalblue</div>
-        <div class="swatch" style="background: #3f6fd1;">16進数<br>#3f6fd1</div>
-        <div class="swatch" style="background: rgb(63 111 209);">rgb()<br>rgb(63 111 209)</div>
-        <div class="swatch" style="background: rgb(63 111 209 / 0.5);">半透明<br>/ 0.5</div>
-        <div class="swatch" style="background: hsl(220 62% 53%);">hsl()<br>hsl(220 62% 53%)</div>
-    </div>
-
-    <h2>長さの単位</h2>
-    <div class="unit-demo">
-        <div class="bar" style="width: 200px;">200px（固定）</div>
-        <div class="bar" style="width: 50%;">50%（親の幅の半分）</div>
-        <div class="bar" style="width: 20rem;">20rem（ルート文字サイズ×20）</div>
-        <div class="bar" style="width: 30vw;">30vw（画面幅の30%）</div>
-    </div>
-
-    <h3>em と rem の違い</h3>
-    <div class="em-parent">
-        親：font-size 20px
-        <p class="em-child">子：1.5em → 親の20px × 1.5 = <strong>30px</strong></p>
-        <p class="rem-child">子：1.5rem → ルート（html）の16px × 1.5 = <strong>24px</strong></p>
-    </div>
-    <p>ブラウザの設定で文字サイズを大きくしたユーザーにも対応できるよう、<strong>文字サイズには rem</strong> を使うのが一般的です。</p>
 </body>
 </html>

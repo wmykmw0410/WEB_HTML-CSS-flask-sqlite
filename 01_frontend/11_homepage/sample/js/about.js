@@ -13,9 +13,9 @@ if (tabList) {
     const selectTab = (selected) => {
         tabs.forEach((tab) => {
             const isSelected = tab === selected;
-            tab.setAttribute('aria-selected', isSelected);
+            tab.classList.toggle('active', isSelected);
             tab.tabIndex = isSelected ? 0 : -1;
-            document.getElementById(tab.getAttribute('aria-controls')).hidden = !isSelected;
+            document.getElementById(tab.dataset.panel).hidden = !isSelected;
         });
     };
 

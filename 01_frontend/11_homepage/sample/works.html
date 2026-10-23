@@ -17,14 +17,14 @@
         <div class="container header-inner">
             <a href="index.html" class="site-name">Taro Yamada</a>
             <!-- 表示設定のポップアップを開くボタン（popover） -->
-            <button type="button" class="icon-button settings-button" popovertarget="settings" aria-label="表示設定" data-tip="表示設定">⚙</button>
+            <button type="button" class="icon-button settings-button" popovertarget="settings" data-tip="表示設定">⚙</button>
             <!-- 狭い画面でメニューを開閉するボタン -->
-            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="メニュー">☰</button>
-            <nav aria-label="メインメニュー">
+            <button type="button" class="nav-toggle" id="nav-toggle">☰</button>
+            <nav>
                 <ul class="nav-links" id="nav-links">
                     <li><a href="index.html">ホーム</a></li>
                     <li><a href="about.html">プロフィール</a></li>
-                    <li><a href="works.html" aria-current="page">制作実績</a></li>
+                    <li><a href="works.html" class="current">制作実績</a></li>
                     <li><a href="contact.html">お問い合わせ</a></li>
                 </ul>
             </nav>
@@ -44,7 +44,7 @@
         <h1>制作実績</h1>
         <p>これまでに作った作品です。カードを押すと、詳しい説明が表示されます。</p>
 
-        <section aria-label="作品一覧">
+        <section>
             <div class="filters" id="filters">
                 <button type="button" data-tag="all" class="active">すべて</button>
                 <button type="button" data-tag="HTML/CSS">HTML/CSS</button>
@@ -58,7 +58,7 @@
     </main>
 
     <!-- 作品の詳細（モーダルウィンドウ） -->
-    <dialog class="work-dialog" id="work-dialog" aria-labelledby="dialog-title">
+    <dialog class="work-dialog" id="work-dialog">
         <div class="dialog-body">
             <p class="work-date" id="dialog-date"></p>
             <h2 id="dialog-title"></h2>
@@ -73,7 +73,7 @@
     </dialog>
 
     <!-- トップへ戻るボタン：300px スクロールしたら表示する -->
-    <button type="button" class="to-top" id="to-top" aria-label="ページの先頭へ戻る" hidden>↑</button>
+    <button type="button" class="to-top" id="to-top" hidden>↑</button>
 
     <footer class="site-footer">
         <div class="container">

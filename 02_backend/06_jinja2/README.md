@@ -246,11 +246,11 @@ base.html（共通レイアウト）
 
 ### 3-6. テンプレートの中で request を使う
 
-テンプレートの中では、今のリクエストの情報（`request`）も使えます（`request`の詳しい使い方は[08_request](../08_request/)で学びます）。`request.endpoint`には「今のページを表示している関数の名前」が入っているので、ナビゲーションで**今いるページのリンクだけに印を付ける**ことができます（01_frontend/02_html_semantic_form の`aria-current="page"`）。
+テンプレートの中では、今のリクエストの情報（`request`）も使えます（`request`の詳しい使い方は[08_request](../08_request/)で学びます）。`request.endpoint`には「今のページを表示している関数の名前」が入っているので、ナビゲーションで**今いるページのリンクだけに印を付ける**ことができます（今いるページのリンクに`current`クラスを付けて、見た目を変える）。
 
 ```html
 <a href="{{ url_for('item_list') }}"
-   {% if request.endpoint == 'item_list' %}aria-current="page"{% endif %}>商品一覧</a>
+   {% if request.endpoint == 'item_list' %}class="current"{% endif %}>商品一覧</a>
 ```
 
 | 値 | 例 |

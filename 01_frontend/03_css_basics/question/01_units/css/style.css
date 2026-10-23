@@ -1,0 +1,50 @@
+/* 問題1：単位と色を書き換える（TODO 1〜5 の値を書き換える） */
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    color: #262b33;
+}
+
+/* ===== ヒーロー（一番上の青い部分） ===== */
+.hero {
+    height: 320px;          /* TODO 1 */
+    background: #3f6fd1;
+    color: #ffffff;
+    padding: 24px;
+}
+
+.hero h1 {
+    font-size: 40px;        /* TODO 2 */
+    margin: 0;
+}
+
+.hero p {
+    font-size: 18px;        /* TODO 2 */
+}
+
+/* ===== 本文 ===== */
+.content {
+    padding: 24px;
+}
+
+.content h2 {
+    font-size: 24px;        /* TODO 2 */
+}
+
+/* ===== お知らせ ===== */
+.notice {
+    background: #3f6fd1;    /* TODO 3 */
+    color: #ffffff;         /* TODO 3 */
+    padding: 8px 12px;
+}
+
+/* ===== ボタン ===== */
+.button {
+    font-size: 16px;
+    padding: 8px 16px;      /* TODO 4 */
+}
+
+.button.large {
+    font-size: 24px;        /* TODO 5 */
+}

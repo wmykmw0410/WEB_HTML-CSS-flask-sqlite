@@ -8,7 +8,7 @@
         body { font-family: sans-serif; max-width: 720px; margin: 32px auto; padding: 0 16px; color: #262b33; }
         .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
         .filters button { padding: 6px 14px; border: 1px solid #c8ced8; border-radius: 999px; background: #fff; cursor: pointer; font: inherit; }
-        .filters button[aria-pressed="true"] { background: #3f6fd1; color: #fff; border-color: #3f6fd1; }
+        .filters button.active { background: #3f6fd1; color: #fff; border-color: #3f6fd1; }
         input[type="search"] { width: 100%; box-sizing: border-box; padding: 8px; font: inherit; }
         .count { color: #6b7280; font-size: 0.9rem; }
         .works { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; padding: 0; list-style: none; }
@@ -21,14 +21,14 @@
     <h1>制作実績</h1>
 
     <div class="filters">
-        <button type="button" data-tag="all" aria-pressed="true">すべて</button>
-        <button type="button" data-tag="HTML" aria-pressed="false">HTML</button>
-        <button type="button" data-tag="CSS" aria-pressed="false">CSS</button>
-        <button type="button" data-tag="JavaScript" aria-pressed="false">JavaScript</button>
-        <button type="button" data-tag="Python" aria-pressed="false">Python</button>
+        <button type="button" data-tag="all" class="active">すべて</button>
+        <button type="button" data-tag="HTML">HTML</button>
+        <button type="button" data-tag="CSS">CSS</button>
+        <button type="button" data-tag="JavaScript">JavaScript</button>
+        <button type="button" data-tag="Python">Python</button>
     </div>
 
-    <input type="search" id="keyword" placeholder="タイトルで検索" aria-label="タイトルで検索">
+    <input type="search" id="keyword" placeholder="タイトルで検索">
     <p class="count" id="count">6件表示中</p>
     <p id="empty" hidden>該当する作品はありません</p>
 

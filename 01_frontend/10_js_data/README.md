@@ -597,7 +597,7 @@ themeButton.addEventListener('click', () => {
 |---|---|
 | `document.documentElement` | `<html>`要素。`dataset.theme`に入れると`data-theme`属性になる |
 | `:root[data-theme="dark"]`（CSS） | `<html>`に`data-theme="dark"`が付いているとき（`:root`は`<html>`のこと） |
-| `:not([data-theme="light"])`（CSS） | `data-theme="light"`が**付いていない**とき（03_css_basics 2節の`:not()`） |
+| `:not([data-theme="light"])`（CSS） | `data-theme="light"`が**付いていない**とき（`:not(...)`は「〜でない」を表す） |
 | `window.matchMedia('(メディアクエリ)').matches` | CSSのメディアクエリが今の画面に当てはまるかを、JavaScriptで`true`/`false`で調べる |
 
 ### 動作確認
@@ -741,7 +741,7 @@ list.addEventListener('click', (event) => {
 | 1 | フォームでタイトルと著者を入力して「追加」を押すと、一覧の最後に追加される（タイトルが空白だけなら追加しない。著者が空欄なら「著者不明」にする） |
 | 2 | 各行の「読了にする」ボタンで`read`を切り替える。読了の行は`.read`クラスが付き（CSSで取り消し線）、ボタンの文字は「未読に戻す」になる |
 | 3 | 各行の「削除」ボタンで、`confirm('『タイトル』を削除しますか？')`で確認してから削除する |
-| 4 | 上の「すべて／未読／読了」ボタンで、表示する本を切り替える（押したボタンに`aria-pressed="true"`）。表示の切り替えはデータを変えるのではなく、`render()`で「表示する分だけ」を選んで作る |
+| 4 | 上の「すべて／未読／読了」ボタンで、表示する本を切り替える（押したボタンに`active`クラス）。表示の切り替えはデータを変えるのではなく、`render()`で「表示する分だけ」を選んで作る |
 | 5 | `#summary`に「全3冊（読了 1冊）」のように、表示の切り替えに関係なく全体の件数を表示する |
 | 6 | 追加・読了・削除の結果を`localStorage`（キー`'reading-list'`）に保存し、リロードしても残る |
 
@@ -754,7 +754,7 @@ list.addEventListener('click', (event) => {
 | 3 | `render()`：`list`を空にし、`filter`に合う本だけを`createItem()`して追加し、`summary`に件数を表示する | `'unread'`なら`read`が`false`、`'read'`なら`true`、`'all'`なら全部。件数は`books`全体で数える |
 | 4 | 追加（フォームの`submit`） | 送信を止め、`{ id: Date.now(), title, author, read: false }`を`push`→`save()`→`render()`→入力欄を空にする |
 | 5 | 読了の切り替えと削除 | ボタンは`render()`のたびに作り直されるので、変わらない親の`list`に1回だけ`'click'`を登録する。行の`id`は`Number(event.target.closest('li').dataset.id)`。データを変えたら`save()`→`render()` |
-| 6 | 表示の切り替え（すべて／未読／読了） | 押したボタンだけ`aria-pressed="true"`にし、`filter`を`data-filter`の値にして`render()`する（データは変わらないので`save()`は不要） |
+| 6 | 表示の切り替え（すべて／未読／読了） | 押したボタンだけ`active`クラスを付け、`filter`を`data-filter`の値にして`render()`する（データは変わらないので`save()`は不要） |
 
 ```html
 <li data-id="1759480000000">                              <!-- read が true なら class="read" -->

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>問題1：ボックスモデル</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 24px 0;
+            color: #262b33;
+        }
+
+        /* ==================== 前半：予想する ==================== */
+        .a1 {
+            width: 300px;
+            padding: 20px;
+            border: 5px solid #3f6fd1;
+        }
+
+        .a2 {
+            width: 300px;
+            padding: 20px;
+            border: 5px solid #3f6fd1;
+            box-sizing: border-box;
+        }
+
+        .a3-top {
+            margin-bottom: 40px;
+            background: #e8edfb;
+        }
+
+        .a3-bottom {
+            margin-top: 24px;
+            background: #e8edfb;
+        }
+
+        .a4 {
+            padding: 10px 20px 30px;
+            background: #e8edfb;
+        }
+
+        /* ==================== 後半：書く ==================== */
+
+        /* TODO B1 */
+
+        .page {
+            /* TODO B2 */
+        }
+
+        .badge {
+            /* TODO B3 */
+            border-radius: 50%;
+            background: #3f6fd1;
+            color: #ffffff;
+            text-align: center;
+            line-height: 28px;
+            font-size: 0.8rem;
+        }
+
+        .hidden-note {
+            /* TODO B4 */
+        }
+
+        .log {
+            border: 1px solid #c8ced8;
+            /* TODO B5 */
+        }
+
+        .card {
+            width: 100%;
+            border: 2px solid #3f6fd1;
+            border-radius: 8px;
+            /* TODO B6 */
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h1>ボックスモデル</h1>
+
+        <h2>前半：予想する</h2>
+
+        <!-- A1 予想： -->
+        <div class="a1">A1</div>
+
+        <!-- A2 予想： -->
+        <div class="a2">A2</div>
+
+        <!-- A3 予想： -->
+        <div class="a3-top">A3（上の箱）</div>
+        <div class="a3-bottom">A3（下の箱）</div>
+
+        <!-- A4 予想： -->
+        <div class="a4">A4</div>
+
+        <h2>後半：書く</h2>
+
+        <div class="card">
+            <h3>メモ <span class="badge">3</span></h3>
+            <p>未読のコメント <span class="badge">12</span></p>
+            <p class="hidden-note">（このメモは非表示です）</p>
+
+            <div class="log">
+                <p>10/1 作成しました</p>
+                <p>10/2 タイトルを変更しました</p>
+                <p>10/2 タグ「仕事」を追加しました</p>
+                <p>10/3 本文を編集しました</p>
+                <p>10/3 ピン留めしました</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

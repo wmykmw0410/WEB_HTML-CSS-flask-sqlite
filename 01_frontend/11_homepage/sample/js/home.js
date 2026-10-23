@@ -19,7 +19,7 @@ let timerId = null;
 const show = (n) => {
     current = (n + slides.length) % slides.length;
     slides.forEach((slide, index) => slide.classList.toggle('active', index === current));
-    dots.forEach((dot, index) => dot.setAttribute('aria-current', index === current));
+    dots.forEach((dot, index) => dot.classList.toggle('current', index === current));
 };
 
 // 自動再生（5秒ごと）
@@ -68,7 +68,6 @@ const loadSlides = async () => {
 
             const dot = document.createElement('button');
             dot.type = 'button';
-            dot.setAttribute('aria-label', `${index + 1}件目を表示`);
             dot.addEventListener('click', () => show(index));
             dotsArea.append(dot);
         });

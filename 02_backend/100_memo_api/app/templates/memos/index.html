@@ -6,19 +6,19 @@
 <h1>メモ一覧</h1>
 
 {#
-    H3：押されているボタンを aria-pressed で伝える（01_frontend/08_js_render 練習問題3）
+    H3：押されているボタンに active クラスを付ける（01_frontend/08_js_render 練習問題3）
     J4：カテゴリとキーワードの両方で絞り込む
 #}
 <div class="list-tools">
-    <div class="filters" role="group" aria-label="カテゴリで絞り込む">
-        <button type="button" data-category="all" aria-pressed="true">すべて</button>
-        <button type="button" data-category="家事" aria-pressed="false">家事</button>
-        <button type="button" data-category="仕事" aria-pressed="false">仕事</button>
-        <button type="button" data-category="趣味" aria-pressed="false">趣味</button>
-        <button type="button" data-category="アイデア" aria-pressed="false">アイデア</button>
-        <button type="button" data-category="プライベート" aria-pressed="false">プライベート</button>
+    <div class="filters" role="group">
+        <button type="button" data-category="all" class="active">すべて</button>
+        <button type="button" data-category="家事">家事</button>
+        <button type="button" data-category="仕事">仕事</button>
+        <button type="button" data-category="趣味">趣味</button>
+        <button type="button" data-category="アイデア">アイデア</button>
+        <button type="button" data-category="プライベート">プライベート</button>
     </div>
-    <input type="search" id="keyword" class="search" placeholder="タイトル・本文で検索" aria-label="タイトル・本文で検索">
+    <input type="search" id="keyword" class="search" placeholder="タイトル・本文で検索">
     <p class="list-count" id="list-count" role="status"></p>
 </div>
 
@@ -30,9 +30,7 @@
         {# ピン留め：POST で送り、サーバーで切り替えてから一覧に戻る（02_backend/08_request・05_redirect） #}
         <form method="post" action="{{ url_for('memos.toggle_pin', memo_id=memo.id) }}" class="pin-form">
             {{ action_form.csrf_token }}
-            <button type="submit" class="pin-button"
-                    aria-pressed="{{ 'true' if memo.is_pinned else 'false' }}"
-                    aria-label="「{{ memo.title }}」をピン留め">{{ '★' if memo.is_pinned else '☆' }}</button>
+            <button type="submit" class="pin-button">{{ '★' if memo.is_pinned else '☆' }}</button>
         </form>
         {% endif %}
         <a class="card-link" href="{{ url_for('memos.detail', memo_id=memo.id) }}">

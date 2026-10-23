@@ -34,8 +34,8 @@ Webアプリを基礎から作れるようになるための、番号付きチ�
 ### フロントエンド編
 - [ ] 01_frontend/01_html_basics — 開発環境と開発者ツール・HTML文書の骨組み・テキストと基本タグ・表
 - [ ] 01_frontend/02_html_semantic_form — セマンティックHTMLとアクセシビリティ・フォーム
-- [ ] 01_frontend/03_css_basics — CSSの書き方と単位・セレクタ・カスケードと詳細度・ボックスモデル・文字と装飾
-- [ ] 01_frontend/04_css_layout — Flexbox・Grid・position・レスポンシブ対応・CSS変数とトランジション
+- [ ] 01_frontend/03_css_basics — CSSの書き方・文字と色と単位・基本のセレクタ・classとid・背景と装飾・（補足）カスケードと詳細度
+- [ ] 01_frontend/04_css_layout — ボックスモデルとdisplay・Flexbox・Grid・レスポンシブ対応・CSS変数・フォームの装飾
 - [ ] 01_frontend/05_js_basics — JavaScriptの読み込みとデバッグ・最小限の基本文法・真偽の判定・関数とコールバック
 - [ ] 01_frontend/06_js_events — イベント（クリック・入力・submit）・入力チェック（ブラウザで動かす）
 - [ ] 01_frontend/07_js_dom — DOM操作（要素の取得・書き換え・作成・XSS）
@@ -118,8 +118,8 @@ Webページが表示されるしくみ（リクエストとレスポンス・UR
 |---|---|---|---|
 | 01 | [html_basics](01_frontend/01_html_basics/) | 開発環境と開発者ツール・HTML文書の骨組み・テキストと基本タグ・表 | — |
 | 02 | [html_semantic_form](01_frontend/02_html_semantic_form/) | セマンティックHTMLとアクセシビリティ・フォーム | ステップ1：4ページのHTML |
-| 03 | [css_basics](01_frontend/03_css_basics/) | CSSの書き方と単位・セレクタ・カスケードと詳細度・ボックスモデル・文字と装飾 | — |
-| 04 | [css_layout](01_frontend/04_css_layout/) | Flexbox・Grid・position・レスポンシブ対応・CSS変数とトランジション | ステップ2：`style.css` |
+| 03 | [css_basics](01_frontend/03_css_basics/) | CSSの書き方・文字と色と単位・基本のセレクタ・classとid・背景と装飾・（補足）カスケードと詳細度 | — |
+| 04 | [css_layout](01_frontend/04_css_layout/) | ボックスモデルとdisplay・Flexbox・Grid・レスポンシブ対応・CSS変数・フォームの装飾 | ステップ2：`style.css` |
 | 05 | [js_basics](01_frontend/05_js_basics/) | JavaScriptの読み込みとデバッグ・最小限の基本文法・真偽の判定・関数とコールバック | — |
 | 06 | [js_events](01_frontend/06_js_events/) | イベント（クリック・入力・ホバー・フォーカス・submit）・入力チェック（ブラウザで動かす） | — |
 | 07 | [js_dom](01_frontend/07_js_dom/) | DOM操作（`querySelector`・属性・要素の作成・XSS） | — |

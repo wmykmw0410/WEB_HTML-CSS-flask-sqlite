@@ -12,10 +12,10 @@ const setupTabs = (container) => {
     const selectTab = (selected) => {
         tabs.forEach((tab) => {
             const isSelected = tab === selected;
-            tab.setAttribute('aria-selected', isSelected);
+            tab.classList.toggle('active', isSelected);
             tab.tabIndex = isSelected ? 0 : -1;
 
-            const panel = document.getElementById(tab.getAttribute('aria-controls'));
+            const panel = document.getElementById(tab.dataset.panel);
             panel.hidden = !isSelected;
         });
     };

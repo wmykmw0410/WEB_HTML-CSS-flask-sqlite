@@ -5,53 +5,7 @@ body {
     margin: 24px;
 }
 
-.from-link {
+/* h2（見出し）をすべて青色にする */
+h2 {
     color: #3f6fd1;
-}
-
-/* 色見本 */
-.swatch-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.swatch {
-    width: 130px;
-    padding: 12px 8px;
-    color: #ffffff;
-    font-size: 0.8rem;
-    text-align: center;
-    border-radius: 6px;
-}
-
-/* 単位の比較 */
-.unit-demo {
-    border: 1px dashed #9aa5b8;
-    padding: 8px;
-}
-
-.bar {
-    background: #e8edfb;
-    border-left: 4px solid #3f6fd1;
-    padding: 4px 8px;
-    margin: 6px 0;
-    white-space: nowrap;
-}
-
-/* em と rem */
-.em-parent {
-    font-size: 20px;
-    border: 1px dashed #9aa5b8;
-    padding: 8px;
-}
-
-.em-child {
-    font-size: 1.5em;
-    margin: 4px 0;
-}
-
-.rem-child {
-    font-size: 1.5rem;
-    margin: 4px 0;
 }

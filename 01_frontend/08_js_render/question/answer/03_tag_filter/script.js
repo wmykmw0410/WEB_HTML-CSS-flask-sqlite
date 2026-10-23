@@ -38,8 +38,8 @@ const applyFilter = () => {
 // TODO 2：タグのボタン
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
-        buttons.forEach((b) => b.setAttribute('aria-pressed', 'false'));
-        button.setAttribute('aria-pressed', 'true');
+        buttons.forEach((b) => b.classList.remove('active'));
+        button.classList.add('active');
 
         selectedTag = button.dataset.tag;
         applyFilter();

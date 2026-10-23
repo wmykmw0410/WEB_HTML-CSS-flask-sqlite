@@ -34,8 +34,6 @@ const createCard = (memo) => {
     pin.type = 'button';
     pin.className = 'pin-button';
     pin.textContent = memo.is_pinned ? '★' : '☆';
-    pin.setAttribute('aria-pressed', memo.is_pinned);
-    pin.setAttribute('aria-label', `「${memo.title}」をピン留め`);
 
     const link = document.createElement('a');
     link.className = 'card-link';
@@ -133,7 +131,7 @@ const render = () => {
 const selectCategory = (category) => {
     selectedCategory = category;
     filters.querySelectorAll('button').forEach((button) => {
-        button.setAttribute('aria-pressed', button.dataset.category === category);
+        button.classList.toggle('active', button.dataset.category === category);
     });
     render();
 };

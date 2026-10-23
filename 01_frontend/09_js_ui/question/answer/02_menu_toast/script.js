@@ -39,10 +39,10 @@ menus.forEach((menu) => {
         }
     });
 
-    // TODO 5：開閉に合わせて aria-expanded を切り替える
+    // TODO 5：開閉に合わせて「⋯」ボタンの open クラスを付け外しする
     //         toggle イベントは、ボタン・外側クリック・Esc・hidePopover() のどれで開閉しても発生する
     const opener = document.querySelector(`[popovertarget="${menu.id}"]`);
     menu.addEventListener('toggle', (event) => {
-        opener.setAttribute('aria-expanded', event.newState === 'open');
+        opener.classList.toggle('open', event.newState === 'open');
     });
 });

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>問題4：記事ページの装飾</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            /* TODO 1 */
+            /* TODO 2 */
+            color: #262b33;
+            background: #f4f6f9;
+        }
+
+        /* ===== ヒーロー ===== */
+        .hero {
+            padding: 48px 16px;
+            /* TODO 3 */
+            /* TODO 4 */
+        }
+
+        .hero h1 {
+            margin: 0;
+            /* TODO 5 */
+        }
+
+        .hero time {
+            /* TODO 6 */
+        }
+
+        /* ===== 記事 ===== */
+        .article {
+            max-width: 640px;
+            margin: -24px auto 40px;   /* 上だけマイナスにして、ヒーローに少し重ねる */
+            padding: 24px;
+            background: #ffffff;
+            /* TODO 7 */
+            /* TODO 8 */
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 12px;
+            font-size: 0.8rem;
+            background: #e8edfb;
+            color: #3f6fd1;
+            /* TODO 9 */
+        }
+
+        .point {
+            padding: 12px 16px;
+            /* TODO 10 */
+        }
+
+        .article a {
+            color: #3f6fd1;
+            /* TODO 11 */
+        }
+
+        .related {
+            /* TODO 12 */
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <h1>CSSで読みやすい文章を作る</h1>
+        <time datetime="2026-10-03">2026年10月3日</time>
+    </header>
+
+    <article class="article">
+        <p><span class="tag">#HTML</span> <span class="tag">#CSS</span></p>
+
+        <p>
+            文章の読みやすさは、内容だけでなく見た目にも大きく左右されます。
+            文字の大きさ・行の高さ・字間・色の組み合わせを少し変えるだけで、
+            同じ文章でも驚くほど読みやすくなります。
+        </p>
+
+        <p class="point">
+            ポイント：日本語の本文の行の高さは 1.5〜1.8 くらいが目安です。
+            行の高さは単位なしの数値で書くと、文字サイズが変わっても比率が保たれます。
+        </p>
+
+        <p>
+            詳しくは <a href="https://developer.mozilla.org/ja/docs/Web/CSS/line-height">MDN の line-height のページ</a> を参照してください。
+        </p>
+
+        <p class="related">関連記事：フォントの選び方と、日本語のWebページでよく使われるフォントスタックの書き方について詳しく解説します</p>
+    </article>
+</body>
+</html>

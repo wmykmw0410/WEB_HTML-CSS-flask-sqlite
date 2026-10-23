@@ -137,8 +137,8 @@ docker compose up --build
 | # | 項目 | 使っている場所 | 学ぶ章 |
 |---|---|---|---|
 | H1 | メモのカードと詳細を`article`に、期限を`<time datetime>`に、詳細の項目を`dl`に | `memos/index.html`・`detail.html` | [01_frontend/02_html_semantic_form](../../01_frontend/02_html_semantic_form/) 1節・[01_html_basics](../../01_frontend/01_html_basics/) 2節 |
-| H2 | ナビの今いるページのリンクに`aria-current="page"`（`request.endpoint`で判定） | `base.html` | 01_frontend/02_html_semantic_form 制作課題・06_jinja2 3-6 |
-| H3 | 絞り込みボタン・ピン留めボタンの状態を`aria-pressed`で伝える | `memos/index.html` | [01_frontend/08_js_render](../../01_frontend/08_js_render/) 練習問題3 |
+| H2 | ナビの今いるページのリンクに`current`クラス（`request.endpoint`で判定） | `base.html` | 06_jinja2 3-6 |
+| H3 | 押されている絞り込みボタンに`active`クラスを付ける | `memos/index.html` | [01_frontend/08_js_render](../../01_frontend/08_js_render/) 練習問題3 |
 | H4 | リンクの文字を「こちら」にしない。`autocomplete`・`required`などの属性 | `auth/login.html`・`register.html`・`memos/_form.html` | 01_frontend/02_html_semantic_form 1・2節 |
 | H5 | ページごとの`<meta name="description">`・ファビコン・OGP（`self.title()`でタイトルを2回使う） | `base.html`・各テンプレートの`block description`・`static/favicon.svg` | 01_frontend/01_html_basics 1節・[11_homepage](../../01_frontend/11_homepage/) 1節・06_jinja2 3-5 |
 | H6 | 追加・編集のフォームを`_form.html`にまとめて`include`する | `memos/_form.html`・`create.html`・`update.html` | 06_jinja2 3-4 |
@@ -148,11 +148,11 @@ docker compose up --build
 | # | 項目 | 学ぶ章 |
 |---|---|---|
 | C1 | `box-sizing: border-box`を全体のリセットにする | [01_frontend/03_css_basics](../../01_frontend/03_css_basics/) 4節 |
-| C2 | キーボード操作のときだけ枠を出す`:focus-visible` | 01_frontend/03_css_basics 2節・11_homepage 最終チェックリスト |
-| C3 | モバイルファースト（`min-width`で広い画面用を足す）。ナビの並びは`grid-template-areas`で切り替え、カードの列数は`auto-fill`＋`minmax()`で自動 | [01_frontend/04_css_layout](../../01_frontend/04_css_layout/) 2・4節・練習問題3 |
+| C2 | キーボード操作のときだけ枠を出す`:focus-visible` | 01_frontend/04_css_layout 6節・11_homepage 最終チェックリスト |
+| C3 | モバイルファースト（`min-width`で広い画面用を足す）。ナビの並びは`grid-template-areas`で切り替え、カードの列数は`auto-fill`＋`minmax()`で自動 | [01_frontend/04_css_layout](../../01_frontend/04_css_layout/) 3・4節・練習問題3 |
 | C4 | ダークモード。OSの設定に従い、ボタン（◐）でも切り替えられる（`data-theme`） | 01_frontend/04_css_layout 5節・[10_js_data](../../01_frontend/10_js_data/) 4節「応用」 |
-| C5 | カードの`:hover`で浮き上がる`transition`。「動きを減らす」設定の人には止める | 01_frontend/04_css_layout 5節 |
-| C6 | ヘッダーを`position: sticky`で上に固定し、スクロールしたら影を付ける | 01_frontend/04_css_layout 3節・[09_js_ui](../../01_frontend/09_js_ui/) 5節 |
+| C5 | カードの`:hover`で浮き上がる`transition`。「動きを減らす」設定の人には止める | 完成例の`style.css`で確認する（04_css_layout では扱わない） |
+| C6 | ヘッダーを`position: sticky`で上に固定し、スクロールしたら影を付ける | 完成例の`style.css`・[09_js_ui](../../01_frontend/09_js_ui/) 5節 |
 | C7 | フォームの`:focus`の輪と、`:user-invalid`の赤枠 | 01_frontend/04_css_layout 練習問題4 |
 
 ### JavaScript

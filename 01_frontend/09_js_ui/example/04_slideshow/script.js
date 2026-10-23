@@ -19,7 +19,6 @@ const dots = [];
 slides.forEach((slide, index) => {   // forEach の2つ目の引数は、何番目か（0 始まり）
     const dot = document.createElement('button');
     dot.type = 'button';
-    dot.setAttribute('aria-label', `${index + 1}枚目を表示`);
     dot.addEventListener('click', () => show(index));
     dotsArea.append(dot);
     dots.push(dot);
@@ -37,7 +36,7 @@ const show = (n) => {
         slide.classList.toggle('active', index === current);
     });
     dots.forEach((dot, index) => {
-        dot.setAttribute('aria-current', index === current);
+        dot.classList.toggle('current', index === current);
     });
 };
 

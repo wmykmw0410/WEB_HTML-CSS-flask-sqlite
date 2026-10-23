@@ -21,25 +21,25 @@
 </head>
 <body>
     {# ヘッダー・フッター・通知などの共通部分（02_backend/02_memo_app_frontend の各HTMLと同じ構造） #}
-    {# request.path は今開いているURLのパス。今いるページのリンクに aria-current="page" を付ける（02_backend/06_jinja2 3-6） #}
+    {# request.path は今開いているURLのパス。今いるページのリンクに class="current" を付ける（02_backend/06_jinja2 3-6） #}
     <header class="site-header">
-        <nav class="site-nav" aria-label="メインメニュー">
+        <nav class="site-nav">
             <a class="site-name" href="/">メモ帳</a>
             <div class="nav-tools">
-                <button type="button" class="theme-toggle" id="theme-toggle" aria-label="配色を切り替える">◐</button>
-                <button type="button" class="hamburger" id="nav-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="nav-links">
+                <button type="button" class="theme-toggle" id="theme-toggle">◐</button>
+                <button type="button" class="hamburger" id="nav-toggle">
                     <span></span><span></span><span></span>
                 </button>
             </div>
             <ul class="nav-links" id="nav-links">
-                <li><a href="/"{% if request.path == '/' %} aria-current="page"{% endif %}>メモ一覧</a></li>
+                <li><a href="/"{% if request.path == '/' %} class="current"{% endif %}>メモ一覧</a></li>
                 {% if current_user.is_authenticated %}
-                <li><a href="/memos/new"{% if request.path == '/memos/new' %} aria-current="page"{% endif %}>メモを追加</a></li>
+                <li><a href="/memos/new"{% if request.path == '/memos/new' %} class="current"{% endif %}>メモを追加</a></li>
                 <li class="nav-user">{{ current_user.username }} さん</li>
                 <li><a href="/logout">ログアウト</a></li>
                 {% else %}
-                <li><a href="/login"{% if request.path == '/login' %} aria-current="page"{% endif %}>ログイン</a></li>
-                <li><a href="/register"{% if request.path == '/register' %} aria-current="page"{% endif %}>新規登録</a></li>
+                <li><a href="/login"{% if request.path == '/login' %} class="current"{% endif %}>ログイン</a></li>
+                <li><a href="/register"{% if request.path == '/register' %} class="current"{% endif %}>新規登録</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -69,7 +69,7 @@
     <div id="toast" class="toast" popover="manual" role="status"></div>
 
     {# 確認ダイアログ（01_frontend/09_js_ui 3節）。script.js が data-confirm を持つフォームで使う #}
-    <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-message">
+    <dialog id="confirm-dialog" class="confirm-dialog">
         <div class="dialog-body">
             <p id="confirm-message"></p>
             <div class="dialog-actions">
@@ -80,7 +80,7 @@
     </dialog>
 
     {# トップへ戻るボタン（01_frontend/09_js_ui 5節） #}
-    <button type="button" class="to-top" id="to-top" aria-label="ページの先頭へ戻る" hidden>↑</button>
+    <button type="button" class="to-top" id="to-top" hidden>↑</button>
 
     {# 全ページ共通の JavaScript（完成済み。02_backend/100_memo_api の static/script.js と同じ） #}
     <script src="/static/script.js"></script>

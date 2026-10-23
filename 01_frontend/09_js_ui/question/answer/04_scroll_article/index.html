@@ -41,7 +41,7 @@
 
         .toc ol { padding-left: 1.2em; }
         .toc a { color: #6b7280; text-decoration: none; }
-        .toc a[aria-current="true"] { color: #3f6fd1; font-weight: bold; }
+        .toc a.current { color: #3f6fd1; font-weight: bold; }
 
         section {
             min-height: 80vh;   /* 1つの節が画面の高さくらいになるようにしている */
@@ -72,7 +72,7 @@
     </header>
 
     <div class="layout">
-        <nav class="toc" aria-label="目次">
+        <nav class="toc">
             <h2>目次</h2>
             <ol>
                 <li><a href="#intro">はじめに</a></li>

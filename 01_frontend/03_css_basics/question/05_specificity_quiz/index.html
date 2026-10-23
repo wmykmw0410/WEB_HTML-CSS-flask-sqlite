@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>問題5：詳細度を予想する</title>
+    <style>
+        body { font-family: sans-serif; margin: 24px; }
+
+        p                  { color: black; }
+        .quiz p            { color: red; }
+        .quiz .q           { color: orange; }
+        body div p         { color: green; }
+        #q4                { color: blue; }
+        .page .quiz .hot   { color: purple; }
+        .quiz .q           { color: brown; }
+        .level             { color: teal; }
+        .note              { color: gray; }
+    </style>
+</head>
+<body>
+    <h1>何色になる？</h1>
+    <p>ブラウザで開く前に、Q1〜Q6の文字色を予想して、各段落の直前のコメントに書き込みます。</p>
+
+    <div class="page">
+        <div class="quiz">
+            <!-- Q1 予想： -->
+            <p>Q1：クラスなしの p</p>
+
+            <!-- Q2 予想： -->
+            <p class="q">Q2：class="q"</p>
+
+            <!-- Q3 予想： -->
+            <p class="q hot">Q3：class="q hot"</p>
+
+            <!-- Q4 予想： -->
+            <p class="q hot" id="q4">Q4：class="q hot" id="q4"</p>
+
+            <!-- Q5 予想： -->
+            <p class="q level">Q5：class="q level"</p>
+
+            <div class="note">
+                <!-- Q6 予想： -->
+                <p>Q6：.note の中の p（親の gray は継承される？）</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

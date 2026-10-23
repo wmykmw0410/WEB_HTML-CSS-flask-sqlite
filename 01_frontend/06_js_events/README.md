@@ -10,8 +10,8 @@
 
 | チャプター | 使う知識 |
 |---|---|
-| 02_html_semantic_form | `id`・`class`属性、フォーム部品 |
-| 03_css_basics | クラスセレクタ（JavaScriptからクラスを付け外しして見た目を切り替える） |
+| 02_html_semantic_form | フォーム部品 |
+| 03_css_basics | `class`・`id`属性、クラスセレクタ（JavaScriptからクラスを付け外しして見た目を切り替える） |
 | 05_js_basics | 変数・関数・`if`・`null`と真偽の判定・コールバック関数・デバッグの方法 |
 
 ## 目次
@@ -232,7 +232,7 @@ button.addEventListener('blur', () => { tip.hidden = true; });
 
 | 使い分け | 例 |
 |---|---|
-| 見た目を変えるだけなら、CSSの`:hover`・`:focus-visible`（03_css_basics 2節） | ボタンの色を変える・影を付ける |
+| 見た目を変えるだけなら、CSSの`:hover`・`:focus-visible`（03_css_basics 3節・04_css_layout 6節） | ボタンの色を変える・影を付ける |
 | 中身を書き換える・別の要素を出す・処理を止めるなら、JavaScriptの`mouseenter`/`mouseleave` | ツールチップを作って表示する・スライドショーの自動再生を止める（09_js_ui 4節） |
 
 | イベント | 違い |

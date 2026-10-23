@@ -10,7 +10,8 @@
 
 | チャプター | 使う知識 |
 |---|---|
-| 02_html_semantic_form | `id`・`class`・`data-*`属性 |
+| 02_html_semantic_form | フォーム部品 |
+| 03_css_basics | `class`・`id`属性 |
 | 05_js_basics | 変数・関数・`forEach`・コールバック関数 |
 | 06_js_events | `getElementById`・`addEventListener`・`textContent`・`classList.toggle` |
 
@@ -81,7 +82,6 @@ document.querySelectorAll('.card');                   // 一致するものす�
 link.getAttribute('href');                      // 属性の値を読む
 link.setAttribute('target', '_blank');          // 属性を追加・変更する
 link.dataset.lang;                              // data-lang="..." の値（data-* 属性専用）
-button.setAttribute('aria-expanded', 'true');   // 制作課題のハンバーガーメニューで使う
 ```
 
 `data-*`属性は、名前のハイフンが**キャメルケース**に変わって`dataset`のプロパティになります。

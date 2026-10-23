@@ -18,12 +18,12 @@
         <div class="container header-inner">
             <a href="index.html" class="site-name">Taro Yamada</a>
             <!-- 08_js_render で追加：狭い画面でメニューを開閉するボタン -->
-            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="メニュー">☰</button>
-            <nav aria-label="メインメニュー">
+            <button type="button" class="nav-toggle" id="nav-toggle">☰</button>
+            <nav>
                 <ul class="nav-links" id="nav-links">
                     <li><a href="index.html">ホーム</a></li>
                     <li><a href="about.html">プロフィール</a></li>
-                    <li><a href="works.html" aria-current="page">制作実績</a></li>
+                    <li><a href="works.html" class="current">制作実績</a></li>
                     <li><a href="contact.html">お問い合わせ</a></li>
                 </ul>
             </nav>
@@ -34,7 +34,7 @@
         <h1>制作実績</h1>
         <p>これまでに作った作品です。</p>
 
-        <section aria-label="作品一覧">
+        <section>
             <!-- 08_js_render で追加：技術ごとの絞り込みボタン -->
             <div class="filters" id="filters">
                 <button type="button" data-tag="all" class="active">すべて</button>

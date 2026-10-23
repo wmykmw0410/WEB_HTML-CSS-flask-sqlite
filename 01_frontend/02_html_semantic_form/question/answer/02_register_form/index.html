@@ -7,37 +7,42 @@
     <style>
         /* 最小限の見た目（CSSは03_css_basicsで学ぶ） */
         body { font-family: sans-serif; max-width: 420px; margin: 24px auto; padding: 0 16px; }
-        .field { margin-bottom: 16px; }
-        .field > label { display: block; font-weight: bold; margin-bottom: 4px; }
-        .hint { margin: 4px 0 0; font-size: 0.8rem; color: #6b7280; }
+        form div { margin-bottom: 16px; }
+        form div > label { display: block; font-weight: bold; }
+        form div > label > input:not([type="checkbox"]) { display: block; margin-top: 4px; font-weight: normal; }
+        form div > p { margin: 4px 0 0; font-size: 0.8rem; color: #6b7280; }
     </style>
 </head>
 <body>
     <form action="#" method="post">
         <h1>ユーザー登録</h1>
 
-        <div class="field">
-            <label for="username">ユーザー名</label>
-            <input id="username" type="text" name="username" required maxlength="50" autocomplete="username">
+        <div>
+            <!-- label で入力欄を包むと、ラベルの文字をクリックしたときに入力欄が選ばれる（for と id は不要） -->
+            <label>ユーザー名
+                <input type="text" name="username" required maxlength="50" autocomplete="username">
+            </label>
         </div>
 
-        <div class="field">
-            <label for="email">メールアドレス</label>
-            <!-- type="email"：形式チェック付き。スマホでは @ 入りのキーボードが出る -->
-            <input id="email" type="email" name="email" required autocomplete="email">
+        <div>
+            <label>メールアドレス
+                <!-- type="email"：形式チェック付き。スマホでは @ 入りのキーボードが出る -->
+                <input type="email" name="email" required autocomplete="email">
+            </label>
         </div>
 
-        <div class="field">
-            <label for="password">パスワード</label>
-            <!-- autocomplete="new-password"：ブラウザが「新しいパスワードの提案」を出してくれる -->
-            <!-- （発展・任意）aria-describedby="password-hint"：下のヒント（id="password-hint"）を、入力欄の説明として読み上げさせる -->
-            <input id="password" type="password" name="password" required minlength="4" autocomplete="new-password" aria-describedby="password-hint">
-            <p id="password-hint" class="hint">4文字以上で入力してください</p>
+        <div>
+            <label>パスワード
+                <!-- autocomplete="new-password"：ブラウザが「新しいパスワードの提案」を出してくれる -->
+                <input type="password" name="password" required minlength="4" autocomplete="new-password">
+            </label>
+            <p>4文字以上で入力してください</p>
         </div>
 
-        <div class="field">
-            <label for="confirm">パスワード（確認）</label>
-            <input id="confirm" type="password" name="confirm" required minlength="4" autocomplete="new-password">
+        <div>
+            <label>パスワード（確認）
+                <input type="password" name="confirm" required minlength="4" autocomplete="new-password">
+            </label>
         </div>
 
         <!-- ラジオボタンのまとまりは fieldset + legend で「何を選ぶのか」を伝える -->
@@ -48,8 +53,8 @@
             <label><input type="radio" name="purpose" value="private"> プライベート</label>
         </fieldset>
 
-        <div class="field">
-            <!-- label で包む書き方なら for / id は不要 -->
+        <div>
+            <!-- label で包む書き方なら、文字をクリックしてもチェックを切り替えられる -->
             <label><input type="checkbox" name="newsletter" value="yes"> お知らせメールを受け取る</label>
         </div>
 

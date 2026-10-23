@@ -129,8 +129,8 @@ list.addEventListener('click', (event) => {
 // TODO 6：表示の切り替え。データは変わらないので save() はしない
 filterButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        filterButtons.forEach((b) => b.setAttribute('aria-pressed', 'false'));
-        button.setAttribute('aria-pressed', 'true');
+        filterButtons.forEach((b) => b.classList.remove('active'));
+        button.classList.add('active');
 
         filter = button.dataset.filter;
         render();
