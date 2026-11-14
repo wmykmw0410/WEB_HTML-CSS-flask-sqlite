@@ -4,7 +4,7 @@
 
 [01_html_basics](../01_html_basics/)で学んだタグを使って、**ページ全体の構造**を意味の伝わる形で組み立てる方法（セマンティックHTML）と、ユーザーの入力を受け取る**フォーム**を学びます。
 
-章の最後の制作課題では、自分を紹介するオリジナルHPのHTMLを書きます。見た目は素っ気なくて構いません。このHTMLに[04_css_layout](../04_css_layout/)でスタイルを付け、[06_js_events](../06_js_events/)・[08_js_render](../08_js_render/)で動きを付けて完成させていきます。
+章の最後の制作課題では、自分を紹介するオリジナルHPのHTMLを書きます。見た目は素っ気なくて構いません。このHTMLに[04_css_layout](../04_css_layout/)でスタイルを付け、[06_js_dom_basics](../06_js_dom_basics/)〜[08_js_forms](../08_js_forms/)・[10_js_render](../10_js_render/)で動きを付けて完成させていきます。
 
 ## 目次
 

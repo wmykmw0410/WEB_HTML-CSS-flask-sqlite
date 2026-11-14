@@ -13,6 +13,7 @@
 │   └── requirements.txt  バックエンド編で使うライブラリの一覧
 ├── web_basic/          Webページが表示されるしくみ（リクエストとレスポンス・URL・ステータスコード・HTTPS・IPアドレス）
 ├── glossary/           用語集（章をまたいで出てくる用語）
+├── js_grammar/         JavaScriptの文法・メソッドリファレンス（フロントエンド編05〜12章の一覧）
 ├── python_grammar/     Pythonの文法リファレンス（基礎・中級・発展）
 └── github/             GitHubにリポジトリをpushする手順
 ```
@@ -26,5 +27,6 @@
 | [setup/vscode.md](setup/vscode.md) | VS Codeの拡張機能を足したくなったとき |
 | [web_basic/](web_basic/) | URL・リクエストとレスポンス・ステータスコードなど、Webのしくみの言葉が出てきたとき。フロントエンド編を始める前に一度ざっと読んでおくと、全体像がつかみやすい |
 | [glossary/](glossary/) | 章の中で、意味を忘れた用語が出てきたとき |
+| [js_grammar/](js_grammar/) | フロントエンド編で、JavaScriptの書き方・メソッド・イベントを忘れたとき（章ごとの初出つき） |
 | [python_grammar/](python_grammar/) | バックエンド編で、わからないPythonの文法が出てきたとき |
-| [github/](github/) | 作ったものをGitHubに置きたくなったとき（フロントエンド編の[11_homepage](../01_frontend/11_homepage/)でHPを公開するときなど） |
+| [github/](github/) | 作ったものをGitHubに置きたくなったとき（フロントエンド編の[13_homepage](../01_frontend/13_homepage/)でHPを公開するときなど） |

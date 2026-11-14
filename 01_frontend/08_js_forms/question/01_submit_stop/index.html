@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>問題1：送信を止める</title>
+    <style>
+        body { font-family: sans-serif; max-width: 520px; margin: 32px auto; padding: 0 16px; color: #262b33; }
+        .lead { color: #5b6472; font-size: 0.9rem; }
+        .field { margin-bottom: 14px; }
+        label { display: block; font-weight: bold; margin-bottom: 4px; }
+        input[type="text"], textarea { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #c8ced8; border-radius: 6px; font: inherit; }
+        button { padding: 6px 14px; border: 1px solid #3f6fd1; border-radius: 6px; background: #fff; color: #3f6fd1; cursor: pointer; }
+        .invalid { border-color: #d14343; }
+        .error { color: #d14343; font-size: 0.85rem; margin: 4px 0 0; min-height: 1.2em; }
+        .output { background: #f4f6f9; padding: 8px; border-radius: 4px; min-height: 1.5em; }
+        .highlight { background: #fff3bf; font-weight: bold; }
+        .over { color: #d14343; font-weight: bold; }
+        .tag { display: inline-block; font-size: 0.75em; background: #e8edfb; color: #3f6fd1; padding: 0 8px; border-radius: 999px; margin-right: 6px; }
+        .tip { background: #262b33; color: #fff; font-size: 0.85rem; padding: 4px 8px; border-radius: 4px; display: inline-block; }
+        .tip:empty { display: none; }
+        .active { outline: 2px solid #3f6fd1; }
+        #result { background: #e9f7ee; padding: 8px; border-radius: 6px; }
+        #result:empty { display: none; }
+    </style>
+</head>
+<body>
+    <p class="lead">README の「練習問題1」を見ながら <code>script.js</code> を書きます。書いたら、ページ下の「テストを実行」ボタンを押し、Consoleで ✅ を確認します。</p>
+    <form id="memo-form" action="#" method="post" novalidate>
+        <div class="field">
+            <label for="title">タイトル</label>
+            <input id="title" type="text" name="title">
+        </div>
+        <button type="submit">保存する</button>
+    </form>
+    <p id="result"></p>
+
+    <script src="script.js"></script>
+</body>
+</html>

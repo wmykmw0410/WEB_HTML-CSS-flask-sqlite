@@ -36,13 +36,15 @@ Webアプリを基礎から作れるようになるための、番号付きチ�
 - [ ] 01_frontend/02_html_semantic_form — セマンティックHTMLとアクセシビリティ・フォーム
 - [ ] 01_frontend/03_css_basics — CSSの書き方・文字と色と単位・基本のセレクタ・classとid・背景と装飾・（補足）カスケードと詳細度
 - [ ] 01_frontend/04_css_layout — ボックスモデルとdisplay・Flexbox・Grid・レスポンシブ対応・CSS変数・フォームの装飾
-- [ ] 01_frontend/05_js_basics — JavaScriptの読み込みとデバッグ・最小限の基本文法・真偽の判定・関数とコールバック
-- [ ] 01_frontend/06_js_events — イベント（クリック・入力・submit）・入力チェック（ブラウザで動かす）
-- [ ] 01_frontend/07_js_dom — DOM操作（要素の取得・書き換え・作成・XSS）
-- [ ] 01_frontend/08_js_render — 配列メソッド・データから画面を作る・絞り込み
-- [ ] 01_frontend/09_js_ui — タブ・ポップアップ・モーダルウィンドウ・スライドショー・スクロール
-- [ ] 01_frontend/10_js_data — JSON・`fetch()`・`async`/`await`・エラー処理・`localStorage`・データから画面を作る・HTTPメソッドの体験
-- [ ] 01_frontend/11_homepage — オリジナルHPの仕上げ（フロントエンド編のゴール）
+- [ ] 01_frontend/05_js_basics — JavaScriptの読み込みとデバッグ・最小限の基本文法・関数とコールバック・（発展）nullと真偽の判定
+- [ ] 01_frontend/06_js_dom_basics — DOMの最小限（要素の取得と`textContent`での書き換え）
+- [ ] 01_frontend/07_js_events — イベント（クリック・入力・ホバー・フォーカス）
+- [ ] 01_frontend/08_js_forms — フォームの送信（`submit`）・入力チェック
+- [ ] 01_frontend/09_js_dom — DOM操作（属性・要素の作成・イベント委譲・XSS）
+- [ ] 01_frontend/10_js_render — 配列メソッド・データから画面を作る・絞り込み
+- [ ] 01_frontend/11_js_ui — タブ・ポップアップ・モーダルウィンドウ・スライドショー・スクロール
+- [ ] 01_frontend/12_js_data — JSON・`fetch()`・`async`/`await`・エラー処理・`localStorage`・データから画面を作る・HTTPメソッドの体験
+- [ ] 01_frontend/13_homepage — オリジナルHPの仕上げ（フロントエンド編のゴール）
 - [ ] 01_frontend/00_my_homepage — 自分のオリジナルHP（各章の制作課題で育てる）
 
 ### バックエンド編：完成形（最初に触ってみる）
@@ -120,13 +122,15 @@ Webページが表示されるしくみ（リクエストとレスポンス・UR
 | 02 | [html_semantic_form](01_frontend/02_html_semantic_form/) | セマンティックHTMLとアクセシビリティ・フォーム | ステップ1：4ページのHTML |
 | 03 | [css_basics](01_frontend/03_css_basics/) | CSSの書き方・文字と色と単位・基本のセレクタ・classとid・背景と装飾・（補足）カスケードと詳細度 | — |
 | 04 | [css_layout](01_frontend/04_css_layout/) | ボックスモデルとdisplay・Flexbox・Grid・レスポンシブ対応・CSS変数・フォームの装飾 | ステップ2：`style.css` |
-| 05 | [js_basics](01_frontend/05_js_basics/) | JavaScriptの読み込みとデバッグ・最小限の基本文法・真偽の判定・関数とコールバック | — |
-| 06 | [js_events](01_frontend/06_js_events/) | イベント（クリック・入力・ホバー・フォーカス・submit）・入力チェック（ブラウザで動かす） | — |
-| 07 | [js_dom](01_frontend/07_js_dom/) | DOM操作（`querySelector`・属性・要素の作成・XSS） | — |
-| 08 | [js_render](01_frontend/08_js_render/) | 配列メソッド（`map`・`filter`・`find`・`includes`）・データから画面を作る（`render()`）・クライアント側での絞り込み | ステップ3：`script.js` |
-| 09 | [js_ui](01_frontend/09_js_ui/) | タブ切り替え・ポップアップ（`popover`）・モーダルウィンドウ（`<dialog>`）・スライドショー・スクロール動作 | （自由課題で使う） |
-| 10 | [js_data](01_frontend/10_js_data/) | JSON・`fetch()`・`async`/`await`・エラー処理・`localStorage`・データから画面を作る・HTTPメソッドの体験（JSONPlaceholder。発展・任意） | ステップ4：データの分離 |
-| 11 | [homepage](01_frontend/11_homepage/) | ファビコン・OGP・画像の最適化・品質チェック・GitHub Pagesでの公開（補足）・全機能を盛り込んだ完成版の作例（`sample/`） | ステップ5：**完成** |
+| 05 | [js_basics](01_frontend/05_js_basics/) | JavaScriptの読み込みとデバッグ・最小限の基本文法・関数とコールバック・（発展）nullと真偽の判定 | — |
+| 06 | [js_dom_basics](01_frontend/06_js_dom_basics/) | DOMの最小限（`getElementById`・`getElementsBy…`・`querySelector`で取得し、`textContent`で書き換える）・書き換わらないときの調べ方 | — |
+| 07 | [js_events](01_frontend/07_js_events/) | イベント（クリック・入力・ホバー・フォーカス） | — |
+| 08 | [js_forms](01_frontend/08_js_forms/) | フォームの送信（`submit`・`preventDefault()`）・入力チェック（`trim()`・`confirm()`） | — |
+| 09 | [js_dom](01_frontend/09_js_dom/) | DOM操作（属性・要素の作成・イベント委譲・XSS） | — |
+| 10 | [js_render](01_frontend/10_js_render/) | 配列メソッド（`map`・`filter`・`find`・`includes`）・データから画面を作る（`render()`）・クライアント側での絞り込み | ステップ3：`script.js` |
+| 11 | [js_ui](01_frontend/11_js_ui/) | タブ切り替え・ポップアップ（`popover`）・モーダルウィンドウ（`<dialog>`）・スライドショー・スクロール動作 | （自由課題で使う） |
+| 12 | [js_data](01_frontend/12_js_data/) | JSON・`fetch()`・`async`/`await`・エラー処理・`localStorage`・データから画面を作る・HTTPメソッドの体験（JSONPlaceholder。発展・任意） | ステップ4：データの分離 |
+| 13 | [homepage](01_frontend/13_homepage/) | ファビコン・OGP・画像の最適化・品質チェック・GitHub Pagesでの公開（補足）・全機能を盛り込んだ完成版の作例（`sample/`） | ステップ5：**完成** |
 
 ### バックエンド編（[02_backend/](02_backend/)）
 
@@ -168,6 +172,7 @@ Webページが表示されるしくみ（リクエストとレスポンス・UR
 |---|---|
 | [setup/](00_docs/setup/) | 環境構築（[フロントエンド編](00_docs/setup/frontend.md)・[バックエンド編](00_docs/setup/backend.md)）・[VS Codeのおすすめ拡張機能](00_docs/setup/vscode.md)・ライブラリの一覧（[requirements.txt](00_docs/setup/requirements.txt)） |
 | [glossary/](00_docs/glossary/) | 用語集（章をまたいで出てくる用語） |
+| [js_grammar/](00_docs/js_grammar/) | JavaScriptの文法・メソッドリファレンス（フロントエンド編05〜12章の一覧） |
 | [python_grammar/](00_docs/python_grammar/) | Pythonの文法リファレンス（基礎・中級・発展） |
 | [github/](00_docs/github/) | GitHubにリポジトリをpushする手順 |
 
